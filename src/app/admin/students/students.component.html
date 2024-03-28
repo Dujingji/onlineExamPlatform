@@ -1,0 +1,125 @@
+<div align="end" class="search">
+  <form [formGroup]="submitForm">
+  <mat-form-field appearance="fill">
+    <mat-label>学生姓名</mat-label>
+    <input matInput placeholder="请输入搜索内容" formControlName="std_name">
+    <button mat-button matSuffix (click)="onSearch()">
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-form-field>
+  </form>
+</div>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" multiTemplateDataRows>
+
+  <ng-container matColumnDef="学生姓名">
+    <th mat-header-cell *matHeaderCellDef> 学生姓名 </th>
+    <td mat-cell *matCellDef="let element"> {{element.std_name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="密码">
+    <th mat-header-cell *matHeaderCellDef> 密码 </th>
+    <td mat-cell *matCellDef="let element"> {{element.password}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="专业类别">
+    <th mat-header-cell *matHeaderCellDef> 专业类别 </th>
+    <td mat-cell *matCellDef="let element"> {{element.major}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="年级">
+    <th mat-header-cell *matHeaderCellDef> 年级 </th>
+    <td mat-cell *matCellDef="let element"> {{element.semester}}</td>
+  </ng-container>
+
+  <!-- <ng-container matColumnDef="毕业时间">
+    <th mat-header-cell *matHeaderCellDef> 毕业时间 </th>
+    <td mat-cell *matCellDef="let element"> {{DateString(element.graduate)}}</td>
+  </ng-container> -->
+
+  <ng-container matColumnDef="所在班级">
+    <th mat-header-cell *matHeaderCellDef> 所在班级/教学点 </th>
+    <td mat-cell *matCellDef="let element; let i = dataIndex"> {{className[i].name}}/{{className[i].college}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="已考数量">
+    <th mat-header-cell *matHeaderCellDef> 已考数量/报考数量 </th>
+    <td mat-cell *matCellDef="let element"> {{element.exam_answers.length}}/{{element.exams.length}}</td>
+  </ng-container>
+
+  <!-- <ng-container matColumnDef="教学点">
+    <th mat-header-cell *matHeaderCellDef> 教学点 </th>
+    <td mat-cell *matCellDef="let element"> {{element.collage_name}} </td>
+  </ng-container> -->
+
+  <ng-container matColumnDef="按钮">
+    <th mat-header-cell *matHeaderCellDef> 操作 </th>
+    <td mat-cell *matCellDef="let element; let i = dataIndex">
+      <button mat-raised-button class="edit" (click)="onEditStudent(element.id, element.username, element.password, element.classroom, element.major,
+      className[i].name, element.semester, element.graduate, element.std_name)">编辑</button>
+      <button mat-raised-button class="delete" (click)="onDeleteStudent(element.id, element.classroom)">删除</button>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="expand">
+    <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button aria-label="expand row"
+        (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+        <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+  <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let element;" [attr.colspan]="columnsToDisplayWithExpand.length">
+      <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+        <app-students-exams-list [id]="element.id"></app-students-exams-list>
+        <mat-card>
+          <mat-card-actions class="footer" align="start">
+            <button mat-raised-button class="form-inline added"> 导出数据 </button>
+          </mat-card-actions>
+        </mat-card>
+
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+  <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row"
+    [class.example-expanded-row]="expandedElement === element">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table>
+
+<mat-paginator [length]="total" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50, 100]"
+(page)="onPageChange($event)" showFirstLastButtons>
+</mat-paginator>
+
+<div align="end" >
+  <mat-form-field class="desire desire_input" appearance="outline">
+    <mat-label>页数 / {{totalPages}}</mat-label>
+    <input matInput type="number"  min="1" max="{{ totalPages }}" [(ngModel)]="desiredPage">
+  </mat-form-field>
+  <button mat-raised-button class="desire" color="primary" (click)="goToDesiredPage()">跳转</button>
+</div>
+
+<mat-card>
+  <mat-card-actions class="footer" align="start">
+    <button mat-raised-button class="form-inline added" (click)="onCreateUser()"> 新增学生 </button>
+    <input type="file" class="file-input" [accept]="'.xlsx'" (change)="onFileSelected($event)" #fileload>
+    <div class="file-upload">
+      <button mat-raised-button color="primary" class="upload-btn" (click)="fileload.click()">
+        导入学生
+      </button>
+      {{fileName || "还没有上传的文件"}}
+    </div>
+    <div class="file-upload">
+      <button mat-raised-button color="primary" class="upload-btn" (click)="onDownloadTemp()">
+        下载模版
+      </button>
+    </div>
+  </mat-card-actions>
+</mat-card>

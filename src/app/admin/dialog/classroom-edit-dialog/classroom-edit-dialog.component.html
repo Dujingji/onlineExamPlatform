@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>班级编辑</h2>
+<mat-dialog-content>
+  <mat-card class="mat-elevation-z5">
+    <mat-card-content class="host">
+      <form [formGroup]="submitForm">
+        <div class="form-inline">
+          <mat-form-field appearance="outline">
+            <mat-label>班级名称</mat-label>
+            <input formControlName="classroom" matInput>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>教学点</mat-label>
+            <input matInput value="{{submitForm.value.college}}" [disabled]="true">
+          </mat-form-field>
+          <button mat-raised-button *ngIf="college" class="submitB" (click)="editCollege()">修改</button>
+            <button mat-raised-button *ngIf="!college" class="submitB" (click)="editCollege()">添加</button>
+        </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>学期</mat-label>
+            <input matInput  formControlName="semester">
+            <mat-hint>20xx春/秋</mat-hint>
+          </mat-form-field>
+        </div>
+        <!-- <div class="form-inline">
+          <mat-form-field class="float-left" appearance="outline">
+            <mat-label>科目类型</mat-label>
+            <mat-select formControlName="major" >
+              <mat-option value="政治">政治</mat-option>
+              <mat-option value="英语">英语</mat-option>
+              <mat-option value="大学语文">大学语文</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="float-right" appearance="outline">
+            <mat-label>班级名称</mat-label>
+            <input  value="{{this.submitForm.value.classroom}}" matInput disabled>
+          </mat-form-field>
+          <button mat-raised-button *ngIf="classroom" class="submitB" (click)="editClassroom()">修改</button>
+         <button mat-raised-button *ngIf="!classroom" class="submitB" (click)="editClassroom()">添加</button>
+        </div> -->
+      </form>
+    </mat-card-content>
+  </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions class="action" align="end">
+  <button mat-raised-button [disabled]="!submitForm.valid" class="submitB form-inline"
+    (click)="closeDialog()">提交</button>
+  <button mat-raised-button mat-dialog-close class="cancelB">取消</button>
+</mat-dialog-actions>

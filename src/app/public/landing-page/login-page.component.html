@@ -1,0 +1,42 @@
+<div class="blank-layout-container justify-content-center align-items-center bg-light-primary">
+  <div
+    class="position-relative row w-100 h-100 bg-gredient justify-content-center"
+  >
+    <div class="col-lg-4 d-flex align-items-center">
+      <mat-card class="cardWithShadow boxed-auth">
+        <mat-card-content class="p-32">
+          <div class="text-center">
+            <h1 [routerLink]="['/public/homePage']">
+              <img
+                src="data:image/png;base64,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"
+                class="align-middle m-2"
+                alt="logo"
+              />
+              线上考试平台
+            </h1>
+          </div>
+          <form class="m-t-30" [formGroup]="loginForm" >
+
+            <mat-label for="username" class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block"
+              >用户名</mat-label
+            >
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <input formControlName="username" matInput type="text" placeholder="用户名..."/>
+            </mat-form-field>
+            <!-- password -->
+            <mat-label for="password" class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block"
+              >密码</mat-label
+            >
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <input formControlName="password" matInput type="password" placeholder="密码..."/>
+            </mat-form-field>
+            <button [disabled]="!loginForm.valid" (click)="onSubmit()" mat-flat-button color="primary" class="w-100">
+               登录系统
+            </button>
+            <!-- input -->
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

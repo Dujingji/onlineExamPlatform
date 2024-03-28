@@ -1,0 +1,34 @@
+<mat-toolbar class="mat-elevation-z2">
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+  </button>
+  <button mat-icon-button class="perLevel" >
+    <mat-icon>forward</mat-icon>
+  </button>
+  <p class="title">{{paper}}</p>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+    <div class="answer-card" *ngFor="let item of section; let i = index;">
+      <div class="answer-card-title">
+        {{item.type}}
+      </div>
+      <button mat-mini-fab class="fab-button" (click)="WaringChanged(correctIndex(i) + j, ID!)"
+        *ngFor="let count of [].constructor(paperData ? paperData.n[i] : 0); let j = index">
+        {{j+1}}
+      </button>
+      <mat-divider>
+
+      </mat-divider>
+    </div>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content mat-elevation-z5">
+      <app-papers-content></app-papers-content>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

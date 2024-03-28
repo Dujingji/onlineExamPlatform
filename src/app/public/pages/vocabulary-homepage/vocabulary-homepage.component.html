@@ -1,0 +1,83 @@
+<div class="container">
+  <div class="day-container">
+    <div class="day_text">
+      <div class="day_text_title">累计打卡</div>
+      <div class="day_text_day">
+        <div class="number">{{total_d}}</div>
+        <div class="day">天</div>
+      </div>
+    </div>
+
+    <div class="day_text">
+      <div class="day_text_title">连续打卡</div>
+      <div class="day_text_day">
+        <div class="number">{{continus_d}}</div>
+        <div class="day">天</div>
+      </div>
+    </div>
+
+    <div class="calendar">
+      <div class="c_button">
+        <div class="p" (click)="goToCalendar()">打卡日历 ></div>
+      </div>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="card-container">
+    <div class="card_title">广东省普通专升本单词库</div>
+    <div class="card_bottom">
+      <div class="progress_text">
+        <div>已完成  {{ percent }}%</div>
+        <div class="p_detail">{{  total_s + '/' +  total_v }}</div>
+      </div>
+      <mat-progress-bar mode="determinate" value="{{ percent }}"></mat-progress-bar>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="text-divider">
+    <div class="divider">
+
+    </div>
+    <div class="divider_title"> 今日计划 </div>
+    <div class="divider">
+
+    </div>
+  </div>
+
+  <div class="target_box" >
+    <div class="target">
+      <div *ngIf="!selectorVisible; else selector" (click)="toggleSelector()" class="target_number">{{performance}} </div>
+      <div *ngIf="!selectorVisible; " (click)="toggleSelector()" class="target_name">
+        <div>新词</div>
+      </div>
+    </div>
+    <div class="target" *ngIf="!selectorVisible;">
+      <div class="target_number">{{getReview()}}</div>
+      <div class="target_name">复习</div>
+    </div>
+
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="bottom_s" >
+    <div class="bottom_b" routerLink="/public/homePage/vocabulary-study">
+      开始学习
+    </div>
+  </div>
+
+
+</div>
+
+<ng-template #selector>
+  <mat-form-field class="small-select">
+    <mat-label>计划</mat-label>
+    <mat-select (selectionChange)="onSelectionChange($event)">
+      <mat-option *ngFor="let option of options" [value]="option.value">{{ option.label }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</ng-template>

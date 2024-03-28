@@ -1,0 +1,8 @@
+{
+  "/dictvoice": {
+    "target": "https://dict.youdao.com",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {"^/dictvoice": "/dictvoice"}
+  }
+}

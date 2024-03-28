@@ -1,0 +1,55 @@
+table {
+  width: 100%;
+  td{
+    width: auto;
+    min-width: 100px;
+    height: auto;
+    max-height: 20px;
+    overflow: scroll;
+  }
+}
+
+:host ::-webkit-scrollbar {
+  /*隐藏滚轮*/
+  display: none;
+}
+
+.action{
+  background-color: lightblue;
+}
+
+.edit{
+  margin: 8px;
+  background-color: lightblue;
+}
+
+.delete{
+  margin: 8px;
+  background-color: lightcoral;
+}
+
+.added{
+  margin: 8px;
+  background-color: lightcyan;
+}
+
+.footer{
+  background-color: beige;
+}
+
+th {
+  background-color: bisque;
+}
+
+.desire{
+  margin: 5px;
+}
+
+.desire_input{
+  width: 100px;
+}
+
+.search{
+  margin-top: 12px;
+  margin-right: 8px;
+}

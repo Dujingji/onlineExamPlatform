@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>试卷编辑</h2>
+<mat-dialog-content>
+  <mat-card class="mat-elevation-z5">
+    <mat-card-header>
+        <mat-card-title></mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="host">
+      <form [formGroup]="submitForm" >
+        <div class="form-inline">
+        <mat-form-field appearance="outline">
+          <mat-label>试卷名称</mat-label>
+          <input formControlName="name" matInput>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>题目类型</mat-label>
+          <input matInput value="{{this.submitForm.value.section}}" disabled>
+        </mat-form-field>
+        <button mat-raised-button class="submitB" (click)="updateSection()" >修改</button>
+        </div>
+        <div class="form-inline">
+          <mat-form-field class="float-left" appearance="outline">
+            <mat-label>科目类型</mat-label>
+            <mat-select formControlName="major" >
+              <mat-option *ngFor="let element of majorData; let i = index" value="{{element.name}}">{{element.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="float-right" appearance="outline">
+            <mat-label>考试时长</mat-label>
+            <input formControlName="timer" type="number" matInput >
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions  class="action" align="end">
+  <button mat-raised-button  [disabled]="!submitForm.valid" class="submitB form-inline" (click)="closeDialog()">提交</button>
+  <button mat-raised-button mat-dialog-close class="cancelB" >取消</button>
+</mat-dialog-actions>
+
+

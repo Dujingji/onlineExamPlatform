@@ -1,0 +1,59 @@
+<mat-toolbar class="mat-elevation-z2">
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+  </button>
+  <div class="title">{{paper}}</div>
+  <div class="sidenav-right">
+    <button  mat-icon-button (click)="sidenav1.toggle()">
+      <mat-icon *ngIf="!sidenav1.opened"> menu </mat-icon>
+      <mat-icon *ngIf="sidenav1.opened"> close </mat-icon>
+    </button>
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon>forward</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav position="start" #sidenav class="mat-elevation-z8">
+      <div class="answer-card" *ngFor="let item of section; let i = index;">
+        <div class="answer-card-title">
+            {{item.type}}
+        </div>
+        <button mat-mini-fab class="fab-button" (click)="WaringChanged(correctIndex(i) + j, ID!)" [ngClass]="{'correct': this.table[correctIndex(i) + j] == 3,
+        'incorrect' : this.table[correctIndex(i)+ j] == 0, 'warning' : this.table[correctIndex(i)+ j] == 2, 'wrong' :  this.table[correctIndex(i)+ j] == 1}"
+        *ngFor="let count of [].constructor(paperData ? paperData.n[i] : 0); let j = index">
+        {{j+1}}
+      </button>
+        <mat-divider>
+
+        </mat-divider>
+      </div>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content mat-elevation-z5">
+      <app-result-page (eventTrigger)="OnReceive($event)"></app-result-page>
+    </div>
+  </mat-sidenav-content>
+
+  <mat-sidenav position="end" #sidenav1 class="mat-elevation-z8" opened="true">
+    <div>
+      <mat-card class="result-card">
+        <mat-card-content>
+          <p>姓名：{{userName}}</p>
+          <p>准考证号：{{EID}}</p>
+          <p>所属院校：{{college}}</p>
+          <p>专业：{{major}}</p>
+          <p>考试结束时间：{{endTime}}</p>
+          <p><img src="../../../../../assets/icons8-correct.svg">正确题数：{{wANDc[0]}}</p>
+          <p><img src="../../../../../assets/icons8-wrong.svg">错误题数：{{wANDc[1]}}</p>
+          <p>总题数：{{paperData ? paperData.length - _qt : ""}}</p>
+          <p class="comment">总分：{{mark}} 分 / {{totalMark}} 分</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

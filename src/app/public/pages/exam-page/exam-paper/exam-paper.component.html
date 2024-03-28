@@ -1,0 +1,111 @@
+<div class="matCat" *ngFor="let s of section; let si = index">
+  <mat-card class=" q_desc mat-elevation-z5">
+    <mat-card-content >
+      <p class="comment">{{s.desc}}</p>
+    </mat-card-content>
+  </mat-card>
+  <div id="{{currentIndex(si) + i}}" class="matCat" *ngFor="let q of getQuestions(si) let i = index">
+    <mat-card class="mat-elevation-z5" *ngIf="q.type == '单项选择题' || q.type == '判断题'
+    || (q.type.includes('阅读理解') && !q.type.includes('题目')) || (q.type.includes('完形填空') && !q.type.includes('题目'))">
+      <mat-card-content>
+        <p></p>
+        <div class="mat-card-text form-inline float-left">
+          {{i + 1}}.
+        </div>
+        <div class="mat-card-text" [innerHtml]="q.question | safeHtml" [appMath]> {{q.question}} </div>
+        <div class="mark-box float-right">
+          <p> 分值：{{q.mark}} 分 </p>
+        </div>
+      </mat-card-content>
+      <mat-card-actions class="mat-card-a" align="start">
+        <button class="answer-button" [ngClass]="{'selected' :  (selectedOption ? selectedOption[currentIndex(si) + i].value : '?') == convert(j),
+          'unselected':  (selectedOption ? selectedOption[currentIndex(si) + i].value : '?')  != convert(j)}"
+          (click)="onChanged(currentIndex(si) + i, j, 0, $event, q.mark, q.answer)" mat-stroked-button
+          *ngFor="let a of q.selection; let j = index" [appMath]>
+          {{convert(j)}}. {{a}}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+    <mat-card class="mat-elevation-z5" *ngIf="q.type == '多项选择题'">
+      <mat-card-content>
+        <div class="form-inline float-left" [appMath]>
+          <p class="mat-card-text"> {{i + 1}}. {{q.question}} </p>
+        </div>
+        <div class="mark-box float-right">
+          <p> 分值：{{q.mark}} 分 </p>
+        </div>
+      </mat-card-content>
+      <mat-card-actions class="mat-card-a" align="start">
+        <button class="answer-button" [ngClass]="{'selected' :  (selectedOption ? calMultQ(j, selectedOption[currentIndex(si) + i].multValue) : false),
+          'unselected':  (selectedOption ? calMultQ(j, selectedOption[currentIndex(si) + i].multValue) : true)}"
+          (click)="onChanged(currentIndex(si) + i, j, 2, $event, q.mark, q.answer)" mat-stroked-button
+          *ngFor="let a of q.selection; let j = index">
+          {{convert(j)}}. {{a}}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+    <mat-card class="mat-elevation-z5" *ngIf="q.type == '填空题'">
+      <mat-card-content>
+        <div class="mat-card-text form-inline float-left">
+          {{i + 1}}.
+          <div class="mat-card-text" [innerHtml]="q.question | safeHtml" [appMath]></div>
+        </div>
+        <div class="mark-box float-right">
+          <p> 分值：{{q.mark}} 分 </p>
+        </div>
+        <form id="{{'form' + currentIndex(si) + i}}">
+          <mdb-form-control>
+            <input mdbInput type="text" value="{{selectedOption ? selectedOption[currentIndex(si) + i].value : ''}}"
+              class="form-control" (change)="onChanged(currentIndex(si) + i, -1 ,1, $event, -1, '')" />
+          </mdb-form-control>
+        </form>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="mat-elevation-z5"
+      *ngIf="q.type != '单项选择题' && q.type != '多项选择题' && q.type != '填空题' && q.type != '判断题'
+      && !(q.type.includes('阅读理解') && !q.type.includes('题目')) && !(q.type.includes('完形填空') && !q.type.includes('题目'))">
+      <mat-card-content>
+        <!-- <div>
+          <p class="mat-card-text"> {{i + 1}}. </p>
+        </div> -->
+
+        <div class="mat-card-text form-inline float-left"> {{i + 1}}. </div>
+        <div [innerHtml]="q.question | safeHtml" [appMath]></div>
+
+        <div *ngFor="let s of q.selection let si1 = index">
+          <p>（{{si1 + 1}}） {{s}}</p>
+        </div>
+        <div>
+          <p class="mark-box" align="end"> 分值：{{q.mark}} 分 </p>
+        </div>
+        <div>
+          <ckeditor *ngIf="!q.type.includes('题目')" [(ngModel)]="model[currentIndex(si) + i].editorData" [editor]="Editor"
+            (ready)="onReady($event, currentIndex(si) + i)" (change)="onChange($event, currentIndex(si) + i)">
+          </ckeditor>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+
+<!-- <mat-card class="mat-elevation-z5">
+  <mat-card-content>
+<div class="form-inline float-left">
+  <select mat-select class="form-control" [value]="questionPerPage"
+  (change)="changePageSize($event)">
+    <option mat-option value="3">每页 3 题</option>
+    <option mat-option value="6">每页 6 题</option>
+    <option mat-option value="10">每页 10 题</option>
+  </select>
+</div>
+<div class="btn-group float-right">
+  <button mat-button-toggle *ngFor="let page of pageNumbers" (click) = "changePage(page)"
+    class="btn btn-outline-primary"
+    [class.active]="page == selectPage"
+  >
+  {{page}}
+  </button>
+</div>
+</mat-card-content>
+</mat-card> -->

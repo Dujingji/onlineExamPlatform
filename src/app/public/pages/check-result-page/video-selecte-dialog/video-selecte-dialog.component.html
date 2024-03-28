@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>视频选择</h2>
+<mat-dialog-content class="mat-elevation-z8">
+  <div class="form-inline">
+    <div *ngFor="let vd of video_list; let i = index">
+      <a href="{{vd}}">
+        <button mat-button class="check_button">{{i}}</button>
+      </a>
+    </div>
+  </div>
+</mat-dialog-content>

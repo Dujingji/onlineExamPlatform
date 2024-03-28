@@ -1,0 +1,50 @@
+<div *ngIf="examInfo ? examInfo.length != 0 : false">
+  <div class="bg-info p-2 text-white title">
+    <h2>{{userInformation}}</h2>
+  </div>
+  <div class="container-fluid">
+    <div class="matCat" *ngFor="let exam of examInfo let i = index">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title> {{exam.major}}</mat-card-title>
+          <mat-card-subtitle>{{exam.description}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          {{exam.description}}
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <!-- <button mat-button class="checkBTN" *ngIf="examStatus(exam.paperId)"  routerLink="/resultPage/{{exam.paperId}}"  >查询成绩</button> -->
+          <button mat-button class="startBTN"
+          [disabled]="getButtonStatus(i) !== 1"
+          routerLink="/public/homePage/p/{{exam._id}}">
+          {{getButtonStatus(i) === -1 ? '加载中...' :
+            getButtonStatus(i) === 0 ?  getTimeSpan(i) :
+            getButtonStatus(i) === 1 ? '开始考试' :
+            getButtonStatus(i) === 2 ? '考试已结束' : ''
+          }}
+          </button>
+          <!-- <button id="b1" mat-button class="startBTN"
+            *ngIf="(active ? !active[i] : false) && (endIs ? !endIs[i] : false) && reminder"
+            [disabled]="true">
+            {{convertDay(reminder[i])}}
+          </button>
+          <button id="b2" mat-button class="startBTN"
+            *ngIf="(active ? active[i] : false) && (endIs ? !endIs[i] : false) && reminder"
+            routerLink="/public/homePage/p/{{exam._id}}">
+            开始考试
+          </button>
+          <button id="b3" mat-button class="startBTN" *ngIf="(endIs ? endIs[i] : false) && reminder" [disabled]="true">
+            考试已结束
+          </button> -->
+        </mat-card-actions>
+        <mat-card-footer align="end">
+          <time>{{examDate(exam.date)}} - {{examDate(exam.end)}}</time>
+        </mat-card-footer>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="examInfo ? examInfo.length == 0 : false" class="not-body">
+  <app-not-exams-page></app-not-exams-page>
+</div>

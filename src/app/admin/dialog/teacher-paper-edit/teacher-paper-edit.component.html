@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>分配改卷</h2>
+<mat-dialog-content>
+  <mat-card class="mat-elevation-z5">
+    <mat-card-content class="host">
+      <form [formGroup]="submitForm" >
+        <div class="form-inline">
+          <mat-form-field class="float-left" appearance="outline">
+            <mat-label>考试名称</mat-label>
+            <mat-select formControlName="exam_name" >
+              <mat-option *ngFor="let element of []" value="1">{{1}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="float-right" appearance="outline">
+            <mat-label>教学点</mat-label>
+            <mat-select formControlName="college" >
+              <mat-option *ngFor="let element of []" value="1">{{1}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="float-left" appearance="outline">
+            <mat-label>类型</mat-label>
+            <mat-select formControlName="type" >
+              <mat-option value="1">随机匹配</mat-option>
+              <mat-option value="2">绝对匹配</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field *ngIf="submitForm.value.type === 2" class="float-right" appearance="outline">
+            <mat-label>类型</mat-label>
+            <mat-select formControlName="type" >
+              <mat-option value="1">随机匹配</mat-option>
+              <mat-option value="2">绝对匹配</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions  class="action" align="end">
+  <button mat-raised-button  [disabled]="!submitForm.valid" class="submitB form-inline" (click)="closeDialog()">提交</button>
+  <button mat-raised-button mat-dialog-close class="cancelB" >取消</button>
+</mat-dialog-actions>

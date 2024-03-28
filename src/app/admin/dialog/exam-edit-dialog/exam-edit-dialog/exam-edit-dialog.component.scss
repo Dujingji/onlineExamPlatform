@@ -1,0 +1,26 @@
+.host {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.submitB{
+  background-color: lightblue;
+  margin: 5px;
+}
+
+.cancelB{
+  background-color: lightcoral;
+}
+
+mat-form-field{
+  margin-right: 10px;
+}
+
+.ngx-timepicker{
+  height: 60px;
+}
+
+.example-section {
+  margin: 12px 0;
+}

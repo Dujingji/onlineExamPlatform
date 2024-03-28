@@ -1,0 +1,76 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" multiTemplateDataRows>
+
+  <ng-container matColumnDef="班级名称">
+    <th mat-header-cell *matHeaderCellDef> 班级名称 </th>
+    <td mat-cell *matCellDef="let element"> {{element.classroom.classroom}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="学生数量">
+    <th mat-header-cell *matHeaderCellDef> 学生数量 </th>
+    <td mat-cell *matCellDef="let element"> {{element.classroom.students.length}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="考试详情">
+    <th mat-header-cell *matHeaderCellDef> 考试详情 </th>
+    <td mat-cell *matCellDef="let element"> {{element.classroom.exams.length}}
+      <button mat-raised-button class="added" (click)="onEditExam(element.classroom._id, element.classroom.exams)">详情</button>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="教学点">
+    <th mat-header-cell *matHeaderCellDef> 教学点 </th>
+    <td mat-cell *matCellDef="let element; let i = dataIndex"> {{element.college}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="学期">
+    <th mat-header-cell *matHeaderCellDef> 学期 </th>
+    <td mat-cell *matCellDef="let element; "> {{element.classroom.semester}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="expand">
+    <th mat-header-cell *matHeaderCellDef aria-label="row actions">展开</th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button aria-label="expand row"
+        (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+        <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="按钮">
+    <th mat-header-cell *matHeaderCellDef> 操作 </th>
+    <td mat-cell *matCellDef="let element;">
+      <button mat-raised-button class="edit" >编辑</button>
+      <button mat-raised-button class="delete" (click)="onDeleteClassroom(element.classroom._id)">删除</button>
+    </td>
+  </ng-container>
+
+
+  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+  <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let element;" [attr.colspan]="columnsToDisplayWithExpand.length">
+      <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+        <app-classroom-students-detail [id] = "element._id"></app-classroom-students-detail>
+        <mat-card>
+          <mat-card-actions class="footer" align="start">
+            <button mat-raised-button class="form-inline added" (click)="onExportData(element.classroom._id)"> 导出数据 </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+  <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand; " class="example-element-row"
+    [class.example-expanded-row]="expandedElement === element">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table>
+
+<mat-card >
+  <mat-card-actions class="footer" align="start">
+    <button mat-raised-button class="form-inline added" (click)="onCreateClassroom()"> 新增班级 </button>
+    <button mat-raised-button class="form-inline added" (click)="onExportData('all')"> 导出全部数据 </button>
+  </mat-card-actions>
+</mat-card>

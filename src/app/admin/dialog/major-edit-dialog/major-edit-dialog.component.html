@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>学科编辑</h2>
+<mat-dialog-content>
+  <mat-card class="mat-elevation-z5">
+    <mat-card-content class="host">
+      <form [formGroup]="submitForm">
+        <div class="form-inline">
+          <mat-form-field appearance="outline">
+            <mat-label>学科名称</mat-label>
+            <input formControlName="name" matInput>
+          </mat-form-field>
+          <mat-form-field class="float-left" appearance="outline">
+            <mat-label>科目类型</mat-label>
+            <mat-select formControlName="type">
+              <mat-option *ngFor="let element of majorData let i = index" value="{{i}}">{{element}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field *ngIf="this.submitForm.value.type == 3" appearance="outline">
+            <mat-label>所属专业基础课</mat-label>
+            <mat-select formControlName="arrg">
+              <mat-option *ngFor="let element of foundList let i = index" value="{{element}}">{{element}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions class="action" align="end">
+  <button mat-raised-button [disabled]="!submitForm.valid" class="submitB form-inline"
+    (click)="closeDialog()">提交</button>
+  <button mat-raised-button mat-dialog-close class="cancelB">取消</button>
+</mat-dialog-actions>

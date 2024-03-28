@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>题目纠错</h2>
+<mat-dialog-content>
+  <form [formGroup]="submitForm">
+    <mat-form-field appearance="fill">
+      <mat-label>纠错内容</mat-label>
+      <textarea formControlName="feedback" matInput rows="5"></textarea> <!-- 设置rows属性来增加输入区域的高度 -->
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button class="delete" mat-button mat-dialog-close>取消</button>
+  <button class="edit" mat-button [disabled]="!submitForm.valid" (click)="closeDialog()">提交</button>
+</mat-dialog-actions>

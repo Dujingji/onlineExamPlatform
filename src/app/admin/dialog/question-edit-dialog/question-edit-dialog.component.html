@@ -1,0 +1,77 @@
+<h2 mat-dialog-title>题目编辑 </h2>
+<!-- <div [appMath]="mathLatex"></div>
+
+<div [appMath]="mathMl"></div> -->
+
+<mat-dialog-content>
+  <mat-card class="mat-elevation-z5">
+    <mat-card-header>
+      <mat-card-title></mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="host">
+      <form [formGroup]="submitForm">
+        <div class="form-inline">
+          <mat-form-field appearance="outline">
+            <mat-label>分值</mat-label>
+            <input matInput type="number" formControlName="mark">
+          </mat-form-field>
+        </div>
+        <div class="form-inline">
+          <mat-form-field class="float-right" appearance="outline">
+            <mat-label>解析</mat-label>
+            <input formControlName="comment" matInput>
+          </mat-form-field>
+        </div>
+        <div *ngIf="submitForm.value.type == '单项选择题' || submitForm.value.type == '多项选择题' ||  submitForm.value.type.includes('阅读理解')
+        || submitForm.value.type.includes('完形填空')"
+          class="form-inline float-left">
+          <mat-form-field appearance="outline">
+            <mat-label>选项数量</mat-label>
+            <input formControlName="selection" type="number" matInput>
+          </mat-form-field>
+          <button mat-raised-button class="submitB" (click)="editSelection()">编辑选项</button>
+        </div>
+        <div *ngIf="submitForm.value.type == '简答题'" class="">
+          <mat-form-field appearance="outline">
+            <mat-label>题目数量</mat-label>
+            <input formControlName="selection" type="number" matInput>
+          </mat-form-field>
+          <button mat-raised-button class="submitB" (click)="editSelection()">编辑选项</button>
+        </div>
+        <div *ngIf="submitForm.value.type === '单项选择题' || submitForm.value.type === '多项选择题' || submitForm.value.type === '判断题'
+        || submitForm.value.type.includes('阅读理解') || submitForm.value.type.includes('完形填空')">
+          <mat-form-field appearance="outline">
+            <mat-label>答案</mat-label>
+            <input formControlName="answer" matInput>
+          </mat-form-field>
+        </div>
+      </form>
+      <div>
+        <p>题目/材料</p>
+        <ckeditor [(ngModel)]="model.editorData" [editor]="Editor" (ready)="onReady($event)"
+          (change)="onChange($event)">
+        </ckeditor>
+      </div>
+      <div *ngIf="submitForm.value.type != '单项选择题' && submitForm.value.type != '多项选择题'  && submitForm.value.type != '判断题'">
+        <p>答案</p>
+        <ckeditor [(ngModel)]="aM.editorData" [editor]="Editor" (ready)="onReadyA($event)"
+          (change)="onChangeA($event)">
+        </ckeditor>
+      </div>
+      <div *ngIf="comment && comment !== null && comment.length > 0">
+        <p>解析</p>
+        <ckeditor [(ngModel)]="cM.editorData" [editor]="Editor" (ready)="onReadyC($event)"
+          (change)="onChangeC($event)">
+        </ckeditor>
+      </div>
+      <!-- <p>预览</p>
+        <div [innerHtml]="model.editorData | safeHtmlV3" [appMath]>
+      </div> -->
+    </mat-card-content>
+  </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions class="action" align="end">
+  <button mat-raised-button [disabled]="!submitForm.valid" class="submitB form-inline"
+    (click)="closeDialog()">提交</button>
+  <button mat-raised-button mat-dialog-close class="cancelB">取消</button>
+</mat-dialog-actions>

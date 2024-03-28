@@ -1,0 +1,47 @@
+mat-card{
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px;
+  background-color: whitesmoke;
+}
+
+mat-expansion-panel{
+  margin: 10px;
+  background-color: whitesmoke;
+}
+
+table{
+  width: 100%;
+  background-color: whitesmoke;
+
+  td{
+    min-width: 20px;
+    width: auto;
+    max-width: 30px;
+  }
+}
+
+.edit{
+  background-color: lightblue;
+}
+
+.no_exercise{
+  margin: 12px;
+}
+
+.major-selector{
+  margin: 4px;
+}
+
+.submitB{
+  background-color: lightblue;
+  margin: 4px;
+}
+
+.title{
+  font-weight: bolder;
+  text-align : center;
+  h2{
+    margin-top: 10px;
+  }
+}

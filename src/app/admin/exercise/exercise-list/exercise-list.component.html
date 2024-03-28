@@ -1,0 +1,114 @@
+<div align="end" class="search">
+  <form [formGroup]="submitForm">
+  <mat-form-field appearance="fill">
+    <mat-label>科目</mat-label>
+    <input matInput placeholder="请输入搜索内容" formControlName="major">
+    <button mat-button matSuffix (click)="onSearch()">
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-form-field>
+  </form>
+</div>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" multiTemplateDataRows>
+
+  <ng-container matColumnDef="题库名称">
+    <th mat-header-cell *matHeaderCellDef> 题库名称 </th>
+    <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="所属专业">
+    <th mat-header-cell *matHeaderCellDef> 所属专业 </th>
+    <td mat-cell *matCellDef="let element"> {{element.major}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="章节数目">
+    <th mat-header-cell *matHeaderCellDef> 章节数目 </th>
+    <td mat-cell *matCellDef="let element"> {{element.model_number}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="题目数量">
+    <th mat-header-cell *matHeaderCellDef> 题目数量 </th>
+    <td mat-cell *matCellDef="let element"> {{element.length}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="上传时间">
+    <th mat-header-cell *matHeaderCellDef> 上传时间 </th>
+    <td mat-cell *matCellDef="let element"> {{date(element.created_date)}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="按钮">
+    <th mat-header-cell *matHeaderCellDef> 操作 </th>
+    <td mat-cell *matCellDef="let element;">
+      <button mat-raised-button class="edit" (click)="onExportData(element._id)">导出数据</button>
+      <button mat-raised-button class="delete" (click)="onDelete(element._id)">删除</button>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="expand">
+    <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+    <td mat-cell *matCellDef="let element; let i = index">
+      <button mat-icon-button aria-label="expand row"
+        (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation(); expendedEvent(i)">
+        <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+  <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let element;" [attr.colspan]="columnsToDisplayWithExpand.length">
+      <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+        <app-exercise-section-list [id]="element._id">
+        </app-exercise-section-list>
+        <mat-card>
+          <mat-card-actions class="footer" align="start">
+
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+  <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row"
+    [class.example-expanded-row]="expandedElement === element">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table>
+
+
+<mat-paginator [length]="total" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50, 100]"
+(page)="onPageChange($event)" showFirstLastButtons>
+</mat-paginator>
+
+<div align="end" >
+  <mat-form-field class="desire desire_input" appearance="outline">
+    <mat-label>页数 / {{totalPages}}</mat-label>
+    <input matInput type="number"  min="1" max="{{ totalPages }}" [(ngModel)]="desiredPage">
+  </mat-form-field>
+  <button mat-raised-button class="desire" color="primary" (click)="goToDesiredPage()">跳转</button>
+</div>
+
+<mat-card>
+  <mat-card-actions class="footer" align="start">
+    <input type="file" class="file-input" [accept]="'.xlsx'" (change)="onFileSelected($event)" #fileload>
+    <div class="file-upload">
+      <button mat-raised-button color="primary" class="upload-btn" (click)="fileload.click()">
+        导入题库
+      </button>
+      {{fileName || "还没有上传的文件"}}
+    </div>
+    <div class="progress">
+      <mat-progress-bar class="progress-bar" mode="determinate" [value]="uploadProgress" *ngIf="uploadProgress">
+      </mat-progress-bar>
+      <mat-icon class="cancel-upload" (click)="cancelUpload()" *ngIf="uploadProgress">delete_forever</mat-icon>
+    </div>
+    <div class="file-upload">
+      <button mat-raised-button color="primary" class="upload-btn" (click)="onDownloadTemp()">
+        下载模版
+      </button>
+    </div>
+  </mat-card-actions>
+</mat-card>

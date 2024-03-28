@@ -1,0 +1,37 @@
+mat-card{
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+  background-color: lightcyan;
+}
+
+.startBTN{
+  background-color: lightblue;
+}
+
+.checkBTN{
+  background-color: lightblue;
+  margin-right: 10px;
+}
+
+mat-card-footer{
+  padding: 10px;
+}
+
+.title{
+  font-weight: bolder;
+  text-align : center;
+  h2{
+    margin-top: 10px;
+  }
+}
+
+.not-body{
+  height: 100%;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  background: lightblue;
+  font-size: 14px;
+  line-height: 1;
+}

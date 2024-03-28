@@ -1,0 +1,102 @@
+<div class="current_decs">
+  {{getCurrentMonthAndYear()}}
+</div>
+<div class="table-box">
+  <table [ngClass]="{'table': !match, 'table-1' : match, 'table-compact' : true }">
+    <tbody>
+      <tr>
+        <th>周日</th>
+        <th>周一</th>
+        <th>周二</th>
+        <th>周三</th>
+        <th>周四</th>
+        <th>周五</th>
+        <th>周六</th>
+      </tr>
+      <tr *ngFor="let week of weeks; let i = index">
+        <td (click)="toggleEvents(dates[week][day])" class="left" [ngClass]="{'not-in-current-month': dates[week][day].status === -1,
+        'today': dates[week][day].today,
+        'current-box': dates[week][day].click,
+        'finished' : dates[week][day].status === 2 && !dates[week][day].click,
+        }" *ngFor="let day of days; let j = index">
+          <div class="date-lable">{{dates[week][day].index }}</div>
+          <div *ngFor="let exam of getExamsData(dates[week][day], 0); let i = index">
+          </div>
+          <div *ngFor="let daily of getDailyData(dates[week][day]); let i = index">
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="print-box form-inline"> 累计打卡：
+  <div class="print-number">{{dailyData ? dailyData.total : 0}}</div>
+  <div class="text-right">天</div>
+  <div class="text-left"> 连续打卡：</div>
+  <div class="print-number">{{dailyData ? dailyData.continue : 0}}</div>
+  <div >天</div>
+</div>
+<p></p>
+<mat-divider></mat-divider>
+<p></p>
+<div class="detail-box">
+  <div [ngClass]="{'comprehensive-shower': !match, 'comprehensive-shower-1' : match}"
+    *ngIf="expendedDate ? expendedDate.expanded : false">
+    <h2 class="calendar-title">
+      {{getCurrentMonthAndYearAndDay(expendedDate ? expendedDate.index : 0)}}
+    </h2>
+    <div class="c_lable" *ngIf="expendedDate ? expendedDate.dailys.length !== 0 : false">
+      <h2 class="h2-title" *ngIf="expendedDate ? expendedDate.dailys.length !== 0 || expendedDate.today: false">
+        每日一练
+      </h2>
+      <mat-card class="history" *ngFor="let exercise of expendedDate ? expendedDate.dailys : []; let i = index">
+        <mat-card-header>
+          <mat-card-title class="card-title">
+            <div class="exercise-major" align="start">
+              <p>{{exercise.daily.major}}</p>
+              <p>题数：{{exercise.daily.length}}</p>
+              <p>客观题正确率：{{exercise.daily.mark }} %</p>
+            </div>
+          </mat-card-title>
+          <button class="button" mat-button
+            routerLink="/public/daily_exercise/{{getYear()}}/{{getMonth()}}/{{exercise.Index}}/{{exercise.daily.major}}">进入练习</button>
+        </mat-card-header>
+      </mat-card>
+    </div>
+    <div *ngIf="expendedDate ? expendedDate.today && majorList.length !== 0 : false">
+      <form [formGroup]="submitForm">
+        <div class="major-selector form-inline">
+          <mat-form-field appearance="outline">
+            <mat-label>课程选择</mat-label>
+            <mat-select formControlName="major">
+              <mat-option *ngFor="let element of majorList" value="{{element}}">{{element}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button class="check-button" mat-button [disabled]="!submitForm.valid"
+            routerLink="/public/daily_exercise/{{getYear()}}/{{getMonth()}}/{{expendedDate ? expendedDate.index : ''}}/{{submitForm.value.major}}">生成练习</button>
+        </div>
+      </form>
+    </div>
+    <p></p>
+    <mat-divider></mat-divider>
+    <p></p>
+    <h2 class="h2-title" *ngIf="expendedDate ? expendedDate.status === 1 && expendedDate.exams.length !== 0 : false">
+      今日考试
+    </h2>
+    <h2 class="h2-title" *ngIf="expendedDate ? expendedDate.status !== 1 && expendedDate.exams.length !== 0 : false">
+      当日考试
+    </h2>
+    <mat-card class="exam_desc" *ngFor="let exam of expendedDate ? expendedDate.exams : []; let i = index">
+      <mat-card-header>
+        <mat-card-title>
+          <div class="exercise-major">
+            <p class="detail">科目：{{ exam.exam.major }} </p>
+            <p class="detail">名称：{{ exam.exam.description }} </p>
+            <p class="detail">成绩：{{ exam.exam.mark }} </p>
+            <p class="detail">时间：{{getDateString( exam.exam.date )}} </p>
+          </div>
+        </mat-card-title>
+      </mat-card-header>
+    </mat-card>
+  </div>
+</div>

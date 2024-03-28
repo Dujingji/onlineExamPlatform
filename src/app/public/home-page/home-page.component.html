@@ -1,0 +1,81 @@
+
+  <mat-toolbar class="mat-elevation-z2">
+    <button
+      mat-icon-button
+      (click)="sidenav.toggle()"
+    >
+      <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+      <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      class="logout"
+      (click)="logout()"
+    >
+    <mat-icon >logout</mat-icon>
+    </button>
+    <p *ngIf="sidenav.opened" class="title">线上考试系统</p>
+    <p class="welcome" *ngIf="isUser">{{username}} 考生，欢迎</p>
+  </mat-toolbar>
+
+  <mat-sidenav-container >
+    <mat-sidenav #sidenav="matSidenav" data-color="danger" data-background-color="white" class="mat-elevation-z8">
+      <img
+        class="avatar mat-elevation-z8"
+        src="https://exam.gwxgt.com/exam-api/profile/profile_{{random().toString()}}.jpg"
+      />
+
+      <h4 class="name"  *ngIf="isUser" >{{username}}</h4>
+      <p class="designation"  *ngIf="isUser" >{{userInfor}}</p>
+      <p class="designation"  *ngIf="isUser" >{{userInfor1}}</p>
+
+      <mat-divider></mat-divider>
+
+      <button mat-button class="menu-button" routerLink="/public/homePage/daily" >
+        <mat-icon>today</mat-icon>
+        <span class="text">每日一练（打卡）</span>
+      </button>
+
+      <button mat-button class="menu-button" routerLink="/public/homePage/exam">
+        <mat-icon>home</mat-icon>
+        <span class="text">待考事项</span>
+      </button>
+      <button mat-button class="menu-button" routerLink="/public/homePage/register">
+        <mat-icon>add</mat-icon>
+        <span class="text">报考页面</span>
+      </button>
+      <button mat-button class="menu-button" routerLink="/public/homePage/result">
+        <mat-icon>person</mat-icon>
+        <span class="text">查询成绩</span>
+      </button>
+
+      <button mat-button class="menu-button" routerLink="/public/homePage/exercise" >
+        <mat-icon>book</mat-icon>
+        <span class="text">专项练习（Beta）</span>
+      </button>
+      <button mat-button class="menu-button" routerLink="/public/homePage/information" [disabled]="true">
+        <mat-icon>
+          receipt
+        </mat-icon>
+        <span class="text">考场信息</span>
+      </button>
+      <button mat-button class="menu-button" routerLink="/public/homePage/vocabulary" >
+        <mat-icon>
+          receipt
+        </mat-icon>
+        <span class="text">单词打卡（体验版）</span>
+      </button>
+      <!-- <button mat-button class="menu-button" (click)="test()" >
+        <mat-icon>person</mat-icon>
+        <span class="text">测试</span>
+      </button> -->
+
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <div class="content mat-elevation-z5">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+

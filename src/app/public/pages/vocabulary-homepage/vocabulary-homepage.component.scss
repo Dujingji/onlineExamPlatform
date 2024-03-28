@@ -1,0 +1,207 @@
+.container {
+  padding: 0px 0px 0px 0px;
+  width: 100%;
+  max-width: 800px;
+  height: 100%;
+  justify-content: center;
+  background-color: white;
+  background-image: url(../../../../assets/1681122871130843.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 8px;
+  padding-left: 16px;
+  padding-top: 16px;
+  padding-right: 16px;
+}
+
+mat-divider {
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.day-container {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.day_text_title {
+  font-size: 1.20rem;
+  font-weight: lighter;
+  margin-bottom: 20px;
+}
+
+.day_text_day {
+  margin-top: 20px;
+  display: flex;
+  align-items: baseline;
+  position: relative;
+
+  .number {
+    margin-right: 12px;
+    font-size: 3rem;
+  }
+
+  .day {
+    font-size: 1.5rem;
+  }
+
+}
+
+.card-container {
+  border-radius: 8px;
+  display: flex;
+  background-image: url(../../../../assets/c6e5996933cd5.png);
+  background-size: cover;
+  width: 100%;
+  height: 25%;
+  margin-top: 32px;
+  padding: 12px;
+  position: relative;
+  flex-direction: column;
+
+  mat-progress-bar {
+    width: 92%;
+  }
+}
+
+.day_text {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.continues-day {
+  width: 100%;
+}
+
+.card_title {
+  font-size: large;
+  font-weight: bolder;
+}
+
+.text-divider {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+
+  .divider_title {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    font-weight: bolder;
+  }
+
+  .divider {
+    width: 100%;
+    /* 线条宽度充满容器，也可以定义具体像素值 */
+    height: 1px;
+    /* 线条的厚度，可以根据需要调整 */
+    background-color: #333;
+    /* 线条的颜色 */
+    /* 如果需要，可以为线条定义外边距 */
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+}
+
+.target_box{
+  margin-top: 32px;
+  width: 100%;
+  height: 20%;
+  display: flex;
+
+  .target{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .target_name{
+    margin-top: 8px;
+    margin-bottom: 4px;
+    font-size: 1.2rem;
+    display: flex;
+  }
+
+  .target_number{
+    margin-top: 8px;
+    margin-bottom: 4px;
+    font-size: 2rem;
+    font-weight: bolder;
+  }
+}
+
+ ::ng-deep .small-select {
+  font-size: 8px; /* 设置字体大小 */
+  line-height: 1;  /* 设置行高 */
+}
+
+.bottom_s{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+
+  .bottom_b{
+    background-color: lightseagreen;
+    color: white;
+    margin: 16px;
+    width: 100%;
+    height: 25%;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    font-weight: bold;
+  }
+}
+
+.progress_text {
+  display: flex;
+  font-weight: bolder;
+  position: relative;
+
+  .p_detail {
+    position: absolute;
+    right: 8%;
+  }
+}
+
+.card_bottom {
+  width: 100%;
+  position: absolute;
+  bottom: 10px;
+}
+
+
+
+.calendar {
+  display: flex;
+  width: 100%;
+  position: relative;
+}
+
+.c_button {
+  position: absolute;
+  bottom: 16px;
+  right: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .p {
+    margin: 8px;
+  }
+
+  background-color: orange;
+  border-radius: 8px;
+}

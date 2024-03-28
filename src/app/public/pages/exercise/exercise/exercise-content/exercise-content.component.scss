@@ -1,0 +1,121 @@
+.mat-card-a{
+  display:inline-table;
+  overflow: auto;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+:host ::ng-deep .ck-editor__editable_inline {
+  min-height: 200px;
+}
+
+:host ::ng-deep img {
+  width: auto;
+  max-width: 100%;
+  height: auto
+}
+
+::ng-deep figure {
+  img{
+  min-width: 175px;
+  min-height: 175px;
+  }
+}
+
+:host ::-webkit-scrollbar {
+  /*隐藏滚轮*/
+  display: none;
+}
+
+.answer-button{
+  background : rgb(238, 238, 238) ;
+  justify-content: left;
+  margin: 5px;
+  width : 95%;
+  min-height: 35px;
+  height: fit-content;
+  text-align : justify;
+  overflow:inherit;
+}
+
+.selected{
+  background: lightseagreen;
+}
+
+.wrong{
+  background: lightcoral;
+}
+
+.box-right{
+  background-color: rgb(206, 235, 215);
+}
+
+.box-wrong{
+  background-color: #ebaba5;
+}
+
+.matCat{
+  margin-bottom: 10px;
+}
+
+.mark-box{
+  font-weight: bold;
+}
+
+.comment-box{
+  background-color: rgb(188, 221, 231)
+}
+
+.mat-card-text{
+  font-weight: bold;
+}
+
+.form-box{
+  display: flex;
+  flex-direction: column;
+  .form-f{
+    width: 95%;
+  }
+
+}
+
+.submitB{
+  background-color: lightblue;
+  margin: 5px;
+}
+
+.submitC{
+  background-color: lightcyan;
+  margin: 5px;
+}
+
+.comment{
+  font-weight: bold;
+}
+
+.q_desc{
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.book-button {
+  background-color: white; /* 象牙色，模拟书页颜色 */
+  border: 2px solid lightblue; /* 棕色，模拟书脊 */
+  font-family: 'Times New Roman', serif; /* 使用衬线字体模拟书写文本 */
+  color: black; /* 棕色文本 */
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 5px; /* 右侧圆角，模拟书本封面的弯曲 */
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1); /* 添加阴影效果，增加立体感 */
+  transition: all 0.3s ease; /* 过渡效果，使鼠标悬停和聚焦效果更平滑 */
+}
+
+.book-button:hover, .book-button:focus {
+  background-color: #FFFFF0; /* 淡黄色，鼠标悬停时模拟翻开的书页 */
+  color: lightcoral; /* 黑色文本 */
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5); /* 加深阴影，增加聚焦效果 */
+}
+
+
+
+

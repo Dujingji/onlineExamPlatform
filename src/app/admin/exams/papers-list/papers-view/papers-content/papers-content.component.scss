@@ -1,0 +1,70 @@
+.mat-card-a{
+  display:inline-table;
+  overflow: auto;
+  margin-bottom: 10px;
+}
+
+:host ::ng-deep .ck-editor__editable_inline {
+  min-height: 200px;
+}
+
+.answer-button1{
+  justify-content: left;
+  margin: 5px;
+  width : 95%;
+  min-height: 35px;
+  height: fit-content;
+  text-align : justify;
+  overflow:inherit;
+}
+
+.answer-button{
+  justify-content: left;
+  margin: 5px;
+  width : 95%;
+  min-height: 35px;
+  height: fit-content;
+  text-align : justify;
+  overflow :auto;
+}
+
+
+.correct{
+  background: lightseagreen;
+}
+
+.incorrect{
+  background: lightcoral;
+}
+
+.normal{
+  background : rgb(238, 238, 238) ;
+}
+
+.matCat{
+  margin: 15px;
+}
+
+.container{
+  align-items: start;
+  font-weight: bold;
+  height: auto;
+  margin-top: 15px;
+  margin-left: 5px;
+}
+
+.box-right{
+  background-color: rgb(206, 235, 215);
+}
+
+.box-wrong{
+  background-color: #ebaba5;
+}
+
+.comment{
+  font-weight: bold;
+}
+
+.mat-card-text{
+  font-weight: bold;
+}

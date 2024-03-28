@@ -1,0 +1,36 @@
+table {
+  width: 100%;
+}
+
+.action{
+  background-color: lightblue;
+}
+.edit{
+  background-color: lightblue;
+}
+
+.delete{
+  margin-left: 5px;
+  background-color: lightcoral;
+}
+
+.added{
+  margin-left: 15px;
+  background-color: lightcyan;
+}
+
+.footer{
+  background-color: beige;
+}
+
+th {
+  background-color: bisque;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-upload{
+  margin: 10px
+}

@@ -1,0 +1,23 @@
+.host {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+
+:host ::ng-deep .ck-editor__editable_inline {
+  min-height: 200px;
+}
+
+.submitB{
+  background-color: lightblue;
+  margin: 5px;
+}
+
+.cancelB{
+  background-color: lightcoral;
+}
+
+mat-form-field{
+  margin-right: 10px;
+}

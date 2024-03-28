@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>选项编辑</h2>
+<mat-dialog-content class="mat-elevation-z8">
+  <div *ngFor="let element of model; let i = index">
+    {{convert(i)}}
+    <ckeditor [(ngModel)]="model[i].editorData" [editor]="Editor" (ready)="onReady($event)"
+    (change)="onChange($event, i)">
+  </ckeditor>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions  class="action" align="end">
+  <button mat-raised-button class="submitB form-inline" (click)="closeDialog()">提交</button>
+  <button mat-raised-button mat-dialog-close class="cancelB" >取消</button>
+</mat-dialog-actions>

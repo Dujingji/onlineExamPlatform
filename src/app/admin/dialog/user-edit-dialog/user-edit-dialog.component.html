@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>用户编辑</h2>
+<mat-dialog-content>
+  <mat-card class="mat-elevation-z5">
+    <mat-card-content class="host">
+      <form [formGroup]="submitForm" >
+        <div class="form-inline">
+        <mat-form-field appearance="outline">
+          <mat-label>用户名</mat-label>
+          <input formControlName="username" matInput>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>密码</mat-label>
+          <input matInput formControlName="password">
+        </mat-form-field>
+
+        </div>
+        <div class="form-inline">
+          <mat-form-field class="float-left" appearance="outline">
+            <mat-label>科目类型</mat-label>
+            <mat-select formControlName="major" >
+              <mat-option *ngFor="let element of majorData" value="{{element.name}}">{{element.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="float-right" appearance="outline">
+            <mat-label>班级名称</mat-label>
+            <input  value="{{this.className}}" matInput disabled>
+          </mat-form-field>
+          <button mat-raised-button *ngIf="classroom" class="submitB" (click)="editClassroom()">修改</button>
+         <button mat-raised-button *ngIf="!classroom" class="submitB" (click)="editClassroom()">添加</button>
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>年级</mat-label>
+          <input formControlName="semester" matInput type="number">
+          <mat-hint>20xx</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>毕业时间</mat-label>
+          <input formControlName="graduate" matInput [matDatepicker]="picker">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>学生姓名</mat-label>
+          <input formControlName="std_name" matInput>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions  class="action" align="end">
+  <button mat-raised-button  [disabled]="!submitForm.valid" class="submitB form-inline" (click)="closeDialog()">提交</button>
+  <button mat-raised-button mat-dialog-close class="cancelB" >取消</button>
+</mat-dialog-actions>
+

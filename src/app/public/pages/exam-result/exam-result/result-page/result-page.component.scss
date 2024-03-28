@@ -1,0 +1,94 @@
+.mat-card-a{
+  display:inline-table;
+  overflow: auto;
+  margin-bottom: 10px;
+}
+
+:host ::ng-deep .ck-editor__editable_inline {
+  min-height: 200px;
+  max-height: 400px;
+}
+
+:host ::-webkit-scrollbar {
+  /*隐藏滚轮*/
+  display: none;
+}
+
+:host ::ng-deep img {
+  width: auto;
+  max-width: 100%;
+  height: auto
+}
+
+.answer-button1{
+  justify-content: left;
+  margin: 5px;
+  width : 95%;
+  min-height: 35px;
+  height: fit-content;
+  text-align : justify;
+  overflow:inherit;
+}
+
+.answer-button{
+  justify-content: left;
+  margin: 5px;
+  width : 95%;
+  min-height: 35px;
+  height: fit-content;
+  text-align : justify;
+  overflow :auto;
+}
+
+.mat-card-text{
+  font-weight: bold;
+}
+
+.correct{
+  background: lightseagreen;
+}
+
+.incorrect{
+  background: lightcoral;
+}
+
+.box-warn{
+  background-color: rgb(247, 234, 119);
+}
+
+.normal{
+  background : rgb(238, 238, 238) ;
+}
+
+mat-card{
+  overflow:scroll;
+}
+
+.matCat{
+  margin-bottom: 10px;
+}
+
+.container{
+  align-items: start;
+  font-weight: bold;
+  height: auto;
+  margin-top: 15px;
+  margin-left: 5px;
+}
+
+.box-right{
+  background-color: rgb(206, 235, 215);
+}
+
+.box-wrong{
+  background-color: #ebaba5;
+}
+
+.comment{
+  font-weight: bold;
+}
+
+.q_desc{
+  font-weight: bold;
+  margin-bottom: 10px;
+}

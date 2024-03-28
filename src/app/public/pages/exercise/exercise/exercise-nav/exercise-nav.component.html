@@ -1,0 +1,84 @@
+<mat-toolbar class="mat-elevation-z2">
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+  </button>
+  <div class="title">{{description}}</div>
+  <div class="sidenav-right">
+    <button mat-icon-button (click)="sidenav1.toggle()">
+      <mat-icon *ngIf="!sidenav1.opened"> menu </mat-icon>
+      <mat-icon *ngIf="sidenav1.opened"> close </mat-icon>
+    </button>
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon>forward</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav position="start" #sidenav class="mat-elevation-z8">
+    <div class="answer-card" *ngFor="let item of section; let i = index;">
+      <div class="answer-card-title">
+        {{item.type}}
+      </div>
+      <button mat-mini-fab class="fab-button" (click)="WaringChanged(correctIndex(i) + j)"
+        [ngClass]="{'correct': table ? table[correctIndex(i) + j].status === 2 : false,
+        'incorrect' : table ? table[correctIndex(i)+ j].status  === 1 : false, 'warning' : (table ? table[correctIndex(i)+ j].status  === 3 : false) || (table ? table[correctIndex(i)+ j].status  === 4 : false)
+        , 'unselected' :  (table ? table[correctIndex(i)+ j].status  === 0 : false) || table === undefined}"
+        *ngFor="let count of [].constructor(data ? data.n[i] : 0); let j = index">
+        {{j+1}}
+      </button>
+      <mat-divider>
+
+      </mat-divider>
+    </div>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content mat-elevation-z5">
+      <app-exercise-content (selectedTrigger)="OnReceive($event)"></app-exercise-content>
+    </div>
+  </mat-sidenav-content>
+
+  <mat-sidenav position="end" #sidenav1 class="mat-elevation-z8" opened="true">
+    <div>
+      <mat-card class="result-card">
+        <mat-card-content>
+          <p>章节名称：{{detail_name}}</p>
+          <p>题目数量：{{detail_length}}</p>
+          <p>本章进度：{{Process()  + '%'}}</p>
+          <p class="comment">客观题得分：{{mark}} 分 / {{totalMark}} 分</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <mat-divider>
+
+    </mat-divider>
+
+    <div class="answer-card-title">
+      可选章节
+    </div>
+    <button mat-mini-fab class="fab-button"
+      (click)="navToNewSection(j, 0)"
+     [ngClass]="{'correct' : j === section_i, 'unselected' : j !== section_i }"
+      *ngFor="let count of [].constructor(excTotalSection); let j = index" [disabled]="j === section_i" >
+      {{j+1}}
+    </button>
+    <mat-divider>
+
+    </mat-divider>
+    <button *ngIf="section_i !== 0" (click)="navToNewSection(-1, 2)" mat-button class="menu-button" >
+      上一章
+    </button>
+    <button *ngIf="section_i !== sectionLength - 1"  (click)="navToNewSection(-1, 1)" mat-button class="menu-button" >
+      下一章
+    </button>
+    <button (click)="SumbitExecriseData()" mat-button class="menu-button">
+      保存
+    </button>
+    <button (click)="remark()" mat-button class="menu-button">
+      重做
+    </button>
+  </mat-sidenav>
+</mat-sidenav-container>

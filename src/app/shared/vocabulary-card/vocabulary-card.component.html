@@ -1,0 +1,12 @@
+<mat-card class="content" [ngClass]="{'flipped': isFlipped }">
+  <mat-card-content class="front" [innerHTML]="frontContent | safeHtmlV6">
+
+  </mat-card-content>
+  <mat-card-content class="back" [innerHTML]="backContent | safeHtmlV6">
+
+  </mat-card-content>
+  <mat-card-actions *ngIf="!isFlipped">
+    <button mat-button (click)="playAudio()">读音</button>
+    <audio #audioControl autoplay></audio>
+  </mat-card-actions>
+</mat-card>

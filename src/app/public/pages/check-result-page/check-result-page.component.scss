@@ -1,0 +1,87 @@
+mat-card{
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+  background-color: lightcyan;
+}
+
+.title{
+  font-weight: bolder;
+  text-align : center;
+  h2{
+    margin-top: 10px;
+  }
+}
+
+.current-matCat{
+  margin: 15px;
+  max-height: 50%;
+
+}
+
+:host ::-webkit-scrollbar {
+  /*隐藏滚轮*/
+  display: none;
+}
+
+.history-matCat{
+  margin: 15px;
+  max-height: 50%;
+}
+
+.edit{
+  background-color: lightblue;
+}
+
+.startBTN{
+  margin: 4px;
+  background-color: lightblue;
+}
+
+.checkBTN{
+  background-color: lightblue;
+  margin-right: 10px;
+}
+
+mat-card-footer{
+  padding: 10px;
+}
+
+.delete{
+  margin-left: 5px;
+  background-color: lightcoral;
+}
+
+.not-body{
+  height: 100%;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  background: lightblue;
+  font-size: 14px;
+  line-height: 1;
+}
+
+mat-expansion-panel{
+  margin: 10px;
+  background-color: whitesmoke;
+}
+
+.table-s{
+  overflow: scroll;
+}
+
+table{
+  overflow: scroll;
+  background-color: whitesmoke;
+
+  th{
+    min-width: 100px;
+    max-width: 180px;
+  }
+  td{
+    min-width: 100px;
+    max-width: 180px;
+
+  }
+}

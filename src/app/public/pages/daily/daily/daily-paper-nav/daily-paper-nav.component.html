@@ -1,0 +1,103 @@
+<mat-toolbar class="mat-elevation-z2">
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+  </button>
+  <div *ngIf="sidenav.opened" class="title"></div>
+  <div class="welcome" *ngIf="timeReminder"></div>
+  <div class="sidenav-right">
+    <button mat-icon-button (click)="sidenav1.toggle()">
+      <mat-icon *ngIf="!sidenav1.opened"> menu </mat-icon>
+      <mat-icon *ngIf="sidenav1.opened"> close </mat-icon>
+    </button>
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon>forward</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+    <div *ngIf="dailyData ? dailyData.status !== 2 : false">
+      <div class="answer-card" *ngFor="let item of dailyData ? dailyData.section : []; let i = index;">
+        <div class="answer-card-title">
+          {{item.type}}
+        </div>
+        <button mat-mini-fab class="fab-button" [ngClass]="{'selected': (selectedList ? selectedList[correctIndex(i) + j].value.length : 0) != 0,
+      'unselected' : (selectedList ? selectedList[correctIndex(i) + j].value.length : 0) == 0}"
+          (click)="WaringChanged(correctIndex(i) + j)"
+          *ngFor="let count of [].constructor(dailyData!.n[i]); let j = index">
+          {{j+1}}
+        </button>
+        <mat-divider>
+        </mat-divider>
+      </div>
+    </div>
+    <div *ngIf="dailyData ? dailyData.status === 2 : false">
+      <div class="answer-card" *ngFor="let item of dailyData ? dailyData.section : []; let i = index;">
+        <div class="answer-card-title">
+          {{item.type}}
+        </div>
+        <button mat-mini-fab class="fab-button" (click)="WaringChanged(correctIndex(i) + j)"
+          [ngClass]="{'correct': this.table[correctIndex(i) + j] == 3,
+          'incorrect' : this.table[correctIndex(i)+ j] == 0, 'warning' : this.table[correctIndex(i)+ j] == 2, 'wrong' :  this.table[correctIndex(i)+ j] == 1}"
+          *ngFor="let count of [].constructor(dailyData!.n[i]); let j = index">
+          {{j+1}}
+        </button>
+        <mat-divider>
+        </mat-divider>
+      </div>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content mat-elevation-z5">
+      <app-daily-paper (selectedTrigger)="OnReceive($event)" [dailyPaper]="dailyData"
+        [selectedOption]="dailyData ? dailyData.answers.length !== 0 ? dailyData.answers : undefined : undefined"
+        [model]="model"
+        >
+      </app-daily-paper>
+    </div>
+  </mat-sidenav-content>
+
+  <mat-sidenav position="end" #sidenav1 class="mat-elevation-z8" opened="true">
+    <div *ngIf="dailyData ? dailyData.status !== 2 : false">
+      <mat-card class="result-card">
+        <mat-card-content>
+          <p>姓名：{{userName}}</p>
+          <p>专业：{{major}}</p>
+          <p><img src="../../../../../assets/icons8-correct.svg">已作答：{{d}}</p>
+          <p><img src="../../../../../assets/icons8-wrong.svg">未作答：{{r === 0 ? (selectedList) ? 0 : dailyData ?
+            dailyData.length - _qt : '加载中...' : r}}</p>
+          <p>总题数：{{dailyData ? dailyData.length - _qt : ""}}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div *ngIf="dailyData ? dailyData.status === 2 : false">
+      <mat-card class="result-card">
+        <mat-card-content>
+          <p>姓名：{{userName}}</p>
+          <p>专业：{{major}}</p>
+          <p><img src="../../../../../assets/icons8-correct.svg">已作答：{{d}}</p>
+          <p><img src="../../../../../assets/icons8-wrong.svg">未作答：{{r === 0 ? (selectedList) ? 0 : dailyData ?
+            dailyData.length - _qt : '加载中...' : r}}</p>
+          <p>正确率：{{dailyData ? dailyData.mark : '...'}} %</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div>
+      <button mat-button *ngIf="dailyData ? dailyData.status !== 2 : false" class="menu-button"
+        (click)="submitDailyPaper()">
+        提交练习
+      </button>
+      <button mat-button *ngIf="dailyData ? dailyData.status !== 2 : false && this.today" class="menu-button"
+        (click)="SaveDailyPaper()">
+        保存
+      </button>
+      <button mat-button *ngIf="dailyData ? dailyData.status === 2 && checkToday(dailyData.date.year, dailyData.date.month, dailyData.date.day) : false" class="menu-button"
+        (click)="remake()">
+        重做
+      </button>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

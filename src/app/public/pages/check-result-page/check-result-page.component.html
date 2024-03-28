@@ -1,0 +1,80 @@
+<div *ngIf="exams ? exams.length != 0 : false">
+  <div class="bg-info p-2 text-white title">
+    <h2>{{userInformation}}</h2>
+  </div>
+  <div class="container-fluid">
+    <div class="current-matCat">
+      <h2>近期可查询成绩</h2>
+      <mat-card *ngFor="let exam of exams">
+        <mat-card-header>
+          <mat-card-title> {{exam.exams.major}}</mat-card-title>
+          <mat-card-subtitle>{{exam.exams.description}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content *ngIf="exam.exam_status == 2">
+          {{exam.std_mark}} 分 / {{exam.total}} 分
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button *ngIf="exam.exam_status == 2 && exam.exams.vd_url && exam.exams.vd_url.length !== 0" mat-button
+            class="startBTN" (click)="openVideoList(exam.exams.vd_url)">评卷视频</button>
+          <button mat-button *ngIf="exam.exam_status == 2" class="startBTN"
+            routerLink="/public/exam/result/{{exam.exams._id}}">查询成绩</button>
+          <button mat-button *ngIf="exam.exam_status == 1" class="startBTN" disabled="">等待改卷结束...</button>
+          <button mat-button *ngIf="exam.exam_status == 0" class="startBTN" disabled="">考试未结束</button>
+        </mat-card-actions>
+        <mat-card-footer align="end">
+          <time>考试结束时间：{{examDate(exam.exams.end)}}</time>
+        </mat-card-footer>
+      </mat-card>
+    </div>
+  </div>
+</div>
+<p></p>
+<mat-divider></mat-divider>
+<p></p>
+<div *ngIf="type !== -1" class="container-fluid">
+  <div class="history-matCat">
+    <h2>历史可查询成绩</h2>
+    <mat-expansion-panel *ngFor="let m of major; let i = index">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{m.name}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="table-s">
+        <table mat-table [dataSource]="getDataSource(i, m.name)">
+
+          <ng-container matColumnDef="考试名称">
+            <th mat-header-cell *matHeaderCellDef> 考试名称 </th>
+            <td mat-cell *matCellDef="let element"> {{element.exams.description}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="分数">
+            <th mat-header-cell *matHeaderCellDef> 分数 </th>
+            <td mat-cell *matCellDef="let element"> {{element.exam_status !== 2 ? '待改卷....' : element.std_mark + ' 分 / '
+              + element.total + ' 分'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="截止时间">
+            <th mat-header-cell *matHeaderCellDef> 考试截止时间 </th>
+            <td mat-cell *matCellDef="let element"> {{examDate(element.exams.end)}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="按钮">
+            <th mat-header-cell *matHeaderCellDef> 操作 </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              <button class="edit" mat-raised-button routerLink="/public/exam/result/{{element.exams._id}}"
+                [disabled]="element.exam_status !== 2">查询</button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </mat-expansion-panel>
+  </div>
+</div>
+
+<div *ngIf="type === -1" class="not-body">
+  <app-not-result-page></app-not-result-page>
+</div>

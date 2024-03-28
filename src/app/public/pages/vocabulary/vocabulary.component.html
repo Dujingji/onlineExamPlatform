@@ -1,0 +1,110 @@
+<audio #audioControl autoplay></audio>
+
+<div class="container" *ngIf="length > studied">
+  <mat-toolbar>
+    <div class="status-bar">
+      <span>学习进度：</span>
+      <span>{{ studied + ' / ' + length}}</span>
+    </div>
+  </mat-toolbar>
+
+  <div class="page-container" *ngIf="length > studied">
+    <div class="text">
+      <div class="vocabulary">{{current.vocabulary}}</div>
+      <div class="p_symbol">
+        <button class="icon-button" (click)="playAudio(current.vocabulary)">
+          <i class="fas fa-volume-up"></i>
+          {{ '/' + current.p_symbol + '/'}}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip" *ngIf="tip">
+    <p>根据例句，判断释义</p>
+    <div [innerHTML]="getTip() | highlight: current.vocabulary"></div>
+  </div>
+
+  <div class="card-container" *ngIf="current.vocabulary.length > 0">
+    <div class="card-b" *ngIf="length > studied && !tip" (click)="toggleTip()">
+      提示一下
+    </div>
+
+    <div class="card-b" *ngIf="length > studied && tip" routerLink="/public/homePage/vocabulary-detail/{{current.vocabulary}}">
+      没想起来
+    </div>
+
+    <div class="card-b" *ngIf="length <= studied" (click)="restudy()">
+      重新学习
+    </div>
+    <div class="card-g" *ngIf="length > studied" routerLink="/public/homePage/vocabulary-detail/{{current.vocabulary}}">
+      我认识
+    </div>
+  </div>
+</div>
+
+<div class="list-container" *ngIf="length <= studied && studied > 0">
+  <div class="list_text_container">
+    <div class="title_text">
+      <div class="title_text_t">单词总结</div>
+      <mat-slide-toggle class="list_button" color="warn" labelPosition="before" (change)="settingChange()" [checked]="allFlip"
+        [ngStyle]="{ 'transform': 'scale(1.15)' }">
+
+      </mat-slide-toggle>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="detail_container" *ngFor="let word of words; let i = index" (click)="vocabularyDetail(word.vocabulary, i) ">
+      <div class="list_text">
+        <div class="word_text">{{word.vocabulary}}</div>
+        <button class="icon-button" (click)="playAudio(word.vocabulary)">
+          <i class="fas fa-volume-up"></i>
+          {{ '/' + word.symbol + '/'}}
+        </button>
+      </div>
+      <div *ngIf="!allFlip || word.flip">
+        <div class="mean_text" *ngFor="let t of word.v_type; let i = index">
+          <div>{{t + ' ' + (word.v_mean[i] )}}</div>
+        </div>
+      </div>
+      <div *ngIf="allFlip && !word.flip" class="colum_container">
+        <div class="shadow_colum"></div>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+
+  </div>
+
+  <div class="button-t"></div>
+
+  <div class="button-s">
+    <div class="next" routerLink="/public/homePage/vocabulary">学习完成</div>
+    <div class="next" (click)="nextGroup()">下一组</div>
+  </div>
+</div>
+
+
+
+<!-- <div class="upper-section">
+    <div class="card-container">
+      <app-vocabulary-card
+        (isButton)="onRec($event, current)"
+        [class.selected]="current.data.vocabulary.length != 0 ? current.selected : false"
+        [frontContent]="current.data.vocabulary.length != 0 ? current.data.vocabulary : '选择一个想要学习的单词'"
+        [backContent]="current.data.vocabulary.length != 0 ? printVMean(current) : '选择一个想要学习的单词'"
+        [isFlipped]="current.data.vocabulary.length != 0 ? current.filp : false"
+        (click)=" current.data.vocabulary.length != 0 ? rotateCard(current) : ''">
+      </app-vocabulary-card>
+    </div>
+
+  </div> -->
+
+<!-- <div class="lower-section">
+    <div class="card-container">
+      <app-vocabulary-card *ngFor="let card of readyCard; let i = index"
+      [class.unselected]="!card.selected"
+        [frontContent]="card.data.vocabulary"
+         (click)="card.selected ? '' : selectCard(card, i)">
+      </app-vocabulary-card>
+    </div>
+
+  </div> -->

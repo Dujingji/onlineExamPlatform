@@ -1,0 +1,97 @@
+.blank-layout-container {
+  height: 100vh;
+  display: flex;
+  background-size: cover;
+  align-items: center;
+  background-image: url(../../../assets/background.png);
+}
+
+.auth-title {
+  font-size: 36px;
+  line-height: 44px;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 50% 0%;
+  }
+}
+
+.img-height {
+  height: calc(100vh - 83px);
+}
+
+.custom-row {
+  &.row {
+    margin-right: -8px;
+    margin-left: -8px;
+    .col-2,
+    .col-12 {
+      padding-right: 8px;
+      padding-left: 8px;
+    }
+  }
+}
+
+.or-border {
+  position: relative;
+  text-align: center;
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100px;
+    top: 50%;
+    height: 1px;
+    background: #e5eaef;
+  }
+  &:after {
+    content: "";
+    position: absolute;
+    right: 0;
+    width: 100px;
+    top: 50%;
+    height: 1px;
+    background: #e5eaef;
+  }
+}
+
+.boxed-auth {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.max-width-form {
+  max-width: 450px;
+}
+
+.cardWithShadow {
+  box-shadow: 0 0 20px 6px #cfcfcf;
+  border-radius: 20px;
+  opacity: .90;
+}
+
+.clock {
+  width: 200px;
+  height: 200px;
+  border: 10px solid #333;
+  border-radius: 50%;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  box-sizing: border-box;
+}
+
+.hour,
+.minute,
+.second {
+  position: absolute;
+  background: #333;
+}

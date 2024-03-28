@@ -1,0 +1,134 @@
+<div class="bg-info p-2 text-white title">
+  <h2>{{userInformation}}</h2>
+</div>
+
+<div class="container-fluid">
+  <div class="matCat">
+    <h2>近期可参与的考试</h2>
+    <p></p>
+    <p *ngIf="examRegister.length === 0">无可报名的考试！</p>
+    <mat-card *ngFor="let exam of examRegister">
+      <mat-card-header>
+        <mat-card-title> {{exam.major}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        {{exam.description}}
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-button class="startBTN" *ngIf="active(exam.end)"
+          (click)="registerExam(user_id, exam._id, 0)" >确认报考</button>
+        <!-- <button *ngIf="active(exam.date)" mat-button class="startBTN" (click)="registerExam(user_id, exam._id, 0)" >确认报考 "</button> -->
+        <button *ngIf="!active(exam.end)" mat-button class="delete" disabled="true">截止报考</button>
+      </mat-card-actions>
+      <mat-card-footer align="end">
+        <time>截止时间： {{examDate(exam.end)}}</time>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="history-matCat">
+    <h2>已报名的考试</h2>
+    <p></p>
+    <p *ngIf="type === -1">无可查询的的考试！</p>
+    <mat-expansion-panel *ngFor="let m of major; let i = index">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{m.name}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="table-s">
+        <table mat-table [dataSource]="getDataSource(i, m.name)">
+
+          <ng-container matColumnDef="考试名称">
+            <th mat-header-cell *matHeaderCellDef> 考试名称 </th>
+            <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="科目">
+            <th mat-header-cell *matHeaderCellDef> 科目 </th>
+            <td mat-cell *matCellDef="let element"> {{element.major}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="截止时间">
+            <th mat-header-cell *matHeaderCellDef> 报名截止时间 </th>
+            <td mat-cell *matCellDef="let element"> {{examDate(element.end)}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="按钮">
+            <th mat-header-cell *matHeaderCellDef> 操作 </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              <button [ngClass]="{'edit': active(element.end), 'delete' : !active(element.end)}" mat-raised-button
+                (click)="cancelRegister(user_id, element._id, 1)" [disabled]="!active(element.end)">
+                {{active(element.end) ? '取消报考' : '截止报名'}} </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </mat-expansion-panel>
+  </div>
+  <div *ngIf="type === 1 || type === 3">
+    <p></p>
+    <mat-divider></mat-divider>
+    <p></p>
+    <div class="comprehensive-shower">
+      <h2 class="h2-title">请确认您的专业基础课（确定后无法自主修改，谨慎选择）</h2>
+      <div class="c_lable">
+        <form [formGroup]="submitForm">
+          <div class="major-selector" *ngIf="type === 1 || type === 3">
+            <mat-form-field appearance="outline">
+              <mat-label>专业基础课</mat-label>
+              <mat-select formControlName="found">
+                <mat-option *ngFor="let element of foundList" value="{{element.name}}">{{element.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button class="submitB" mat-button [disabled]="!submitForm.valid"
+              (click)="setSubject(0, submitForm.value.found)">确定</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="type === 2 || type === 3">
+    <p></p>
+    <mat-divider></mat-divider>
+    <p></p>
+    <div class="comprehensive-shower">
+      <h2 class="h2-title">请确认您的专业综合课</h2>
+      <div class="c_lable">
+        <form [formGroup]="submitForm1">
+          <div class="major-selector" *ngIf="type === 2 || type === 3">
+            <mat-form-field appearance="outline">
+              <mat-label>专业综合课</mat-label>
+              <mat-select formControlName="comprehensive">
+                <mat-option *ngFor="let element of comprehensiveList"
+                  value="{{element.name}}">{{element.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button class="submitB" mat-button [disabled]="type === 3 || !submitForm1.valid"
+              (click)="setSubject(1, submitForm1.value.comprehensive)">
+              {{type === 3 ? '请先确定专业基础课' : '确定'}}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="type === 0">
+    <p></p>
+    <mat-divider></mat-divider>
+    <p></p>
+    <div class="comprehensive-shower">
+      <h2 class="h2-title">专业综合课</h2>
+      <div class="c_lable">
+        <mat-form-field appearance="outline">
+          <mat-label>专业综合课</mat-label>
+          <input matInput value="{{submitForm1.value.comprehensive}}" [disabled]="true" />
+        </mat-form-field>
+        <button class="changeB" mat-button (click)="setSubject(3, undefined)">修改</button>
+      </div>
+    </div>
+  </div>
+</div>

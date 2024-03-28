@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>选项编辑</h2>
+<mat-dialog-content [formGroup]="submitForm" class="mat-elevation-z8">
+  <div formArrayName="selections" *ngFor="let element of selections.controls; let i = index">
+    <mat-form-field appearance="outline"
+      [formGroupName]="i">
+      <mat-label>{{i}} </mat-label>
+      <input matInput formControlName="selection" value="{{element}}">
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions  class="action" align="end">
+  <button mat-raised-button  [disabled]="!submitForm.valid" class="submitB form-inline" (click)="closeDialog()">提交</button>
+  <button mat-raised-button mat-dialog-close class="cancelB" >取消</button>
+</mat-dialog-actions>

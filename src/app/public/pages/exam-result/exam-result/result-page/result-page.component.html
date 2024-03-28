@@ -1,0 +1,188 @@
+<div class="matCat" *ngFor="let s of section let si = index">
+  <mat-card class="q_desc mat-elevation-z5">
+    <mat-card-content>
+      <p class="comment">{{s.desc}}</p>
+    </mat-card-content>
+  </mat-card>
+  <div id="{{currentIndex(si) + i}}" class="matCat" *ngFor="let q of getQuestions(si) let i = index">
+    <mat-card class="mat-elevation-z5">
+      <mat-card-content>
+        <div class="mark-box">
+          <mat-card>
+            <mat-card-content *ngIf="!q.type.includes('题目')" [ngClass]="{'box-right': mark[currentIndex(si) + i] != 0, 'box-wrong' : mark[currentIndex(si) + i] == 0}">
+              <p *ngIf="mark[currentIndex(si) + i] != 0"><img src="../../../../../../assets/icons8-correct.svg"> {{mark[currentIndex(si) + i]}} 分 /
+                {{q.mark}} 分</p>
+              <p *ngIf="mark[currentIndex(si) + i] == 0"><img src="../../../../../../assets/icons8-wrong.svg"> {{mark[currentIndex(si) + i]}} 分 /
+                {{q.mark}}
+                分</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="container" *ngIf="q.type === '单项选择题' || q.type === '判断题' || q.type === '多项选择题'
+        || (q.type.includes('阅读理解') && !q.type.includes('题目')) || (q.type.includes('完形填空') && !q.type.includes('题目'))" >
+           <div class="mat-card-text form-inline float-left">
+            {{i + 1}}.
+          </div>
+          <div class="mat-card-text" [innerHtml]="q.question | safeHtml" [appMath]> </div>
+        </div>
+        <div *ngIf="q.type == '填空题'">
+          <p></p>
+          <div class="mat-card-text form-inline float-left">
+            {{i + 1}}.
+          </div>
+          <div class="mat-card-text" [innerHtml]="q.question | safeHtml" [appMath]> </div>
+          <form id="{{'form' + currentIndex(si) + i}}">
+            <mdb-form-control>
+              <input mdbInput type="text" value="{{selected ? selected[currentIndex(si) + i].value : ''}}" class="form-control" disabled />
+            </mdb-form-control>
+          </form>
+          <p></p>
+          <mat-card>
+            <mat-card-content>
+              <div>
+                <div class="mat-card-text form-inline"> <p>【正确答案】</p></div>
+                  <div class="mat-card-text" [innerHtml]="q.answer | safeHtml" [appMath]></div>
+                <p></p>
+                <mat-divider></mat-divider>
+                <p></p>
+                <div class="mat-card-text form-inline">
+                  <p>【解析】</p>
+                </div>
+                <div class="mat-card-text"
+                [innerHtml]="(q.comment == '' || q.comment === undefined || q.comment === null) ? '略' : q.comment | safeHtml"
+                [appMath]>
+              </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div *ngIf="q.type != '单项选择题' && q.type != '多项选择题' && q.type != '填空题' && q.type != '判断题'
+        && !(q.type.includes('阅读理解') && !q.type.includes('题目')) && !(q.type.includes('完形填空') && !q.type.includes('题目')) && q.type != '填空题'" >
+          <p></p>
+          <div class="mat-card-text form-inline float-left">
+            {{i + 1}}.
+          </div>
+          <div class="mat-card-text" [innerHtml]="q.question | safeHtml" [appMath]> </div>
+          <div *ngFor="let s of q.selection let si1 = index">
+            <p>（{{si1 + 1}}） {{s}}</p>
+          </div>
+          <div>
+            <p class="mark-box" align="end"> 分值：{{q.mark}} 分 </p>
+          </div>
+          <div>
+            <ckeditor *ngIf="!q.type.includes('题目')" [editor]="Editor" data="{{selected ? selected[currentIndex(si) + i].value : ''}}" (ready)="onReady($event)"
+              [disabled]="true"></ckeditor>
+          </div>
+          <mat-card>
+            <mat-card-content>
+              <div >
+                <img *ngIf="mark[currentIndex(si) + i] != 0" src="../../../../../../../assets/icons8-correct.svg">
+                <img *ngIf="mark[currentIndex(si) + i] === 0" src="../../../../../../../assets/icons8-correct.svg">
+                <p></p>
+                <div class="mat-card-text form-inline">
+                  <p *ngIf="!q.type.includes('题目')">【解析】</p>
+                  <p *ngIf="q.type.includes('题目')">【译文】</p>
+                </div>
+                <div class="mat-card-text"
+                  [innerHtml]="(q.comment == '' || q.comment === undefined || q.comment === null) ? q.answer : q.comment | safeHtml"
+                  [appMath]>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-card-content>
+      <mat-card-actions class="mat-card-a" align="start" *ngIf="q.type == '单项选择题' || q.type == '判断题'
+      || (q.type.includes('阅读理解') && !q.type.includes('题目')) || (q.type.includes('完形填空') && !q.type.includes('题目'))">
+        <div class="answer-button" *ngFor="let a of q.selection; let j = index">
+          <mat-expansion-panel [expanded]="true"
+            [ngClass]="{'correct' : getAnswer(currentIndex(si) + i) == j,
+        'incorrect':  convertN(selected ? selected[currentIndex(si) + i].value  : '') != getAnswer(currentIndex(si) + i)  &&  convertN(selected ? selected[currentIndex(si) + i].value  : '') == j,
+        'normal':  convertN(selected ? selected[currentIndex(si) + i].value  : '') != getAnswer(currentIndex(si) + i)  &&  convertN(selected ? selected[currentIndex(si) + i].value  : '') != j && getAnswer(currentIndex(si) + i) != j}"
+            *ngIf="getAnswer(currentIndex(si) + i) != j" disabled>
+            <mat-expansion-panel-header>
+              <mat-panel-title [appMath]>
+                {{convert(j)}}. {{a}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+          </mat-expansion-panel>
+          <mat-expansion-panel [expanded]="true"
+            [ngClass]="{'correct' : getAnswer(currentIndex(si) + i) == j,
+        'incorrect':   convertN(selected ? selected[currentIndex(si) + i].value  : '') != getAnswer(currentIndex(si) + i)  &&  convertN(selected ? selected[currentIndex(si) + i].value  : '') == j,
+        'normal':  convertN(selected ? selected[currentIndex(si) + i].value  : '') != getAnswer(currentIndex(si) + i)  &&  convertN(selected ? selected[currentIndex(si) + i].value  : '') != j && getAnswer(currentIndex(si) + i) != j}"
+            *ngIf="getAnswer(currentIndex(si) + i) == j" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title [appMath]>
+                {{convert(j)}}. {{a}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+              <div class="mat-card-text form-inline">
+                <p>【解析】</p>
+              </div>
+              <div class="mat-card-text"
+                [innerHtml]="(q.comment == '' || q.comment === undefined || q.comment === null) ? q.answer : q.comment | safeHtml"
+                [appMath]>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </div>
+      </mat-card-actions>
+      <mat-card-actions class="mat-card-a" align="start" *ngIf="q.type == '多项选择题'">
+        <button class="answer-button1" [ngClass]="{'correct' :  (selected ? calMultQ(j, selected[currentIndex(si) + i].multValue) : false) && mark[currentIndex(si) + i] != 0,
+        'incorrect':  (selected ? calMultQ(j, selected[currentIndex(si) + i].multValue) : true) && mark[currentIndex(si) + i] == 0}" mat-stroked-button
+          *ngFor="let a of q.selection; let j = index" disabled [appMath]>
+          {{convert(j)}}. {{a}}</button>
+        <mat-card>
+          <mat-card-content>
+            <div>
+              <img *ngIf="mark[currentIndex(si) + i] != 0" src="../../../../../../../assets/icons8-correct.svg">
+              <img *ngIf="mark[currentIndex(si) + i] === 0" src="../../../../../../../assets/icons8-correct.svg">
+              <p></p>
+              <div class="mat-card-text form-inline">
+                <p>【正确答案】{{q.answer}} </p>
+              </div>
+              <p></p>
+              <mat-divider></mat-divider>
+              <p></p>
+              <div class="comment form-inline">
+                【解析】
+                <div class="mat-card-text"
+                  [innerHtml]="(q.comment == '' || q.comment === undefined || q.comment === null) ? q.answer : q.comment | safeHtml"
+                  [appMath]>
+                </div>
+              </div>
+            </div>
+            <!-- <p [appMath] *ngIf="mark[currentIndex(si) + i] != 0" class="comment"><img src="../../../../../../assets/icons8-correct.svg">
+              正确答案：{{q.answer}} 【解析】：{{(q.comment == '' || q.comment === undefined || q.comment === null) ? q.answer : q.comment}} </p>
+            <p [appMath] *ngIf="mark[currentIndex(si) + i] == 0" class="comment"><img src="../../../../../../assets/icons8-wrong.svg">
+              正确答案：{{q.answer}} 【解析】：{{(q.comment == '' || q.comment === undefined || q.comment === null) ? q.answer : q.comment}} </p> -->
+          </mat-card-content>
+        </mat-card>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+
+<!-- </div> -->
+
+<!-- <mat-card class="mat-elevation-z5">
+  <mat-card-content>
+<div class="form-inline float-left">
+  <select mat-select class="form-control" [value]="questionPerPage"
+  (change)="changePageSize($event)">
+    <option mat-option value="3">每页 3 题</option>
+    <option mat-option value="6">每页 6 题</option>
+    <option mat-option value="10">每页 10 题</option>
+  </select>
+</div>
+<div class="btn-group float-right">
+  <button mat-button-toggle *ngFor="let page of pageNumbers" (click) = "changePage(page)"
+    class="btn btn-outline-primary"
+    [class.active]="page == selectPage"
+  >
+  {{page}}
+  </button>
+</div>
+</mat-card-content>
+</mat-card> -->

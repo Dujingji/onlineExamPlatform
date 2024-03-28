@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>用户编辑</h2>
+<mat-dialog-content>
+  <mat-card class="mat-elevation-z5">
+    <mat-card-content class="host">
+      <form [formGroup]="submitForm" >
+        <div class="form-inline">
+        <mat-form-field appearance="outline">
+          <mat-label>用户名</mat-label>
+          <input formControlName="username" matInput>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>密码</mat-label>
+          <input matInput formControlName="password">
+        </mat-form-field>
+
+        </div>
+        <div class="form-inline">
+          <mat-form-field class="float-left" appearance="outline">
+            <mat-label>科目类型</mat-label>
+            <mat-select formControlName="major" >
+              <mat-option *ngFor="let element of majorData" value="{{element.name}}">{{element.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions  class="action" align="end">
+  <button mat-raised-button  [disabled]="!submitForm.valid" class="submitB form-inline" (click)="closeDialog()">提交</button>
+  <button mat-raised-button mat-dialog-close class="cancelB" >取消</button>
+</mat-dialog-actions>
+

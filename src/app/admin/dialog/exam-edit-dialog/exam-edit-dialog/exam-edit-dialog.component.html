@@ -1,0 +1,73 @@
+<h2 mat-dialog-title>考试编辑</h2>
+<mat-dialog-content>
+  <mat-card class="mat-elevation-z5">
+    <mat-card-header>
+      <mat-card-title>考试编辑</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="host">
+      <form [formGroup]="submitForm">
+        <div class="form-inline">
+          <mat-form-field appearance="outline">
+            <mat-label>考试名称</mat-label>
+            <input formControlName="description" matInput>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>urls数量</mat-label>
+            <input formControlName="vd_url_number" type="number" matInput>
+          </mat-form-field>
+          <button mat-raised-button class="submitB" (click)="editUrls()" >编辑urls</button>
+          <mat-form-field appearance="outline">
+            <mat-label>试卷ID</mat-label>
+            <input matInput value="{{submitForm.value.paperId}}" disabled>
+          </mat-form-field>
+          <button mat-raised-button *ngIf="paperId" class="submitB" (click)="editPaper()">修改</button>
+          <button mat-raised-button *ngIf="!paperId" class="submitB" (click)="editPaper()">添加</button>
+        </div>
+        <div class="form-inline">
+          <mat-form-field class="float-left" appearance="outline">
+            <mat-label>科目类型</mat-label>
+            <mat-select formControlName="major">
+              <mat-option *ngFor="let element of majorData" value="{{element.name}}">{{element.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="float-right" appearance="outline">
+            <mat-label>考试日期</mat-label>
+            <input formControlName="date" matInput [matDatepicker]="picker">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <div class="ngx-timepicker">
+            <ngx-timepicker-field [controlOnly]="true" [format]="24"
+              [defaultTime]="time!.hours.toString()+':'+ time!.minutes"
+              (timeChanged)="timeChanged($event, 0)"></ngx-timepicker-field>
+          </div>
+        </div>
+        <div class="form-inline">
+          <mat-form-field class="float-right" appearance="outline">
+            <mat-label>截止时间</mat-label>
+            <input formControlName="end" matInput [matDatepicker]="picker1">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+          <div class="ngx-timepicker">
+            <ngx-timepicker-field [controlOnly]="true" [format]="24"
+              [defaultTime]="endTime!.hours.toString()+':'+ endTime!.minutes"
+              (timeChanged)="timeChanged($event, 1)"></ngx-timepicker-field>
+          </div>
+        </div>
+        <div>
+          <section class="example-section">
+            <mat-checkbox formControlName="isAuto" matInput class="example-margin">自动评卷</mat-checkbox>
+          </section>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions class="action" align="end">
+  <button mat-raised-button [disabled]="!submitForm.valid" class="submitB form-inline"
+    (click)="closeDialog()">提交</button>
+  <button mat-raised-button mat-dialog-close class="cancelB">取消</button>
+</mat-dialog-actions>

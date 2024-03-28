@@ -1,0 +1,87 @@
+<mat-toolbar class="mat-elevation-z2">
+  <!-- <button
+    mat-icon-button
+    (click)="sidenav.toggle()"
+  >
+    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+  </button>
+  <div *ngIf="sidenav.opened" class="title">{{paper}}</div>
+  <div class="welcome" *ngIf="timeReminder">{{rT.hour}} : {{rT.min}} : {{rT.sec}}</div>
+  <div class="sidenav-right">
+    <button
+    mat-icon-button
+    (click)="SumbitExamPaper(onCal)"
+    >
+      <mat-icon class="forward_icon">forward</mat-icon>
+    </button>
+  </div> -->
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+  </button>
+  <div *ngIf="sidenav.opened" class="title">{{paper}}</div>
+  <div class="welcome" *ngIf="timeReminder">{{rT.hour}} : {{rT.min}} : {{rT.sec}}</div>
+  <div class="sidenav-right">
+    <button  mat-icon-button (click)="sidenav1.toggle()">
+      <mat-icon *ngIf="!sidenav1.opened"> menu </mat-icon>
+      <mat-icon *ngIf="sidenav1.opened"> close </mat-icon>
+    </button>
+    <button mat-icon-button (click)="SumbitExamPaper(onCal)">
+      <mat-icon>forward</mat-icon>
+    </button>
+  </div>
+
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+
+      <div class="answer-card" *ngFor="let item of section; let i = index;">
+        <div class="answer-card-title">
+            {{item.type}}
+        </div>
+        <button mat-mini-fab class="fab-button" [ngClass]="{'selected': (selectedList ? selectedList[correctIndex(i) + j].value.length : 0) != 0,
+        'unselected' : (selectedList ? selectedList[correctIndex(i) + j].value.length : 0) == 0}" (click)="WaringChanged(correctIndex(i) + j, ID!)"
+        *ngFor="let count of [].constructor(paperData!.n[i]); let j = index">
+              {{j+1}}
+        </button>
+        <mat-divider>
+
+        </mat-divider>
+      </div>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content mat-elevation-z5">
+      <app-exam-paper (selectedTrigger)="OnReceive($event)"></app-exam-paper>
+    </div>
+  </mat-sidenav-content>
+
+  <mat-sidenav position="end" #sidenav1 class="mat-elevation-z8" opened="true">
+    <div>
+      <mat-card class="result-card">
+        <mat-card-content>
+          <p>姓名：{{userName}}</p>
+          <p>准考证号：{{EID}}</p>
+          <p>所属院校：{{college}}</p>
+          <p>专业：{{major}}</p>
+          <p>考试结束时间：{{endTime}}</p>
+          <p><img src="../../../../../assets/icons8-correct.svg">已作答：{{d}}</p>
+          <p><img src="../../../../../assets/icons8-wrong.svg">未作答：{{r === 0 ? (selectedList) ? 0 : paperData ? paperData.length - _qt : '加载中...' : r}}</p>
+          <p>总题数：{{paperData ? paperData.length - _qt : ""}}</p>
+          <p>试卷分值：{{totalMark}}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div>
+      <button mat-button class="menu-button" (click)="SumbitExamPaper(onCal)">
+        提交试卷
+      </button>
+      <button mat-button class="menu-button" (click)="SaveExamPaper(0)">
+        保存
+      </button>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

@@ -1,0 +1,45 @@
+<mat-toolbar class="mat-elevation-z2">
+  <button
+    mat-icon-button
+    (click)="sidenav.toggle()"
+  >
+    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    class="logout"
+    (click)="logout()"
+  >
+  <mat-icon >logout</mat-icon>
+  </button>
+  <p class="title" *ngIf="sidenav.opened">线上考试系统</p>
+  <p class="welcome" *ngIf="isUser">{{username}} 老师，欢迎</p>
+</mat-toolbar>
+
+<mat-sidenav-container >
+  <mat-sidenav #sidenav="matSidenav" data-color="danger" data-background-color="white" class="mat-elevation-z8">
+    <img
+    class="avatar mat-elevation-z8"
+    src="https://exam.bodaoedu.com/exam-api/profile/profile_{{random().toString()}}.jpg"
+  />
+
+    <h4 class="name"  *ngIf="isUser" >{{username}}</h4>
+    <p class="designation"  *ngIf="isUser" >{{userInfor}}</p>
+
+    <mat-divider></mat-divider>
+
+    <button mat-button class="menu-button" routerLink="/teacher">
+      <mat-icon>home</mat-icon>
+      <span class="text">改卷列表</span>
+    </button>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content mat-elevation-z5">
+      <router-outlet ></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+

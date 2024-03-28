@@ -1,0 +1,7 @@
+<h2 mat-dialog-title>提交试卷？</h2>
+<mat-dialog-content>提交试卷后将不能在进入答题界面，确认退出吗？</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>取消</button>
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+  <button mat-button [mat-dialog-close]="true">确定</button>
+</mat-dialog-actions>

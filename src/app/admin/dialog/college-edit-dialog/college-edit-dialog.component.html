@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>教学点编辑</h2>
+<mat-dialog-content>
+  <mat-card class="mat-elevation-z5">
+    <mat-card-content class="host">
+      <form [formGroup]="submitForm">
+        <div class="form-inline">
+          <mat-form-field appearance="outline">
+            <mat-label>教学点名称</mat-label>
+            <input formControlName="name" matInput>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions class="action" align="end">
+  <button mat-raised-button [disabled]="!submitForm.valid" class="submitB form-inline"
+    (click)="closeDialog()">提交</button>
+  <button mat-raised-button mat-dialog-close class="cancelB">取消</button>
+</mat-dialog-actions>

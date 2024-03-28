@@ -1,0 +1,9 @@
+<div class="menu-container" #dropDownMenu>
+  <div class="menu-icon" (click)="toggleMenu()">
+    &#x22EE;
+  </div>
+  <div class="dropdown-menu" [class.show]="menuOpen" [class.hz-resever]="reverseDirection">
+    <!-- 菜单项 -->
+    <div (click)="openDialogButton()"> 纠错 </div>
+  </div>
+</div>
