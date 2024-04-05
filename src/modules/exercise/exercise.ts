@@ -1,6 +1,7 @@
 import { exericseDetailModel } from "./exercise-detail";
 
 export interface exerciseModel{
+  _id : string,
   major: string,
   length : number,
   description : string,

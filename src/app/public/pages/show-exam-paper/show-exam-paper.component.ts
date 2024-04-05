@@ -4,6 +4,7 @@ import { userInfo } from 'src/modules/user/user';
 import { exam } from 'src/modules/exams/exam';
 import { ExamPaperService } from 'src/app/service/exam/exam-paper.service';
 import { Subscription, interval, first, take, Subject, takeUntil } from 'rxjs';
+import { PublicService, menuModel } from 'src/app/service/public/public.service';
 
 @Component({
   selector: 'app-show-exam-paper',
@@ -23,7 +24,8 @@ export class ShowExamPaperComponent implements OnInit {
 
   examEntriesSub = new Subscription();
 
-  constructor(private exampaperService: ExamPaperService) { }
+
+  constructor(private exampaperService: ExamPaperService, private publicService : PublicService) { }
 
   examStatus(paperId: string): boolean {
     let status = false

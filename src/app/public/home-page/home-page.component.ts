@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatSidenav } from '@angular/material/sidenav';
 import { NavigationEnd, Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { ExamPaperService } from 'src/app/service/exam/exam-paper.service';
 import { exam } from 'src/modules/exams/exam';
 import { Subscription } from 'rxjs';
 import { user, userInfo } from 'src/modules/user/user';
+import { PublicService, menuModel } from 'src/app/service/public/public.service';
 
 
 @UntilDestroy()
@@ -27,13 +28,54 @@ export class HomePageComponent implements OnInit, OnDestroy{
   public isUser = false
   private random_n = 1
 
+  private menuList2: Array<menuModel> =
+  [
+    {
+      name: '每日一练',
+      url: '/public/homePage/daily'
+    },
+    {
+      name: '单词打卡',
+      url: '/public/homePage/vocabulary'
+    },
+    {
+      name: '专项练习',
+      url: '/public/homePage/exercise'
+    }
+  ]
+
+  private menuList1: Array<menuModel> =
+  [
+    {
+      name: '待考事项',
+      url: '/public/homePage/exam'
+    },
+    {
+      name: '报考页面',
+      url: '/public/homePage/register'
+    },
+  ]
+
   private notifier = new Subject<void>()
 
-  constructor(private observer: BreakpointObserver, private router: Router, private examPaperService : ExamPaperService, private authService : AuthService) {}
+  constructor(private observer: BreakpointObserver, private router: Router, private examPaperService : ExamPaperService,
+    private authService : AuthService, private publicService : PublicService, private cd : ChangeDetectorRef) {}
 
   ngOnDestroy(): void {
     this.notifier.next()
     this.notifier.complete()
+  }
+
+  changeIndex(i : number){
+    this.publicService.index = i
+  }
+
+  get menuList(){
+    return this.publicService.MenuList
+  }
+
+  get menuIndex(){
+    return this.publicService.index
   }
 
   ngOnInit(): void {
@@ -44,6 +86,23 @@ export class HomePageComponent implements OnInit, OnDestroy{
     .subscribe(() =>{
       this.retrieveUser()
     })
+  }
+
+  changeMenuList(i : number){
+    if(i === 0){
+      this.publicService.SetMenuList = this.menuList2
+      this.publicService.index = 0
+      this.cd.detectChanges()
+    }else if(i === 1){
+      this.publicService.SetMenuList = this.menuList1
+      this.publicService.index = 0
+      this.cd.detectChanges()
+    }
+    else{
+      this.publicService.SetMenuList = []
+      this.publicService.index = 0
+      this.cd.detectChanges()
+    }
   }
 
   logout(){
@@ -100,6 +159,7 @@ export class HomePageComponent implements OnInit, OnDestroy{
   }
 
   ngAfterViewInit() {
+    this.cd.detectChanges()
     this.observer
       .observe(['(max-width: 800px)'])
       .pipe(delay(1), untilDestroyed(this))

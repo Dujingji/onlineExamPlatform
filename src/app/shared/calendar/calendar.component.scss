@@ -1,291 +1,374 @@
-.table {
-  border-collapse: separate;
-  border-style: solid;
-  border-width: 0.05rem;
-  border-color: lightgrey;
-  border-radius: 0.15rem;
-  background-color: whitesmoke;
-  color: black;
-  margin: 0;
-  margin-top: 1.2rem;
-  max-width: 750px;
-  width: 750px;
-}
-
-.table-1 {
-  border-collapse: separate;
-  border-style: solid;
-  border-width: 0.05rem;
-  border-color: lightgrey;
-  border-radius: 0.15rem;
-  background-color: whitesmoke;
-  color: black;
-  margin: 0;
-  margin-top: 1.2rem;
-  max-width: 100%;
+.container {
   width: 100%;
-}
-
-.table.table-compact th,
-.table.table-compact td {
-  padding-top: 0.3rem;
-  padding-bottom: 0.25rem;
-}
-
-.table-compact th,
-.table-compact td {
-  padding-top: 0.3rem;
-  padding-bottom: 0.25rem;
-}
-
-.table th {
-  color: whitesmoke;
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  background-color: #004a9f;
-  vertical-align: bottom;
-  border-bottom-style: solid;
-  border-bottom-width: 0.05rem;
-  border-bottom-color: lightgrey;
-  border-top: 0 none;
-}
-
-.table th,
-.table td {
-  font-size: 1rem;
-  line-height: 0.7rem;
-  padding: 0.55rem 0.6rem 0.55rem;
-  text-align: center;
-  vertical-align: top;
-}
-
-.table th.left:first-child,
-.table td.left:first-child {
-  padding-left: 0.3rem;
-}
-
-tr:not(:first-child) {
-  height: calc(12vh - 36px);
-}
-
-.table.table-compact th,
-.table.table-compact td {
-  padding-top: 0.3rem;
-  padding-bottom: 0.25rem;
-}
-
-.table th.left,
-.table td.left {
-  text-align: left;
-}
-
-th {
-  text-align: center;
-}
-
-table {
-  border-spacing: 0;
-  table-layout: fixed;
-  margin: 0;
-  height: 50%;
-}
-
-td {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   position: relative;
-  padding: 3px 3px 20px;
-  border: 1px solid lightgrey;
-}
-
-tr:first-child > th {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-tr:first-child {
-  height: 20px;
-}
-
-.date-lable {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 2px;
-}
-
-.desc {
-  margin-left: 4px;
-  font-size: 12px;
-  overflow: hidden;
-}
-
-.exam_desc {
-  margin: 4px;
-  font-size: 20px;
-  background-color: antiquewhite;
-}
-
-.current_decs{
-  margin-top: 4px;
-  text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 4px;
-}
-
-.not-in-current-month{
-  background-color: grey;
-  color: lightgrey;
-}
-
-.today{
-  border: 4px solid red;
-  color: red;
-}
-
-.current-box{
-  background-color: skyblue;
-  color: whitesmoke;
-}
-
-.comprehensive-shower{
-  box-shadow: 0 0 8px 2px  lightblue;
+  max-width: 800px;
+  // background-image: url(../../../../assets/1681122871130843.jpg);
+  // background-size: cover;
+  // background-repeat: no-repeat;
+  background-color: white;
   border-radius: 8px;
-  opacity: .90;
-  background-color: whitesmoke;
-  padding: 12px;
-  width: 750px;
+  padding: 0px 0px 0px 0px;
+  overflow: scroll;
 }
 
-.comprehensive-shower-1{
-  box-shadow: 0 0 8px 2px  lightblue;
-  border-radius: 8px;
-  opacity: .90;
-  background-color: whitesmoke;
-  padding: 12px;
+.detail_container {
   width: 100%;
-}
-
-.exam-dot{
-  width: 10px;
-  height: 10px;
-  background-color: red;
-  border-radius: 50%;
-}
-
-.daily-dot{
-  width: 10px;
-  height: 10px;
-  background-color: greenyellow;
-  border-radius: 50%;
-}
-
-.detail{
-  margin: 4px;
-}
-
-.finished{
-  background-color: lightseagreen;
-  color: whitesmoke;
-}
-
-.label{
-  text-align: start;
-  display:inline-flex;
-}
-
-.calendar-title{
-  text-align: center;
-}
-
-.check-button{
-  margin :4px;
-  width: max-content;
-  background-color: powderblue;
-}
-
-.exercise-major{
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.h2-title{
-  font-weight: bold;
-  margin: 4px;
-}
-
-.c_lable{
-  text-align: start;
-}
-
-.d-l{
-  width: 100%;
-}
-
-.history{
+  max-width: 800px;
   display: flex;
-  align-items: start;
-  justify-content: space-between;
-  background-color: lavender; /* 这里可以设置你想要的颜色 */
+  flex-direction: column;
+  position: relative;
+  overflow: scroll;
+
+  padding: 0px 0px 0px 0px;
+  padding-bottom: 12px;
+  background-color: white;
+
+}
+
+.row_r {
+  display: flex;
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  min-height: 125px;
+}
+
+.inside-button {
+  background-color: gold;
   border-radius: 4px;
-  margin: 4px;
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+
+  .p {
+    margin: 8px;
+    font-weight: bolder;
+  }
+}
+
+.display-box {
+  display: flex;
+  flex-direction: row;
   width: 100%;
-  padding: 8px;
-  box-shadow: 1px 1px 1px #888888;
+  margin-top: 12px;
+  background-color: whitesmoke;
+  align-items: center;
+  border-radius: 8px;
+  position: relative;
+
+  .detail_text {
+    display: flex;
+    align-items: baseline;
+    flex-direction: column;
+    height: 100%;
+    padding-top: 8px;
+    margin-left: 8px;
+
+    .d_m {
+      margin-top: 4px;
+      font-weight: 550;
+      font-size: 1.15rem;
+      margin-bottom: 4px;
+    }
+
+    .d_p {
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+  }
+
+  .image {
+    display: flex;
+    margin-left: 8px;
+    margin-right: 8px;
+
+    img {
+      border-radius: 8px;
+      width: 100px;
+      height: 100px;
+    }
+  }
+
 }
 
-.card-title{
-  flex : 1;
-}
-
-.button{
-  background-color: lightblue;
-  margin-left: auto;
-}
-
-.table-box{
+.top-s {
+  width: 100%;
+  height: 20%;
+  min-height: 115px;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
   display: flex;
+  align-items: center;
   justify-content: center;
+  background-image: url(../../../assets/a36099aa2ff65.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  .top-button {
+    position: absolute;
+
+    right: 8px;
+    top: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+
+    .p {
+      margin: 4px;
+      font-weight: bolder;
+    }
+
+    background-color:gold;
+  }
+
+  .top-day {
+    display: flex;
+    align-items: baseline;
+    width: 100%;
+    justify-content: center;
+
+    .section_1 {
+      display: flex;
+      width: 100%;
+      align-items: baseline;
+      justify-content: center;
+    }
+
+    .day_1 {
+      font-size: 2.5rem;
+      margin-right: 4px;
+      font-family: fangsong;
+      color: black;
+    }
+
+    .day_2 {
+      font-size: 2.5rem;
+      margin-right: 4px;
+      font-family: fangsong;
+      color: black;
+    }
+
+    .cn {
+      font-size: 1.15rem;
+      margin-left: 4px;
+      font-family: fangsong;
+      font-weight: bolder;
+    }
+  }
+
+  .week-title {
+    width: 95%;
+    display: inline-flex;
+    position: absolute;
+    bottom: 8px;
+    left: 2.5%;
+
+    .title {
+      display: flex;
+      font-weight: bolder;
+      color: grey;
+      font-size: larger;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 }
 
-.detail-box{
+
+
+.calendar-container {
   display: flex;
-  justify-content: center;
+  padding-top: 20px;
+  padding-left: 2.5%;
+  padding-right: 2.5%;
+  width: 100%;
+  max-width: 800px;
+  max-height: 350px;
+  flex-direction: column;
+  position: relative;
+
+  .date-title_top {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .date {
+      font-size: 1.25rem;
+      font-weight: bolder;
+      color: grey;
+      font-family: fangsong;
+
+      .top{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        position: relative;
+
+        .top_2{
+          position: absolute;
+          right: 16px;
+        }
+      }
+    }
+
+    .divider {
+      width: 100%;
+      /* 线条宽度充满容器，也可以定义具体像素值 */
+      height: 1px;
+      /* 线条的厚度，可以根据需要调整 */
+      background-color: lightgrey;
+      /* 线条的颜色 */
+      /* 如果需要，可以为线条定义外边距 */
+      margin-top: 4px;
+      margin-right: 4px;
+    }
+  }
+
+  .date-title_bottom {
+    position: absolute;
+    bottom: 5%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .date {
+      font-size: 1.25rem;
+      font-weight: bolder;
+      color: grey;
+      font-family: fangsong;
+    }
+
+    .divider {
+      width: 95%;
+      /* 线条宽度充满容器，也可以定义具体像素值 */
+      height: 1px;
+      /* 线条的厚度，可以根据需要调整 */
+      background-color: lightgrey;
+      /* 线条的颜色 */
+      /* 如果需要，可以为线条定义外边距 */
+      margin-top: 4px;
+      margin-right: 4px;
+
+    }
+  }
 }
 
-.major-selector{
+.calendar {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0px 0px 0px 0px;
+  position: relative;
+  flex-direction: column;
+  max-width: 800px;
+  font-family: "Open Sans", sans-serif;
+
+
+  .week-day {
+    width: 100%;
+    display: inline-flex;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    border-radius: 2px;
+
+    .day {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin: 2px;
+
+      p {
+        margin: 2px;
+      }
+    }
+
+    .active {
+      color: black;
+    }
+
+    .today {
+      border: 3px dashed lightcoral;
+      /* 设置边框样式为虚线、宽度为3px、颜色为蓝色 */
+    }
+
+    .inactive {
+      color: lightgray
+    }
+
+    .checked {
+      background-color: lightblue;
+    }
+
+    .current-box {
+      background-color: lightseagreen;
+    }
+  }
+
 }
 
-.print-box{
-  display: flex;
-  background-color: lavender;
+/* 隐藏滚动条 */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: none;
+}
+
+.created_box {
   width: 100%;
-  align-items: center;
-  text-align: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  display: flex;
+  flex-direction: row;
+  background-color: whitesmoke;
+  overflow: scroll;
+
+  .major-selector {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 4px;
+
+    .check-button{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px 8px 8px 8px;
+      width: 100px;
+      background-color: lightblue;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: larger;
+      color: grey;
+      font-family: fangsong;
+      margin: 4px;
+    }
+  }
+}
+
+.detail_c_title {
+  width: 100%;
+  display: flex;
   justify-content: center;
-  font-weight: bold;
-  margin-top: 4px;
-  box-shadow: 1px 1px 1px #888888;
-  font-size: 16px;
-  height: 40px;
-}
-
-.print-number{
-  margin: 4px;
-  color: red;
-}
-
-.text-left{
-  margin-left: 8px;
-}
-
-.text-right{
-  margin-right: 8px;
+  align-items: center;
+  background-color: whitesmoke;
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: grey;
+  font-family: fangsong;
+  padding-top: 8px;
+  padding-bottom: 4px;
 }

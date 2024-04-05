@@ -1,4 +1,98 @@
-<div class="current_decs">
+<div class="container">
+  <div class="mat-elevation-z8 top-s">
+
+    <div class="top-day">
+      <div class="section_1">
+        <div class="cn">累计：</div>
+        <div class="day_1">{{dailyData ? dailyData.total : 0}}</div>
+        <div class="cn">天</div>
+      </div>
+      <div class="section_1">
+        <div class="cn">连续：</div>
+        <div class="day_2">{{dailyData ? dailyData.continue : 0}}</div>
+        <div class="cn">天</div>
+      </div>
+    </div>
+
+    <div class="week-title">
+      <div class="title">Sun</div>
+      <div class="title">Mon</div>
+      <div class="title">Tue</div>
+      <div class="title">Wed</div>
+      <div class="title">Thu</div>
+      <div class="title">Fri</div>
+      <div class="title">Sat</div>
+    </div>
+  </div>
+
+  <div class="calendar-container">
+    <div class="date-title_top">
+      <div class="date">
+        <div class="top">
+          <div class="top_1" *ngIf="state === 'expanded'">{{getDate(0)}}</div>
+          <div class="top_1" *ngIf="state === 'collapsed'">{{getDate(1)}}</div>
+          <div class="top_2" *ngIf="state === 'collapsed'" (click)="toggleBlock()">
+            <mat-icon>keyboard_arrow_down</mat-icon>
+          </div>
+          <div class="top_2" *ngIf="state === 'expanded'" (click)="toggleBlock()"> <mat-icon>keyboard_arrow_up</mat-icon> </div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="calendar" #content [@expandCollapse]="state">
+          <div class="week-day" *ngFor="let week of calendar; let i = index">
+            <div class="day" (click)="toggleEvents(day)" *ngFor="let day of week; let i = index" [ngClass]="
+          {
+          'active': day.active,
+          'inactive': !day.active,
+          'today': day.today,
+          'checked' : day.selector,
+          'current-box': day.click
+          }">
+              <p>{{day.date}}</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="detail_container">
+    <div class="detail_c_title" *ngIf="expendedDate ? expendedDate.today && majorList.length !== 0 : false">
+      生成练习
+    </div>
+    <div class="created_box" *ngIf="expendedDate ? expendedDate.today && majorList.length !== 0 : false">
+      <div class="major-selector" *ngFor="let element of majorList; let i = index">
+        <div class="check-button mat-elevation-z1"
+          routerLink="/public/daily_exercise/{{getYear()}}/{{getMonth()}}/{{expendedDate ? expendedDate.date : ''}}/{{majorList[i]}}">
+          {{element}}</div>
+      </div>
+    </div>
+
+    <div class="row_r" *ngFor="let item of current ? current.dailys : []; let i = index">
+      <div class="display-box mat-elevation-z3">
+        <!-- Display your data here, for example: -->
+        <div class="image">
+          <img [src]="'../../../assets/封面1.png'" alt="政治理论">
+        </div>
+        <div class="detail_text">
+          <p class="d_m">{{getMajor(i)}}</p>
+          <p class="d_p">{{getTotal(i)}}</p>
+          <p class="d_p">{{getProcess(i)}}</p>
+          <div class="inside-button"
+            routerLink="/public/daily_exercise/{{getYear()}}/{{getMonth()}}/{{getIndex(i)}}/{{getMajor(i)}}">
+            <div class="p">进入练习</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- <div class="current_decs">
   {{getCurrentMonthAndYear()}}
 </div>
 <div class="table-box">
@@ -99,4 +193,4 @@
       </mat-card-header>
     </mat-card>
   </div>
-</div>
+</div> -->

@@ -3,6 +3,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { first } from 'rxjs';
 import { DailyService } from 'src/app/service/daily/daily-service.service';
+import { PublicService, menuModel } from 'src/app/service/public/public.service';
 
 @Component({
   selector: 'app-vocabulary-homepage',
@@ -18,13 +19,15 @@ export class VocabularyHomepageComponent implements OnInit{
   public performance : number = 0
   public percent: number = 0
 
+
+
   selectorVisible = false;
 
   ngOnInit(): void {
     this.fetchUserData()
   }
 
-  constructor(private router : Router, private dailyService : DailyService){
+  constructor(private router : Router, private dailyService : DailyService, private publicService : PublicService){
 
   }
 

@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/service/auth/auth.service';
 import { ExamPaperService } from 'src/app/service/exam/exam-paper.service';
+import { PublicService, menuModel } from 'src/app/service/public/public.service';
 import { exam } from 'src/modules/exams/exam';
 import { major } from 'src/modules/major/major';
 import { userInfo } from 'src/modules/user/user';
@@ -39,8 +40,19 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
 
   public disabled : boolean = false
 
+  private menuList: Array<menuModel> =
+  [
+    {
+      name: '待考事项',
+      url: '/public/homePage/exam'
+    },
+    {
+      name: '报考页面',
+      url: '/public/homePage/register'
+    },
+  ]
 
-  constructor(private exampaperService: ExamPaperService) {
+  constructor(private exampaperService: ExamPaperService, private publicService : PublicService) {
     this.submitForm = new FormGroup({})
     this.submitForm1 = new FormGroup({})
   }
@@ -53,6 +65,9 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['考试名称', '科目', "截止时间", '按钮'];
 
   ngOnInit(): void {
+
+    this.publicService.SetMenuList = this.menuList
+
     this.submitForm = new FormGroup({
       'found': new FormControl(undefined, [Validators.required])
     })

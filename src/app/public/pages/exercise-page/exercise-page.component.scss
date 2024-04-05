@@ -1,47 +1,170 @@
-mat-card{
-  padding: 10px;
-  border-radius: 10px;
-  margin: 10px;
-  background-color: whitesmoke;
-}
-
-mat-expansion-panel{
-  margin: 10px;
-  background-color: whitesmoke;
-}
-
-table{
+.container {
   width: 100%;
-  background-color: whitesmoke;
+  max-width: 800px;
+  height: 100%;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
 
-  td{
-    min-width: 20px;
-    width: auto;
-    max-width: 30px;
+.major_box {
+  margin-top: 12px;
+  margin-bottom: 0px;
+  width: 100%;
+  padding: 32px 0px 0px 0px;
+  background-color: white;
+  flex-direction: column;
+  position: relative;
+}
+
+.major_shadow_box {
+  width: 100%;
+  height: 80px;
+  background-image: url(../../../../assets/1681122871130843.jpg);
+  background-size: cover;
+  border-radius: 6px;
+  z-index: -1;
+}
+
+.profile_box {
+  position: absolute;
+  left: 16px;
+  top: 12px;
+  height: 85px;
+  width: 65px;
+  background-image: url(../../../../assets/封面1.png);
+  background-size: cover;
+  border-radius: 6px;
+}
+
+.major_title {
+  position: absolute;
+  left: 100px;
+  top: 40px;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.35rem;
+  font-family: fangsong;
+  font-weight: 600;
+
+  .text {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 100%;
   }
 }
 
-.edit{
-  background-color: lightblue;
+.detail_container {
+
+  display: flex;
+  width: 100%;
+  background-color: white;
+  flex-direction: column;
+
+  .card {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-family: fangsong;
+    font-weight: 600;
+    font-size: larger;
+  }
 }
 
-.no_exercise{
-  margin: 12px;
+.divider {
+  width: 100%;
+  /* 线条宽度充满容器，也可以定义具体像素值 */
+  height: 4px;
+  /* 线条的厚度，可以根据需要调整 */
+  background-color: gray;
+  /* 线条的颜色 */
+  /* 如果需要，可以为线条定义外边距 */
+  margin-top: 4px;
+  margin-right: 4px;
+  margin-bottom: 4px;
 }
 
-.major-selector{
-  margin: 4px;
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  scrollbar-width: none;
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 800px;
+  width: 100%;
+  h2 {
+    margin: 12px;
+  }
+}
+
+.card {
+  width: 100%;
+  border-radius: 6px;
+  display: flex;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  flex-direction: row;
+  position: relative;
+  background-color: whitesmoke;
+
+  .card_image {
+    width: 60px;
+    height: 65px;
+    background-image: url(../../../../assets/封面1.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 6px;
+  }
+
+  .card_text{
+    margin-top: 8px;
+    margin-left: 4px;
+  }
+
+  .card_action{
+    position: absolute;
+    right: 6px;
+    bottom: 6px;
+    font-family: fangsong;
+    font-weight: 600;
+    padding: 4px 4px 4px 4px;
+    background-color: gold;
+    border-radius: 4px;
+  }
+}
+
+.selector_box{
+  margin-bottom: 16px;
+}
+
+mat-divider{
+  margin: 16px 4px 16px 4px;
 }
 
 .submitB{
   background-color: lightblue;
-  margin: 4px;
+  margin: 4px 4px 4px 4px;
 }
 
-.title{
-  font-weight: bolder;
-  text-align : center;
-  h2{
-    margin-top: 10px;
-  }
+.major-selector {
+  font-size: 14px;
+  padding: 8px 12px;
+  line-height: 1.5;
+  /* 添加其他所需的样式属性 */
+  display: flex;
+  align-items: baseline;
+}
+
+mat-card-content{
+  display: flex;
+  flex-direction: column;
 }

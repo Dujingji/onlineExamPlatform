@@ -1,42 +1,96 @@
-<div>
+<div class="container">
   <div class="bg-info p-2 text-white title">
     <h2>{{userInformation}}</h2>
   </div>
-  <mat-expansion-panel *ngFor="let m of major; let i = index">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        {{m}}
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <table mat-table [dataSource]="getDataSource(i, m)">
-
-      <ng-container matColumnDef="练习名称">
-        <th mat-header-cell *matHeaderCellDef> 练习名称 </th>
-        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="进度">
-        <th mat-header-cell *matHeaderCellDef> 进度 </th>
-        <td mat-cell *matCellDef="let element"> {{element.length + ' %'}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="按钮">
-        <th mat-header-cell *matHeaderCellDef> 操作 </th>
-        <td mat-cell *matCellDef="let element; let i = index">
-          <button class="edit" mat-raised-button (click)="navTo(element._id, element.model_Id)">进入</button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  </mat-expansion-panel>
 
   <div *ngIf="major.length === 0 && type === 0">
     <h1 class="no_exercise">没有可用的章节练习</h1>
   </div>
 
-  <div *ngIf="type === 1 || type === 2 || type === 3">
+  <div class="major_box" *ngFor="let m of major; let i = index">
+    <div class="profile_box mat-elevation-z5"></div>
+    <div class="major_shadow_box ">
+
+    </div>
+    <div class="major_title">
+      <div class="text">
+        <div>{{m}}</div>
+        <div class="top_2" *ngIf="state[i] === 'collapsed'" (click)="toggleBlock(i)">
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </div>
+        <div class="top_2" *ngIf="state[i] === 'expanded'" (click)="toggleBlock(i)">
+          <mat-icon>keyboard_arrow_up</mat-icon>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail_container" #content [@expandCollapse]="state[i]">
+      <div class="card mat-elevation-z1" *ngFor="let element of getDataSource(i, m)">
+        <div class="card_image">
+
+        </div>
+        <div class="card_text">
+          <p>{{element.description}}</p>
+          <p> {{ '进度：' + element.length + ' %'}} </p>
+        </div>
+        <div class="card_action mat-elevation-z1" (click)="navTo(element._id, element.model_Id)">
+          进入学习
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="selector_box" *ngIf="type === 1 || type === 2 || type === 3" >
+    <mat-card class="mat-elevation-z3">
+      <mat-card-header>
+        <mat-card-title>请确认您的专业课（确定后无法自主修改，谨慎选择）</mat-card-title>
+      </mat-card-header>
+      <p></p>
+      <mat-divider></mat-divider>
+      <p></p>
+      <mat-card-content>
+        <form [formGroup]="submitForm">
+          <div class="major-selector" *ngIf="type === 1 || type === 3">
+            <mat-form-field appearance="outline">
+              <mat-label>专业基础课</mat-label>
+              <mat-select  formControlName="found">
+                <mat-option *ngFor="let element of foundList" value="{{element.name}}">{{element.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button class="submitB" mat-button [disabled]="!submitForm.valid"
+              (click)="setSubject(0, submitForm.value.found)">确定</button>
+          </div>
+        </form>
+        <form [formGroup]="submitForm1">
+          <div class="major-selector" *ngIf="type === 2 || type === 3">
+            <mat-form-field appearance="outline">
+              <mat-label>专业综合课</mat-label>
+              <mat-select formControlName="comprehensive">
+                <mat-option *ngFor="let element of comprehensiveList"
+                  value="{{element.name}}">{{element.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button class="submitB" mat-raised-button [disabled]="type === 3 || !submitForm1.valid"
+              (click)="setSubject(1, submitForm1.value.comprehensive)">
+              {{type === 3 ? '请先确定专业基础课' :
+              '确定'}}</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+  <!-- <div *ngIf="type === 1 || type === 2 || type === 3">
     <mat-card>
       <mat-card-header>
         <mat-card-title>请确认您的专业课（确定后无法自主修改，谨慎选择）</mat-card-title>
@@ -75,4 +129,4 @@
       </mat-card-content>
     </mat-card>
   </div>
-</div>
+</div> -->
