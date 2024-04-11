@@ -6,13 +6,15 @@
   display: flex;
   flex-direction: column;
   background-color: white;
+  padding: 0px 0px 0px 0px;
+
 }
 
 .major_box {
   margin-top: 12px;
   margin-bottom: 0px;
   width: 100%;
-  padding: 32px 0px 0px 0px;
+  padding: 32px 15px 0px 15px;
   background-color: white;
   flex-direction: column;
   position: relative;
@@ -21,7 +23,7 @@
 .major_shadow_box {
   width: 100%;
   height: 80px;
-  background-image: url(../../../../assets/1681122871130843.jpg);
+  background-image: url(../../../../assets/渐变3.jpg);
   background-size: cover;
   border-radius: 6px;
   z-index: -1;
@@ -29,19 +31,23 @@
 
 .profile_box {
   position: absolute;
-  left: 16px;
+  left: 31px;
   top: 12px;
   height: 85px;
   width: 65px;
-  background-image: url(../../../../assets/封面1.png);
-  background-size: cover;
   border-radius: 6px;
+  box-shadow: 2px 2px 8px rgba(109, 107, 107, 0.5);
+
+  img{
+    height: 100%;
+    width: 100%;
+  }
 }
 
 .major_title {
   position: absolute;
-  left: 100px;
-  top: 40px;
+  left: 115px;
+  top: 45px;
   display: flex;
   flex-direction: column;
   font-size: 1.35rem;
@@ -93,15 +99,31 @@
   scrollbar-width: none;
 }
 
-.title {
+
+.background {
+  max-width: 800px;
+  width: 100%;
+  height: 50px;
+  background-image: url(../../../../assets/渐变2.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 800px;
-  width: 100%;
-  h2 {
-    margin: 12px;
+
+  p{
+    color: white;
+    font-family: kaiti;
+    font-weight: 600;
+    font-size: 1.25rem;
   }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  border-top-left-radius: 36px;
+  border-top-right-radius: 36px;
 }
 
 .card {
@@ -119,18 +141,20 @@
   .card_image {
     width: 60px;
     height: 65px;
-    background-image: url(../../../../assets/封面1.png);
-    background-size: cover;
-    background-repeat: no-repeat;
     border-radius: 6px;
+    margin-top: 2px;
+    img{
+      width: 100%;
+      height: 100%;
+    }
   }
 
-  .card_text{
+  .card_text {
     margin-top: 8px;
-    margin-left: 4px;
+    margin-left: 8px;
   }
 
-  .card_action{
+  .card_action {
     position: absolute;
     right: 6px;
     bottom: 6px;
@@ -142,15 +166,15 @@
   }
 }
 
-.selector_box{
+.selector_box {
   margin-bottom: 16px;
 }
 
-mat-divider{
+mat-divider {
   margin: 16px 4px 16px 4px;
 }
 
-.submitB{
+.submitB {
   background-color: lightblue;
   margin: 4px 4px 4px 4px;
 }
@@ -164,7 +188,11 @@ mat-divider{
   align-items: baseline;
 }
 
-mat-card-content{
+mat-card-content {
   display: flex;
   flex-direction: column;
+}
+
+.no_exercise{
+  padding-top: 20px;
 }

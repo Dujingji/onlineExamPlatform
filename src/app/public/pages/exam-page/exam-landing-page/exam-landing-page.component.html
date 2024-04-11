@@ -1,17 +1,19 @@
 <div class="container-fluid">
-  <h1 align="center">考试要求</h1>
-  <h2 align="center">
-    满分200分。考试时间120分钟。
-  </h2>
-  <h3>
-    注意事项：
-  </h3>
-    1.  考生必须在规定的地方作答，否则答案无效。<br>
-    2.  考试开始倒计时将开始，结束后将无法作答。<br>
-    3.  左侧为答题情况，绿色为已答题，白色为未答题<br>
-    4.  非选择题有公式、画图、表格时可以上传图片，图片大小不得超过2MB<br>
-    5.  作答结束请点击左侧提交试卷，考试时间结束将会自动上传答案
-
+  <nz-descriptions nzTitle="考试信息" nzBordered>
+    <nz-descriptions-item nzTitle="名称">{{exam_detail? exam_detail.description : ''}}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="科目" [nzSpan]="2">{{exam_detail? exam_detail.major : ''}}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="卷面分数">{{total_mark}}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="时长" [nzSpan]="2">
+      {{cost}}
+    </nz-descriptions-item>
+    <nz-descriptions-item nzTitle="状态" [nzSpan]="1">
+      <nz-badge *ngIf="examStatus() === 1" nzStatus="success" nzText="进行中"></nz-badge>
+      <nz-badge *ngIf="examStatus() === 0" nzStatus="default" nzText="未开始"></nz-badge>
+      <nz-badge *ngIf="examStatus() === 2" nzStatus="error" nzText="已结束"></nz-badge>
+      <nz-spin nzSimple *ngIf="examStatus() === -1"></nz-spin>
+    </nz-descriptions-item>
+    <nz-descriptions-item nzTitle="截止时间" [nzSpan]="1">{{getTimeString()}}</nz-descriptions-item>
+  </nz-descriptions>
 
   <div class="footer">
     <button mat-button class="button mat-elevation-z2" routerLink="/public/exam/{{exam_id}}">开始考试</button>

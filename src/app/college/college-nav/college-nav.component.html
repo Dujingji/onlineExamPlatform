@@ -1,0 +1,41 @@
+<div class="container">
+  <nz-layout>
+    <nz-sider nzWidth="300px" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+      <div class="logo">
+
+        <div class="text" *ngIf="!isCollapsed"> 线上考试平台教务系统 </div>
+      </div>
+      <ul nz-menu nzTheme="dark" nzMode="inline">
+        <li nz-submenu nzTitle="账号管理" nzIcon="user">
+          <ul>
+            <li nz-menu-item>账号信息</li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="数据分析" nzIcon="team">
+          <ul>
+            <li nz-menu-item>专项练习</li>
+            <li nz-menu-item>单词打卡</li>
+            <li nz-menu-item>每日一练</li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="考试安排" nzIcon="team">
+          <ul>
+            <li nz-menu-item>编辑考试</li>
+          </ul>
+        </li>
+      </ul>
+    </nz-sider>
+    <nz-layout>
+      <nz-header class="header">
+        <span class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+          (click)="isCollapsed = !isCollapsed">
+        </span>
+        <span class="title">{{title}}</span>
+      </nz-header>
+      <nz-content>
+        <router-outlet></router-outlet>
+      </nz-content>
+      <nz-footer>博导教育</nz-footer>
+    </nz-layout>
+  </nz-layout>
+</div>

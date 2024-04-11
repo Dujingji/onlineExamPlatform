@@ -116,7 +116,6 @@ export class ExamPageComponent implements OnInit, OnDestroy {
         }
       }
       else if (this.timeReminder !== undefined && this.timeReminder <= 0) {
-        console.log(1)
         if (this.selectedList) {
           if (this.exam_id && this.paper_id) {
             let marker = ''
@@ -129,7 +128,7 @@ export class ExamPageComponent implements OnInit, OnDestroy {
             let SumbitDialogRef = this.dialog.open(SumbitDialogComponent)
             SumbitDialogRef.afterClosed().subscribe(result => {
               this.submited = true
-              this.location.back();
+              this.router.navigate(['/public/homePage/exam'])
             })
 
           }
@@ -155,7 +154,7 @@ export class ExamPageComponent implements OnInit, OnDestroy {
           let SumbitDialogRef = this.dialog.open(SumbitDialogComponent)
           SumbitDialogRef.afterClosed().subscribe(result => {
             this.submited = true
-            this.location.back();
+            this.router.navigate(['/public/homePage/exam'])
           })
         }
       }
@@ -288,10 +287,10 @@ export class ExamPageComponent implements OnInit, OnDestroy {
         this.isAuto = data.isAuto
         this.end_time = data.end
         let now = new Date();
-        if (Date.parse(new Date(data.std_start).toLocaleString()) + (data.time * 1000) > Date.parse(new Date(data.end).toLocaleString())) {
-          this.timeReminder = (Date.parse(new Date(data.end).toLocaleString()) - Date.parse(now.toLocaleString())) / 1000
+        if (new Date(data.std_start).getTime() + (data.time * 1000) > new Date(data.end).getTime()) {
+          this.timeReminder = (new Date(data.end).getTime() - now.getTime()) / 1000
         } else {
-          this.timeReminder = (Date.parse(new Date(data.std_start).toLocaleString()) + (data.time * 1000) - Date.parse(now.toLocaleString())) / 1000
+          this.timeReminder = (new Date(data.std_start).getTime() + (data.time * 1000) - now.getTime()) / 1000
         }
         this.paperData.questions.forEach(element => {
           if (!element.type.includes('题目'))

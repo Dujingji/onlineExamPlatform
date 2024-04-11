@@ -20,7 +20,7 @@ export class LoginPageComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = new FormGroup({
-      'username': new FormControl('', [Validators.required]),
+      'username': new FormControl(localStorage.getItem('lastLoginUserName'), [Validators.required]),
       'password': new FormControl('', [Validators.required])
     })
   }

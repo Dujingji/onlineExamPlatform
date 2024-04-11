@@ -1,0 +1,35 @@
+<nz-table #sortTable [nzData]="listOfDisplayData" nzShowSizeChanger [nzFrontPagination]="false" [nzLoading]="loading"
+  [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" [nzScroll]="{ y: '650px' }" (nzQueryParams)="onQueryParamsChange($event)"
+  nzTableLayout="fixed">
+  <thead>
+    <tr>
+      <th *ngFor="let column of listOfColumn" [nzSortFn]="!column.compare" [nzSortPriority]="!column.priority"
+        nzCustomFilter>
+        {{ column.title }}
+        <nz-filter-trigger *ngIf="column.title === '姓名'" [(nzVisible)]="visible" [nzActive]="searchValue.length > 0"
+          [nzDropdownMenu]="menu">
+          <span nz-icon nzType="search"></span>
+        </nz-filter-trigger>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of sortTable.data">
+      <td>{{ data.student_name}}</td>
+      <td>{{ data.semester }}</td>
+      <td>{{ data.student_id}}</td>
+      <td>{{ data.password }}</td>
+      <td>{{ data.found }}</td>
+      <td>{{ data.comprehensive }}</td>
+    </tr>
+  </tbody>
+</nz-table>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" nz-input placeholder="搜索" />
+      <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">Search</button>
+      <button nz-button nzSize="small" (click)="reset()">Reset</button>
+    </div>
+  </div>
+</nz-dropdown-menu>

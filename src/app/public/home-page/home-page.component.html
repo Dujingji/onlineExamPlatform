@@ -10,12 +10,12 @@
 
     <mat-divider></mat-divider>
 
-    <button mat-button class="menu-button" (click)="changeMenuList(0)" routerLink="/public/homePage/daily">
+    <button mat-button class="menu-button" (click)="changeMenuList('/public/homePage/daily')" >
       <mat-icon>today</mat-icon>
       <span class="text">练习模块</span>
     </button>
 
-    <button mat-button class="menu-button" (click)="changeMenuList(1)" routerLink="/public/homePage/exam">
+    <button mat-button class="menu-button" (click)="changeMenuList('/public/homePage/exam')" >
       <mat-icon>home</mat-icon>
       <span class="text">线上考试</span>
     </button>
@@ -23,7 +23,7 @@
       <mat-icon>add</mat-icon>
       <span class="text">报考页面</span>
     </button> -->
-    <button mat-button class="menu-button"(click)="changeMenuList(2)" routerLink="/public/homePage/result">
+    <button mat-button class="menu-button"(click)="changeMenuList('/public/homePage/result')" >
       <mat-icon>person</mat-icon>
       <span class="text">查询成绩</span>
     </button>
@@ -62,15 +62,29 @@
       </div>
 
       <div class="right_button">
-        <div class="sub_menu" [ngClass]="{'red' : menuIndex === i}" *ngFor="let item of menuList; let i = index" (click)="changeIndex(i)" routerLink="{{item.url}}">
-          <div class="divider"></div>
-          {{item.name}}
+        <mat-menu #appMenu="matMenu">
+          <ng-template matMenuContent>
+            <button mat-menu-item *ngFor="let item of menuList; let i = index" (click)="changeMenuIndex(i, item.url)"> {{item.name}}</button>
+
+          </ng-template>
+        </mat-menu>
+
+        <button class="sub_menu" *ngIf="sidenav.mode === 'over' && menuList.length > 1"  mat-icon-button [matMenuTriggerFor]="appMenu">
+          <mat-icon>settings</mat-icon>
+        </button>
+
+        <div class="sub_menu" *ngIf="sidenav.mode === 'side' && menuList.length > 1">
+          <div class="sub_menu_item" [ngClass]="{'red' : item.url === currentUrl}" *ngFor="let item of menuList; let i = index" (click)="changeMenuIndex(i, item.url)" >
+            <div class="divider"></div>
+            {{item.name}}
+          </div>
         </div>
         <button mat-icon-button class="logout" (click)="logout()">
           <mat-icon>logout</mat-icon>
         </button>
       </div>
       <p class="welcome" *ngIf="isUser && sidenav.mode !== 'over'">{{username}} 考生，欢迎</p>
+      <p class="welcome" *ngIf="isUser && menuList[menuIndex] && sidenav.mode === 'over'">{{menuList[menuIndex].name}}</p>
     </mat-toolbar>
     <div class="content mat-elevation-z5">
       <router-outlet></router-outlet>

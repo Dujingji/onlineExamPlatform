@@ -1,17 +1,25 @@
-.container-fluid{
+.container-fluid {
   position: relative;
-  height: calc(100vh - 140px);
-}
-
-.footer{
+  width: 100%;
+  background-color: white;
+  padding-top: 16px;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  max-width: 800px;
 }
 
-.button{
-  position: absolute;
-  right: 10px;
-  bottom: 0;
+.footer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 8px 8px 8px 8px;
+}
+
+.button {
+  font-family: kaiti;
+  font-weight: 600;
+  font-size: 1.3rem;
   border-radius: 5px;
   background-color: rgb(59, 126, 214);
   color: white;

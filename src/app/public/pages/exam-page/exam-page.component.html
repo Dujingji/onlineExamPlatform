@@ -1,27 +1,16 @@
 <mat-toolbar class="mat-elevation-z2">
-  <!-- <button
-    mat-icon-button
-    (click)="sidenav.toggle()"
-  >
-    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
-    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
-  </button>
-  <div *ngIf="sidenav.opened" class="title">{{paper}}</div>
-  <div class="welcome" *ngIf="timeReminder">{{rT.hour}} : {{rT.min}} : {{rT.sec}}</div>
-  <div class="sidenav-right">
-    <button
-    mat-icon-button
-    (click)="SumbitExamPaper(onCal)"
-    >
-      <mat-icon class="forward_icon">forward</mat-icon>
+  <div class="sidenav-left">
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+      <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
     </button>
-  </div> -->
-  <button mat-icon-button (click)="sidenav.toggle()">
-    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
-    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
-  </button>
-  <div *ngIf="sidenav.opened" class="title">{{paper}}</div>
-  <div class="welcome" *ngIf="timeReminder">{{rT.hour}} : {{rT.min}} : {{rT.sec}}</div>
+    <div *ngIf="sidenav.opened" class="title">{{paper}}</div>
+  </div>
+
+  <div class="welcome" *ngIf="timeReminder">
+    {{rT.hour}} : {{rT.min}} : {{rT.sec}}
+  </div>
+
   <div class="sidenav-right">
     <button  mat-icon-button (click)="sidenav1.toggle()">
       <mat-icon *ngIf="!sidenav1.opened"> menu </mat-icon>
@@ -75,11 +64,11 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div>
-      <button mat-button class="menu-button" (click)="SumbitExamPaper(onCal)">
+    <div class="sub-menu-list">
+      <button mat-raised-button class="sub-menu-button" (click)="SumbitExamPaper(onCal)">
         提交试卷
       </button>
-      <button mat-button class="menu-button" (click)="SaveExamPaper(0)">
+      <button mat-raised-button class="sub-menu-button" (click)="SaveExamPaper(0)">
         保存
       </button>
     </div>

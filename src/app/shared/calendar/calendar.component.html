@@ -68,12 +68,14 @@
           {{element}}</div>
       </div>
     </div>
-
+    <div class="empty" *ngIf="(current ? current.dailys.length === 0 : true) &&(expendedDate ? expendedDate.today === false : true)">
+      <nz-empty></nz-empty>
+    </div>
     <div class="row_r" *ngFor="let item of current ? current.dailys : []; let i = index">
       <div class="display-box mat-elevation-z3">
         <!-- Display your data here, for example: -->
-        <div class="image">
-          <img [src]="'../../../assets/封面1.png'" alt="政治理论">
+        <div class="image ">
+          <img src="https://exam.gwxgt.com/exam-api/e-profile/{{getUrl(getMajor(i))}}" alt="政治理论">
         </div>
         <div class="detail_text">
           <p class="d_m">{{getMajor(i)}}</p>

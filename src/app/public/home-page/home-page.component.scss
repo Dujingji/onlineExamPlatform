@@ -1,5 +1,5 @@
 mat-toolbar {
-  background: #004a9f;
+  background: #194e8a;
   color: white;
   border-radius: 4px;
   padding: 8px;
@@ -9,24 +9,23 @@ mat-toolbar {
   align-items: center;
   position: relative;
 
-
   .welcome {
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bolder;
     font-size: large;
-    margin: 0px 0px 0px 0px ;
+    margin: 0px 0px 0px 0px;
   }
 
-  .meun_button{
+  .meun_button {
     position: absolute;
     display: flex;
     left: 8px;
   }
 }
 
-.divider{
+.divider {
   background-color: white;
   height: 16px;
   width: 2px;
@@ -36,31 +35,42 @@ mat-toolbar {
   margin-bottom: 8px;
 }
 
-.sub_menu{
-  margin-right: 4px;
-  margin-left: 4px;
-  font-family: kaiti;
-  font-weight: 600;
-  font-size: large;
+.sub_menu {
+
   display: flex;
   flex-direction: row;
+
+  .sub_menu_item {
+    display: flex;
+    margin-right: 4px;
+    margin-left: 4px;
+    flex-direction: row;
+    font-family: kaiti;
+    font-weight: 600;
+    font-size: large;
+  }
 }
 
-.red{
+.red {
   color: orange;
 }
 
-.right_button{
+.right_button {
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
   right: 8px;
+  overflow: scroll;
 }
 
 :host ::-webkit-scrollbar {
   /*隐藏滚轮*/
   display: none;
+}
+
+::ng-deep * {
+  scrollbar-width: 0px;
 }
 
 .title {
@@ -76,7 +86,7 @@ mat-sidenav {
   margin: 8px;
   width: 300px;
   border-right: none;
-  background: #004a9f;
+  background: #194e8a;
   color: white;
   border-radius: 4px;
   padding: 16px;
@@ -90,6 +100,8 @@ mat-sidenav {
   margin-right: 8px;
   overflow: auto;
   background-color: rgb(238, 238, 238);
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 
 
@@ -125,6 +137,7 @@ mat-sidenav-container {
 .name {
   margin-top: 8px;
   font-weight: bold;
+  color: white;
 }
 
 .designation {

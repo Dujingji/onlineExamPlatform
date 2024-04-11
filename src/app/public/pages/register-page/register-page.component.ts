@@ -24,7 +24,7 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
 
   private notifier = new Subject<void>()
 
-  private std_id : string | null = localStorage.getItem("information")
+  private std_id: string | null = localStorage.getItem("information")
 
   private data: Array<exam[]> = []
   private englishResult: exam[] = []
@@ -36,23 +36,13 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
   public type: number = 0
   public foundList: major[] = []
   public comprehensiveList: major[] = []
-  public user_c? : string
+  public user_c?: string
 
-  public disabled : boolean = false
+  public disabled: boolean = false
+  private recent: exam[] = []
 
-  private menuList: Array<menuModel> =
-  [
-    {
-      name: '待考事项',
-      url: '/public/homePage/exam'
-    },
-    {
-      name: '报考页面',
-      url: '/public/homePage/register'
-    },
-  ]
 
-  constructor(private exampaperService: ExamPaperService, private publicService : PublicService) {
+  constructor(private exampaperService: ExamPaperService, private publicService: PublicService) {
     this.submitForm = new FormGroup({})
     this.submitForm1 = new FormGroup({})
   }
@@ -62,11 +52,9 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
     this.notifier.complete()
   }
 
-  displayedColumns: string[] = ['考试名称', '科目', "截止时间", '按钮'];
+  displayedColumns: string[] = ['考试名称', '科目', "截止时间"];
 
   ngOnInit(): void {
-
-    this.publicService.SetMenuList = this.menuList
 
     this.submitForm = new FormGroup({
       'found': new FormControl(undefined, [Validators.required])
@@ -78,15 +66,21 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
     this.retrieveExam()
 
     this.exampaperService.examSubject
-    .pipe(takeUntil(this.notifier))
-    .subscribe(response => {
-      this.retrieveExam()
-    })
+      .pipe(takeUntil(this.notifier))
+      .subscribe(response => {
+        this.retrieveExam()
+      })
   }
 
-  getDataSource(index: number, major : string) {
-    let filterList = this.data[index].filter(itme => itme.major === major)
+  getDataSource(index: number, major: string, data: exam[][]) {
+    let filterList = data[index].filter(itme => itme.major === major)
     return new MatTableDataSource<exam>(filterList);
+  }
+
+  CheckEmpty(index: number, major: string, data: exam[][]) {
+    let result = new Array<exam>()
+    result = data[index].filter(itme => itme.major === major)
+    return result
   }
 
   get examReminder(): exam[] {
@@ -119,10 +113,22 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
       })
   }
 
+  get historyRegister() {
+    let temp: exam[][] = []
+    this.data.forEach(m => {
+      temp.push(m)
+    })
+    return temp
+  }
+
+  get recentRegister() {
+    return this.recent
+  }
+
   cancelRegister(user: string, exam: string, type: number) {
     this.exampaperService.updateRegister(user, exam, type)
       .subscribe((data) => {
-        if(data.status){
+        if (data.status) {
           window.location.reload();
         }
       })
@@ -137,7 +143,7 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
   }
 
   setSubject(type: number, subject?: string) {
-    if(this.std_id)
+    if (this.std_id)
       this.exampaperService.setSubject(this.std_id, type, subject)
   }
 
@@ -147,6 +153,7 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
       this.exampaperService.getRegisterExamEntries(id)
         .subscribe((data) => {
           this.current = data.current
+          this.recent = data.recent
           this.foundList = data._fl
           this.comprehensiveList = data._cl
           this.major = data.major
@@ -156,19 +163,10 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
           this.politicsResult = data._p
           this.type = data.type
           this.user_c = data.u_c
+          this.data = data.all
           for (let i = 0; i < this.major.length; i++) {
-            if (this.major[i].type === 0) {
-              this.data.push(this.englishResult)
-            }
-            if (this.major[i].type === 1) {
-              this.data.push(this.politicsResult)
-            }
-            if (this.major[i].type === 2) {
-              this.data.push(this.foundResult)
-            }
             if (this.major[i].type === 3) {
-              this.data.push(this.comprehensiveResult)
-              this.submitForm1.setValue({'comprehensive' : this.user_c ? this.user_c : ''})
+              this.submitForm1.setValue({ 'comprehensive': this.user_c ? this.user_c : '' })
             }
           }
         })

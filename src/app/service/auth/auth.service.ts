@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { Subject, catchError, tap, throwError } from "rxjs";
 import { AuthModel } from 'src/modules/auth/auth';
 import { user } from "src/modules/user/user";
+import { CollegesService } from "../college/college.service";
 
 @Injectable({ providedIn: "root" })
 export class AuthService {
@@ -55,7 +56,7 @@ export class AuthService {
     }
   }
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private collegesService: CollegesService) { }
 
 
   logout() {
@@ -78,7 +79,7 @@ export class AuthService {
   loginUser(username: string, password: string) {
     const authData: AuthModel = { username: username, password: password };
 
-    this.http.post<{ token: string, expiresIn: number, body: user }>('https://exam.gwxgt.com/exam-api/auth/login/', authData)
+    this.http.post<{ token: string, expiresIn: number, body: user, college: string, username : string }>('https://exam.gwxgt.com/exam-api/auth/login/', authData)
       .pipe(catchError(this.handleError))
       .subscribe(res => {
         this.token = res.token;
@@ -89,13 +90,19 @@ export class AuthService {
           this.authenticatedSub.next(true);
           this.isAuthenticated = true;
           this.account = this.userInformation.account
-          if (this.account == "admin") {
+          if (this.account === "admin") {
             this.router.navigate(['/admin'])
+          }
+          else if(this.account === "college") {
+            this.router.navigate(['/college'])
+            localStorage.setItem('college', res.college)
+            this.collegesService.c_id = res.college
           }
           else if (this.account == "teacher") {
             this.router.navigate(['/teacher/0'])
           }
           else {
+            localStorage.setItem('lastLoginUserName', res.username)
             this.router.navigate(['/public/homePage/daily'])
           }
           this.logoutTimer = setTimeout(() => { this.logout() }, res.expiresIn * 1000);

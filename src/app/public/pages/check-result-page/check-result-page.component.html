@@ -1,4 +1,84 @@
-<div *ngIf="exams ? exams.length != 0 : false">
+<div class="container">
+  <div class="top-container">
+    <mat-tab-group>
+      <mat-tab label="近期成绩">
+        <ng-template matTabContent>
+          <div class="not-body" *ngIf="exams?.length === 0">
+            <nz-empty></nz-empty>
+          </div>
+          <div class="card" *ngFor="let exam of exams">
+            <nz-card nzTitle="{{exam.exams.description}}" [nzExtra]="cardExtar">
+              <p>{{'科目：' + exam.exams.major}}</p>
+              <p>{{'考试状态：' + (exam.exam_status === 1 ? '等待改卷' : exam.exam_status === 0 ? '考试未结束' : '改卷完成')}}</p>
+              <p *ngIf="exam.exam_status === 2" class="warning">{{'分数：' + exam.std_mark + ' / ' + exam.total + ' 分'}}
+              </p>
+              <p *ngIf="exam.exam_status !== 2">{{'考试截止日期：' + examDate(exam.exams.end)}}</p>
+            </nz-card>
+            <ng-template #cardExtar>
+              <button *ngIf="exam.exam_status == 2 && exam.exams.vd_url && exam.exams.vd_url.length !== 0" mat-button
+                class="startBTN" (click)="openVideoList(exam.exams.vd_url)">评卷视频</button>
+              <button mat-button *ngIf="exam.exam_status == 2" class="startBTN"
+                routerLink="/public/exam/result/{{exam.exams._id}}">查询成绩</button>
+            </ng-template>
+          </div>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="历史查询">
+        <ng-template matTabContent>
+          <div class="not-body" *ngIf="major.length === 0">
+            <nz-empty></nz-empty>
+          </div>
+          <div class="history_detail">
+            <mat-expansion-panel *ngFor="let m of major; let i = index">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{m.name}}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="table-s">
+                <table mat-table [dataSource]="getDataSource(i, m.name)">
+
+                  <ng-container matColumnDef="考试名称">
+                    <th mat-header-cell *matHeaderCellDef> 考试名称 </th>
+                    <td mat-cell *matCellDef="let element"> {{element.exams.description}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="分数">
+                    <th mat-header-cell *matHeaderCellDef> 分数 </th>
+                    <td mat-cell *matCellDef="let element"> {{element.exam_status !== 2 ? '待改卷....' : element.std_mark +
+                      ' 分 / '
+                      + element.total + ' 分'}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="截止时间">
+                    <th mat-header-cell *matHeaderCellDef> 考试截止时间 </th>
+                    <td mat-cell *matCellDef="let element"> {{examDate(element.exams.end)}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="按钮">
+                    <th mat-header-cell *matHeaderCellDef> 操作 </th>
+                    <td mat-cell *matCellDef="let element; let i = index">
+                      <button class="startBTN" mat-raised-button routerLink="/public/exam/result/{{element.exams._id}}"
+                        [disabled]="element.exam_status !== 2">查询</button>
+                        <button class="startBTN" mat-raised-button (click)="openVideoList(element.exams.vd_url)"
+                        [disabled]="element.exam_status !== 2">评讲视频</button>
+                    </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+              </div>
+            </mat-expansion-panel>
+          </div>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+
+
+<!-- <div *ngIf="exams ? exams.length != 0 : false">
   <div class="bg-info p-2 text-white title">
     <h2>{{userInformation}}</h2>
   </div>
@@ -77,4 +157,4 @@
 
 <div *ngIf="type === -1" class="not-body">
   <app-not-result-page></app-not-result-page>
-</div>
+</div> -->

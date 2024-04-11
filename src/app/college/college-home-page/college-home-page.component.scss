@@ -1,0 +1,24 @@
+.search-box {
+  padding: 8px;
+}
+
+.search-box input {
+  width: 188px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.search-box button {
+  width: 90px;
+}
+
+.search-button {
+  margin-right: 8px;
+}
+
+nz-table{
+  margin-top: 16px;
+  max-height: 650px;
+  max-width: 100%; /* 确保表格宽度不会超出其父容器 */
+  width: auto !important; /* 强制表格宽度根据内容自适应 */
+}

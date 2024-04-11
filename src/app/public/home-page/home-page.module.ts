@@ -35,6 +35,13 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { VocabularyHomepageComponent } from '../pages/vocabulary-homepage/vocabulary-homepage.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { VocabularyCalendarComponent } from '../pages/vocabulary-calendar/vocabulary-calendar.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { MatMenuModule } from '@angular/material/menu';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
 
 @NgModule({
   declarations: [
@@ -75,7 +82,14 @@ import { VocabularyCalendarComponent } from '../pages/vocabulary-calendar/vocabu
     MatInputModule,
     MatDialogModule,
     MatSlideToggleModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatTabsModule,
+    NzEmptyModule,
+    MatMenuModule,
+    NzCardModule,
+    NzSpinModule,
+    NzDescriptionsModule,
+    NzBadgeModule
   ],
   providers: []
 })

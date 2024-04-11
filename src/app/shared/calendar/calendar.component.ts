@@ -140,7 +140,12 @@ export class CalendarComponent implements OnInit {
       return now.getFullYear() + '-' + (now.getMonth() + 1)
     }
     else {
-      return now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + (now.getDate())
+      if(this.current){
+        return now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + (this.current.date)
+      }
+      else{
+        return  now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + (now.getDate())
+      }
     }
 
   }
@@ -168,6 +173,7 @@ export class CalendarComponent implements OnInit {
   }
 
   toggleEvents(day: DateModel) {
+
     if (day.status !== -1 && this.current) {
       this.current.click = false
       this.current.expanded = !this.current.expanded
@@ -240,16 +246,11 @@ export class CalendarComponent implements OnInit {
       else {
         this.calendar.push(week.slice())
         week = new Array<DateModel>()
-        week.push({
-          active: true,
-          today: i === date.getDate() && year === date.getFullYear() && month === date.getMonth(),
-          date: i,
-          selector: false,
-          status: 0,
-          expanded: false,
-          click: false,
-          dailys: []
-        })
+        if (i === date.getDate() && year === date.getFullYear() && month === date.getMonth()) {
+          this.current = temp
+          this.toggleEvents(this.current)
+        }
+        week.push(temp)
       }
       // Check if the current date is today
     }
@@ -268,7 +269,7 @@ export class CalendarComponent implements OnInit {
       })
     }
     this.calendar.push(week)
-    console.log(this.calendar)
+    // console.log(this.calendar)
   }
 
   range(input: Array<unknown> | number) {
@@ -276,6 +277,10 @@ export class CalendarComponent implements OnInit {
       return input.map((item, index) => index);
     }
     return new Array(input).fill(0).map((item, index) => index);
+  }
+
+  getUrl(major : string){
+    return major + ".jpg"
   }
 
   getCurrentMonthAndYear() {

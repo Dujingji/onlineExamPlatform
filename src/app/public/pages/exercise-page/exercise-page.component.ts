@@ -36,10 +36,10 @@ export class ExercisePageComponent implements OnInit {
   public type: number = 0
   public foundList: major[] = []
   public comprehensiveList: major[] = []
-  public state : Array<string> = []
+  public state: Array<string> = []
 
 
-  constructor(private exerciseService: ExerciseService, private router: Router, private publicService : PublicService) {
+  constructor(private exerciseService: ExerciseService, private router: Router, private publicService: PublicService) {
     this.submitForm = new FormGroup({})
     this.submitForm1 = new FormGroup({})
   }
@@ -60,6 +60,15 @@ export class ExercisePageComponent implements OnInit {
 
   get userInformation() {
     return localStorage.getItem("classroom")
+  }
+
+  getUrl(major: string, c: number) {
+    if(c === 1){
+      return major + ".jpg"
+    }
+    else{
+      return major + "-子图.jpg"
+    }
   }
 
   retrieveData(): void {
@@ -92,7 +101,7 @@ export class ExercisePageComponent implements OnInit {
 
   displayedColumns: string[] = ['练习名称', '进度', "按钮"];
 
-  getDataSource(index: number, major : string) {
+  getDataSource(index: number, major: string) {
     let filterList = this.data[index].filter(itme => itme.major === major)
     return filterList
   }
@@ -111,7 +120,7 @@ export class ExercisePageComponent implements OnInit {
     }
   }
 
-  toggleBlock(i : number) {
+  toggleBlock(i: number) {
     this.state[i] = this.state[i] === 'expanded' ? 'collapsed' : 'expanded';
   }
 }

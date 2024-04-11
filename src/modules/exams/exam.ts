@@ -17,7 +17,13 @@ export interface exam{
 }
 
 export interface examEntries{
-  exams : exam[]
+  exams : exam[],
+}
+
+export interface examEntriesA{
+  exams: exam[],
+  active: exam[],
+  end: exam[],
 }
 
 export interface examUpdateModel{

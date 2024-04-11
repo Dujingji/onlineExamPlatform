@@ -1,8 +1,87 @@
-<div class="bg-info p-2 text-white title">
-  <h2>{{userInformation}}</h2>
+<div class="container">
+  <div class="top-container">
+    <mat-tab-group>
+      <mat-tab label="可报名">
+        <ng-template matTabContent>
+          <div class="not-body" *ngIf="examRegister.length === 0">
+            <nz-empty></nz-empty>
+          </div>
+          <div class="card" *ngFor="let exam of examRegister">
+            <nz-card nzTitle="{{exam.description}}" [nzExtra]="cardExtar">
+              <p>{{'科目：' + exam.major}}</p>
+              <p>{{'考试时间：' + examDate(exam.date)}} </p>
+              <p class="red">{{'报名截止时间：' + examDate(exam.end) }}</p>
+            </nz-card>
+            <ng-template #cardExtar>
+              <div class="register_button" [ngClass]="{'active' : active(exam.end), 'inactive' : !active(exam.end)}"
+              (click)="active(exam.end) ? registerExam(user_id, exam._id, 0) : ''" >{{active(exam.end) ? '报名' : '截止'}}</div>
+            </ng-template>
+          </div>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="已报名">
+        <ng-template matTabContent>
+          <div class="not-body" *ngIf="recentRegister.length === 0">
+            <nz-empty></nz-empty>
+          </div>
+          <div class="card" *ngFor="let exam of recentRegister">
+            <nz-card nzTitle="{{exam.description}}" [nzExtra]="cardExtar">
+              <p>{{'科目：' + exam.major}}</p>
+              <p>{{'考试时间：' + examDate(exam.date)}} </p>
+              <p class="red">{{'报名截止时间：' + examDate(exam.end) }}</p>
+            </nz-card>
+            <ng-template #cardExtar>
+              <div class="register_button" [ngClass]="{'cancel' : active(exam.end), 'inactive' : !active(exam.end)}"
+              (click)="active(exam.end) ? cancelRegister(user_id, exam._id, 1) : ''" >{{active(exam.end) ? '取消报考' : '截止'}}</div>
+            </ng-template>
+          </div>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="历史参考">
+        <ng-template matTabContent>
+          <div class="not-body" *ngIf="historyRegister.length === 0">
+            <nz-empty></nz-empty>
+          </div>
+          <div class="history_detail">
+            <mat-expansion-panel *ngFor="let m of major; let i = index">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{m.name}}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="table-s">
+                <table mat-table *ngIf="CheckEmpty(i, m.name, historyRegister).length !== 0" [dataSource]="getDataSource(i, m.name, historyRegister)">
+
+                  <ng-container matColumnDef="考试名称">
+                    <th mat-header-cell *matHeaderCellDef> 考试名称 </th>
+                    <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="科目">
+                    <th mat-header-cell *matHeaderCellDef> 科目 </th>
+                    <td mat-cell *matCellDef="let element"> {{element.major}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="截止时间">
+                    <th mat-header-cell *matHeaderCellDef> 报名截止时间 </th>
+                    <td mat-cell *matCellDef="let element"> {{examDate(element.end)}} </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+              </div>
+            </mat-expansion-panel>
+
+          </div>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
 </div>
 
-<div class="container-fluid">
+
+<!-- <div class="container-fluid">
   <div class="matCat">
     <h2>近期可参与的考试</h2>
     <p></p>
@@ -17,7 +96,7 @@
       <mat-card-actions align="end">
         <button mat-button class="startBTN" *ngIf="active(exam.end)"
           (click)="registerExam(user_id, exam._id, 0)" >确认报考</button>
-        <!-- <button *ngIf="active(exam.date)" mat-button class="startBTN" (click)="registerExam(user_id, exam._id, 0)" >确认报考 "</button> -->
+
         <button *ngIf="!active(exam.end)" mat-button class="delete" disabled="true">截止报考</button>
       </mat-card-actions>
       <mat-card-footer align="end">
@@ -131,4 +210,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

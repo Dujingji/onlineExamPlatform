@@ -12,11 +12,6 @@ import { MatDividerModule } from '@angular/material/divider';
 
 import { HomePageModule } from './home-page/home-page.module';
 
-
-
-
-
-
 @NgModule({
   declarations: [
     PublicComponent,

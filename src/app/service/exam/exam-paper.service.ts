@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, Subject, catchError, first, map, tap, throwError } from 'rxjs';
 import { paperModel } from 'src/modules/paper/paper';
-import { exam, examEntries } from 'src/modules/exams/exam';
+import { exam, examEntries, examEntriesA } from 'src/modules/exams/exam';
 import { userInfo } from 'src/modules/user/user';
 import { answerModel } from 'src/app/public/pages/exam-page/exam-paper/exam-paper.component';
 import { major } from 'src/modules/major/major';
@@ -42,20 +42,26 @@ export class ExamPaperService {
     })
   }
 
-  getUserAnswer(userInfo_id: string, paper_id: string, exam_id : string): Observable<{ answer: result }> {
+  getUserAnswer(userInfo_id: string, paper_id: string, exam_id: string): Observable<{ answer: result }> {
     return this.http.get<{ answer: result }>('https://exam.gwxgt.com/exam-api/exam/get-user-answer', {
       params: new HttpParams().set('info_id', userInfo_id).set('paper_id', paper_id).set('exam_id', exam_id)
     })
   }
 
+  getExamDetailInfo(exam_id : string) : Observable<{ detail : exam, total : number, cost: number }>{
+    return this.http.get<{ detail : exam, total : number, cost: number }>('https://exam.gwxgt.com/exam-api/exam/get-exam-detail-info', {
+      params: new HttpParams().set('exam_id', exam_id)
+    })
+  }
+
   getRegisterExamEntries(id: string): Observable<{
-    current: exam[], _e: exam[], _p: exam[],
-    _f: exam[], _c: exam[], major: major[], type: number, _fl : major[] ,_cl : major[], u_c? : string
-   }> {
+    current: exam[], _e: exam[], _p: exam[], recent: exam[], all : exam[][],
+    _f: exam[], _c: exam[], major: major[], type: number, _fl: major[], _cl: major[], u_c?: string
+  }> {
     return this.http.get<{
-      current: exam[], _e: exam[], _p: exam[],
-    _f: exam[], _c: exam[], major: major[], type: number,  _fl : major[] ,_cl : major[],  u_c? : string
-     }>('https://exam.gwxgt.com/exam-api/exam/get-register-exam', {
+      current: exam[], _e: exam[], _p: exam[], recent: exam[], all : exam[][],
+      _f: exam[], _c: exam[], major: major[], type: number, _fl: major[], _cl: major[], u_c?: string
+    }>('https://exam.gwxgt.com/exam-api/exam/get-register-exam', {
       params: new HttpParams().set('id', id)
     })
   }
@@ -83,8 +89,8 @@ export class ExamPaperService {
       );
   }
 
-  getExamEntries(id: string): Observable<examEntries> {
-    return this.http.get<examEntries>('https://exam.gwxgt.com/exam-api/exam/get-exam', {
+  getExamEntries(id: string): Observable<examEntriesA> {
+    return this.http.get<examEntriesA>('https://exam.gwxgt.com/exam-api/exam/get-exam', {
       params: new HttpParams().set('id', id)
     })
   }
@@ -114,8 +120,8 @@ export class ExamPaperService {
       })
   }
 
-  setSubject(userInfo: string, type: number, subject? : string) {
-    const examData: any = { id: userInfo, type : type, subject : subject };
+  setSubject(userInfo: string, type: number, subject?: string) {
+    const examData: any = { id: userInfo, type: type, subject: subject };
     return this.http.post<{ status: boolean }>('https://exam.gwxgt.com/exam-api/exam/set-subject/', examData)
       .pipe(first())
       .pipe(
@@ -171,5 +177,5 @@ export interface resultInfo {
   exam_status: number
   total: number
   std_mark: number,
-  major : string
+  major: string
 }

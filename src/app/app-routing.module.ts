@@ -21,6 +21,10 @@ const routes: Routes = [
     loadChildren: () => import('./teacher/teacher.module').then((m) => m.TeacherModule),
   },
   {
+    path: 'college',
+    loadChildren: () => import('./college/college.module').then((m) => m.CollegeModule)
+  },
+  {
     path: '**',  pathMatch: 'full',
     component: PageNotFoundComponent
   },

@@ -28,34 +28,6 @@ export class HomePageComponent implements OnInit, OnDestroy{
   public isUser = false
   private random_n = 1
 
-  private menuList2: Array<menuModel> =
-  [
-    {
-      name: '每日一练',
-      url: '/public/homePage/daily'
-    },
-    {
-      name: '单词打卡',
-      url: '/public/homePage/vocabulary'
-    },
-    {
-      name: '专项练习',
-      url: '/public/homePage/exercise'
-    }
-  ]
-
-  private menuList1: Array<menuModel> =
-  [
-    {
-      name: '待考事项',
-      url: '/public/homePage/exam'
-    },
-    {
-      name: '报考页面',
-      url: '/public/homePage/register'
-    },
-  ]
-
   private notifier = new Subject<void>()
 
   constructor(private observer: BreakpointObserver, private router: Router, private examPaperService : ExamPaperService,
@@ -66,8 +38,8 @@ export class HomePageComponent implements OnInit, OnDestroy{
     this.notifier.complete()
   }
 
-  changeIndex(i : number){
-    this.publicService.index = i
+  get currentUrl(){
+    return this.router.url
   }
 
   get menuList(){
@@ -80,6 +52,17 @@ export class HomePageComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
     this.retrieveUser()
+    let object =  this.publicService.AllMenuList.get(this.router.url)
+    if(object){
+      let temp : menuModel[] = []
+      this.publicService.AllMenuList.forEach(e =>{
+        if(e.group === object!.group){
+          temp.push(e)
+        }
+      })
+      this.publicService.SetMenuList = temp
+      this.cd.detectChanges()
+    }
     this.random_n = Math.floor(Math.random() * 6 + 1);
     this.examPaperService.examSubject
     .pipe(takeUntil(this.notifier))
@@ -88,21 +71,28 @@ export class HomePageComponent implements OnInit, OnDestroy{
     })
   }
 
-  changeMenuList(i : number){
-    if(i === 0){
-      this.publicService.SetMenuList = this.menuList2
-      this.publicService.index = 0
-      this.cd.detectChanges()
-    }else if(i === 1){
-      this.publicService.SetMenuList = this.menuList1
-      this.publicService.index = 0
-      this.cd.detectChanges()
-    }
-    else{
+  changeMenuList(url : string){
+    this.router.navigate([url])
+    this.publicService.index = 0
+    let object =  this.publicService.AllMenuList.get(url)
+    if(object){
+      let temp : menuModel[] = []
+      this.publicService.AllMenuList.forEach(e =>{
+        if(e.group === object!.group){
+          temp.push(e)
+        }
+      })
+      this.publicService.SetMenuList = temp
+
+    }else{
       this.publicService.SetMenuList = []
-      this.publicService.index = 0
-      this.cd.detectChanges()
     }
+    this.cd.detectChanges()
+  }
+
+  changeMenuIndex(index : number, url: string){
+    this.publicService.index = index
+    this.router.navigate([url])
   }
 
   logout(){
