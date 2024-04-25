@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable, Subject, catchError, first, tap, throwError } from "rxjs";
@@ -33,6 +33,20 @@ export class AuthService {
 
   get AuthenticatedSub() {
     return this.loginSub
+  }
+
+  getCollegeList(): Observable<{ college: {name : string}[] }> {
+    return this.http.get<{ college:  {name : string}[] }>('https://exam.gwxgt.com/exam-api/auth/college-list')
+  }
+
+  getMajorList(condition: number, major: string): Observable<{ data:  {name : string}[] }> {
+    return this.http.get<{ data:  {name : string}[] }>('https://exam.gwxgt.com/exam-api/auth/major', {
+      params: new HttpParams().set('condition', condition).set('major', major)
+    })
+  }
+
+  guesterLogin() {
+
   }
 
   setLogoutTime(accessToken: string, expiresIn: number, refresh_token: string) {
@@ -96,7 +110,7 @@ export class AuthService {
   refreshToken() {
     let token = this.getRefreshToken()
     let username = localStorage.getItem('lastLoginUserName');
-    this.http.post<{ accessToken: string, expiresIn: number, refresh_token: string }>('https://exam.gwxgt.com/exam-api/auth/refresh', { token: token, username : username })
+    this.http.post<{ accessToken: string, expiresIn: number, refresh_token: string }>('https://exam.gwxgt.com/exam-api/auth/refresh', { token: token, username: username })
       .pipe(catchError(this.handleRefreshError))
       .subscribe(res => {
         const now = new Date()
@@ -113,28 +127,28 @@ export class AuthService {
   autoRefreshToken(): Observable<{ accessToken: string, expiresIn: number, refresh_token: string }> {
     let token = this.getRefreshToken()
     let username = localStorage.getItem('lastLoginUserName');
-    return this.http.post<{ accessToken: string, expiresIn: number, refresh_token: string }>('https://exam.gwxgt.com/exam-api/auth/refresh', { token: token, username : username })
+    return this.http.post<{ accessToken: string, expiresIn: number, refresh_token: string }>('https://exam.gwxgt.com/exam-api/auth/refresh', { token: token, username: username })
   }
 
-  autoLogin(username: string, refresh_token : string){
-    this.http.post<{ _AT : string }>('https://exam.gwxgt.com/exam-api/auth/auto-login',
-    {username: username, token : refresh_token})
-    .pipe(catchError(this.handleAutoLoginError))
-    .pipe(first())
-    .subscribe(res =>{
-      localStorage.setItem('token', res._AT);
-      this.loginUser(username, '', res._AT, 'access');
-    })
+  autoLogin(username: string, refresh_token: string) {
+    this.http.post<{ _AT: string }>('https://exam.gwxgt.com/exam-api/auth/auto-login',
+      { username: username, token: refresh_token })
+      .pipe(catchError(this.handleAutoLoginError))
+      .pipe(first())
+      .subscribe(res => {
+        localStorage.setItem('token', res._AT);
+        this.loginUser(username, '', res._AT, 'access');
+      })
   }
 
-  loginUser(username: string, password: string, access_token : string, mark : string) {
-    const authData: AuthModel = { username: username, password: password, access_token : access_token, mark : mark };
+  loginUser(username: string, password: string, access_token: string, mark: string) {
+    const authData: AuthModel = { username: username, password: password, access_token: access_token, mark: mark };
     this.http.post<{ token: string, expiresIn: number, body: user, college: string, username: string, refresh_token: string }>('https://exam.gwxgt.com/exam-api/auth/login/', authData)
       .pipe(catchError(this.handleError))
       .pipe(first())
       .subscribe(res => {
         this.token = res.token;
-        if(res.refresh_token)
+        if (res.refresh_token)
           this.refresh = res.refresh_token
         if (this.token) {
           this.userInformation = res.body;
@@ -166,8 +180,8 @@ export class AuthService {
       })
   }
 
-  handleAutoLoginError(error : HttpErrorResponse){
-    if(error.status === 401){
+  handleAutoLoginError(error: HttpErrorResponse) {
+    if (error.status === 401) {
       console.error(error.error.message);
       alert('验证过期，请重新登录！');
     }
@@ -222,7 +236,7 @@ export class AuthService {
   storeLoginDetails(token: string, expirationDate: Date, refresh_token: string | undefined) {
     localStorage.setItem('token', token);
     localStorage.setItem('expiresIn', expirationDate.toISOString());
-    if(refresh_token)
+    if (refresh_token)
       localStorage.setItem('refresh_token', refresh_token);
   }
 

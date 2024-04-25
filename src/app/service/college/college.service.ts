@@ -1,9 +1,9 @@
+import { studentExerciseData } from './../../college/student-exercise-list/student-exercise-list.component';
 import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { option, studentAccountInfo } from "src/app/college/college-home-page/college-home-page.component";
-import { studentExerciseData } from "src/app/college/student-exercise-list/student-exercise-list.component";
 import { stduentVocabualryData } from "src/app/college/student-vocabulary-list/student-vocabulary-list.component";
 
 
@@ -71,13 +71,20 @@ export class CollegesService {
     return this.http.post<{data : studentAccountInfo[], total: number}>('https://exam.gwxgt.com/exam-api/college/get-search-student-info-data', data);
   }
 
+  getSearchExerciseInfoData(college_id : string, pageSize: number, pageIndex: number, searchQuery : searchQuery, condition : string): Observable<{data : studentExerciseData[], total: number}>{
+    let data : sendData = {college_id :college_id, pageSize : pageSize, pageIndex : pageIndex, searchQuery : searchQuery, condition : condition}
+    return this.http.post<{ data: studentExerciseData[], total : number }>('https://exam.gwxgt.com/exam-api/college/get-search-student-exercise-info-data', data)
+  }
+
 }
 
 interface searchQuery{
   username? : string,
   grade? : string,
   _f? : string[],
-  _c? : string[]
+  _c? : string[],
+  accruate?: boolean,
+  completed?: number[]
 }
 
 interface sendData{

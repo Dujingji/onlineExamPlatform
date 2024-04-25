@@ -57,6 +57,7 @@ export class StudentExerciseListComponent implements OnInit {
 
   private listOfCurrentPageData: readonly studentExerciseData[] = [];
   public expandSet = new Set<string>();
+
   onExpandChange(id: string, checked: boolean): void {
     if (checked) {
       this.expandSet.add(id);
@@ -94,6 +95,7 @@ export class StudentExerciseListComponent implements OnInit {
   }
 
   createPanel(){
+    this.panels.clear()
     this.student_data.forEach(e =>{
       if(e.e_detail){
         let detailMap = new Map<string, detail[]>()
@@ -233,14 +235,14 @@ export class StudentExerciseListComponent implements OnInit {
     let accruate = this.validateForm.value.accruate
     this.loading = true
     if (this.college_id) {
-      // this.collegesService.getSearchStudentInfoData(this.college_id, this.pageSize, this.pageIndex, { username: username, grade: grade, accruate: accruate, completed: completed_number }, 'fetch')
-      //   .pipe(first())
-      //   .subscribe(data => {
-      //     this.loading = false
-      //     this.total = data.total
-      //     //this.student_data = data.data
-      //     this.listOfDisplayData = [...this.student_data]
-      //   })
+      this.collegesService.getSearchExerciseInfoData(this.college_id, this.pageSize, this.pageIndex, { username: username, grade: grade, accruate: accruate, completed: completed_number }, 'fetch')
+        .pipe(first())
+        .subscribe(data => {
+          this.loading = false
+          this.total = data.total
+          this.student_data = data.data
+          this.listOfDisplayData = [...this.student_data]
+        })
     }
     else {
       alert('教学点id丢失，重新登录已获取id')
@@ -335,11 +337,11 @@ export class StudentExerciseListComponent implements OnInit {
           fileName += '_全部数据'
         }
 
-        this.collegesService.getSearchStudentInfoData(this.college_id, this.pageSize, this.pageIndex, { username: username, grade: grade }, c)
+        this.collegesService.getSearchExerciseInfoData(this.college_id, this.pageSize, this.pageIndex, { username: username, grade: grade, accruate: accurate, completed: completed }, c)
           .pipe(first())
           .subscribe(data => {
             this.loading = false
-            //jsonData = data.data
+            jsonData = data.data
             this.exportToExcel(jsonData, fileName)
           })
       }

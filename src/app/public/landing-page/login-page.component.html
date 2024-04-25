@@ -1,4 +1,4 @@
-<div class="blank-layout-container justify-content-center align-items-center bg-light-primary">
+<!-- <div class="blank-layout-container justify-content-center align-items-center bg-light-primary">
   <div
     class="position-relative row w-100 h-100 bg-gredient justify-content-center"
   >
@@ -23,7 +23,7 @@
             <mat-form-field appearance="outline" class="w-100" color="primary">
               <input formControlName="username" matInput type="text" placeholder="用户名..."/>
             </mat-form-field>
-            <!-- password -->
+
             <mat-label for="password" class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block"
               >密码</mat-label
             >
@@ -33,10 +33,155 @@
             <button [disabled]="!loginForm.valid" (click)="onSubmit()" mat-flat-button color="primary" class="w-100">
                登录系统
             </button>
-            <!-- input -->
+
           </form>
         </mat-card-content>
       </mat-card>
     </div>
   </div>
+</div> -->
+<header class="top-header">
+</header>
+<div>
+  <div class="starsec"></div>
+  <div class="starthird"></div>
+  <div class="starfourth"></div>
+  <div class="starfifth"></div>
 </div>
+<div class="container blank-layout-container">
+  <mat-card class="cardWithShadow boxed-auth">
+    <mat-card-content class="p-32">
+      <nz-tabset>
+        <nz-tab [nzTitle]="'用户登录'" (nzClick)="onChangeGuestTarget()">
+          <nz-spin [nzSpinning]="loading" [nzTip]="'Loading...'">
+            <form class="m-t-30" [formGroup]="loginForm">
+              <mat-label for="username" class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">用户名</mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input formControlName="username" matInput type="text" placeholder="用户名..." />
+              </mat-form-field>
+
+              <mat-label for="password" class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">密码</mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input formControlName="password" matInput type="password" placeholder="密码..." />
+              </mat-form-field>
+              <button [disabled]="!loginForm.valid" (click)="onSubmit(1)" mat-flat-button color="primary" class="w-100">
+                登录系统
+              </button>
+            </form>
+          </nz-spin>
+        </nz-tab>
+        <nz-tab [nzTitle]="'访客登录'" (nzClick)="onChangeGuestTarget()">
+          <nz-alert
+              [nzType]="'info'"
+              [nzMessage]="'未开放'"
+              [nzDescription]="'请等待功能开放'"
+            ></nz-alert>
+            <p></p>
+          <nz-spin [nzSpinning]="guestLoading" [nzDelay]="500">
+            <div *ngIf="!isRegister">
+              <form class="m-t-30" [formGroup]="guestLoginForm">
+                <mat-label for="username" class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">用户号</mat-label>
+                <mat-form-field appearance="outline" class="w-100" color="primary">
+                  <input formControlName="username" matInput type="text" placeholder="用户名...">
+                </mat-form-field>
+
+                <div class="password_p">
+                  <mat-label for="password" class="mat-subtitle-2 f-s-14 f-w-600  m-b-12 d-block">密码</mat-label>
+                  <mat-form-field appearance="outline" class="w-100" color="primary">
+                    <input formControlName="password" matInput type="password" placeholder="密码...">
+                  </mat-form-field>
+                  <a nz-button class="register-link" nzType="link" (click)="RegisterTarget()" nzBlock="true">没有账户？</a>
+                </div>
+              </form>
+              <button [disabled]="!loginForm.valid" mat-flat-button color="primary" class="w-100">
+                访客登录
+              </button>
+            </div>
+          </nz-spin>
+          <div class="m-t-30" *ngIf="isRegister">
+            <div class="register-page-container">
+              <div class="register-title"> 注册您的账户 </div>
+              <a nz-button class="register-link" nzType="link" (click)="onChangeRegisterTarget()"
+                nzBlock="true">已有账户？</a>
+            </div>
+            <mat-divider></mat-divider>
+            <form nz-form [formGroup]="guestRegisterForm">
+              <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="username">用户名</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzValidatingTip="验证中..." [nzErrorTip]="errorUserNameTip">
+                  <input nz-input formControlName="username" id="username" />
+                  <ng-template #errorUserNameTip let-control>
+                    <ng-container *ngIf="control.hasError('comfirm')"> 用户名已存在！</ng-container>
+                    <ng-container *ngIf="control.hasError('required')"> 用户名不能为空 </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="password">密码</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorPasswordTip">
+                  <input nz-input type="password" formControlName="password" id="password"
+                    (ngModelChange)="updataComfirmValidators()" />
+                  <ng-template #errorPasswordTip let-control>
+                    <ng-container *ngIf="control.hasError('minlength')">密码不得小于 6</ng-container>
+                    <ng-container *ngIf="control.hasError('maxlength')"> 密码长度不得超过12</ng-container>
+                    <ng-container *ngIf="control.hasError('required')"> 请输出密码！ </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="comfirm" nzRequired>确认密码</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
+                  <input nz-input type="password" formControlName="comfirm" id="comfirm" />
+                  <ng-template #errorTpl let-control>
+                    <ng-container *ngIf="control.hasError('required')">请确认您的密码！</ng-container>
+                    <ng-container *ngIf="control.hasError('confirm')">
+                      两个密码不匹配，请确认后输入
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="comfirm" nzRequired>选择教学点</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择教学点">
+                  <nz-select formControlName="college" nzShowSearch nzPlaceHolder="选择你的教学点..." nzAllowClear>
+                    <nz-option *ngFor="let college of college_list" nzLabel="{{college.name}}"
+                      nzValue="{{college.name}}"> </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="major" nzRequired>专业基础课</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择类别">
+                  <nz-select formControlName="major" nzShowSearch nzPlaceHolder="选择你的类别" nzAllowClear>
+                    <nz-option *ngFor="let major of majorList" nzLabel="{{major.name}}" nzValue="{{major.name}}">
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item *ngIf="guestRegisterForm.value.major">
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="comphensive" nzRequired>专业综合课</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择专业综合课">
+                  <nz-select formControlName="comphensive" nzShowSearch nzPlaceHolder="选择你的专业综合课" nzAllowClear>
+                    <nz-option *ngFor="let element of comphensiveList" nzLabel="{{element.name}}"
+                      nzValue="{{element.name}}"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+              <div class="cf-turnstile" data-sitekey="0x4AAAAAAAYFJRZapKWijDGw"></div>
+              <button [disabled]="!guestRegisterForm.valid" (click)="register()" mat-flat-button color="primary"
+                class="w-100">
+                注册账户
+              </button>
+            </form>
+
+          </div>
+
+        </nz-tab>
+      </nz-tabset>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<ng-template #registerCom>
+
+</ng-template>
