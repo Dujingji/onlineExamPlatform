@@ -47,6 +47,7 @@ nz-header {
   padding: 0;
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 nz-content {
@@ -74,4 +75,14 @@ nz-footer {
   max-width: 100%;
   max-height: 100%;
   padding: 0px 0px 0px 0px;
+}
+
+.content{
+  width: 100%;
+  padding-right: 24px;
+}
+
+.logout{
+  position: absolute;
+  right: 26px;
 }

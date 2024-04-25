@@ -1,0 +1,126 @@
+<div class="container">
+  <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-label>姓名</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input formControlName="username" nz-input placeholder="姓名" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label>年级</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input formControlName="grade" nz-input placeholder="年级" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label>完成度</nz-form-label>
+        <nz-select nzMode="tags" nzPlaceHolder="完成度查询" formControlName="completed">
+          <nz-option *ngFor="let option of completedOption" [nzLabel]="option.label"
+            [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </nz-form-item>
+      <nz-form-item>
+        <label nz-checkbox formControlName="accruate">详细</label>
+      </nz-form-item>
+
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="24" class="search-area">
+        <button nz-button [nzType]="'primary'" (click)="onSearchData()" [disabled]="checkSearchStatus()">搜索</button>
+        <button nz-button (click)="onResetSearchBar()">清空</button>
+        <button nz-button [nzType]="'primary'" [disabled]="setOfCheckedId.size === 0"
+          (click)="jsonCheck(0)">导出选中数据</button>
+        <button nz-button [nzType]="'primary'" [disabled]="loading"
+          (click)="checkSearchStatus() ? jsonCheck(2) : jsonCheck(1)">{{ checkSearchStatus() ? '导出全部数据' :
+          '导出搜索数据'}}</button>
+      </div>
+    </div>
+  </form>
+
+  <nz-table #sortTable [nzData]="listOfDisplayData" nzShowSizeChanger [nzFrontPagination]="false" [nzLoading]="loading"
+    [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" [nzScroll]="{ y: '500px' }"
+    [nzPageSizeOptions]="[10,20,50,100, 500, 1000, total]" nzTableLayout="fixed"
+    (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+    <thead>
+      <tr>
+        <th nzWidth="60px"></th>
+        <th nzWidth="60px" [nzSelections]="listOfSelection" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
+          (nzCheckedChange)="onAllChecked($event)">
+        </th>
+        <th [nzSortPriority]="listOfColumn[0].priority" nzCustomFilter>
+          {{ listOfColumn[0].title }}
+          <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+            <span nz-icon nzType="search"></span>
+          </nz-filter-trigger>
+        </th>
+        <th [nzSortPriority]="listOfColumn[1].priority" nzCustomFilter>
+          {{ listOfColumn[1].title }}
+
+        </th>
+        <th nzCustomFilter>
+          {{ listOfColumn[2].title }}
+
+        </th>
+        <th nzCustomFilter>
+          {{ listOfColumn[3].title }}
+        </th>
+        <th nzCustomFilter>
+          {{ listOfColumn[4].title }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of sortTable.data">
+        <tr>
+          <td [nzExpand]="expandSet.has(data.student_id)" (nzExpandChange)="onExpandChange(data.student_id, $event)">
+          </td>
+          <td [nzChecked]="setOfCheckedId.has(data.student_id)"
+            (nzCheckedChange)="onItemChecked(data.student_id, $event)"></td>
+          <td>{{ data.std_name}}</td>
+          <td>{{ data.semester }}</td>
+          <td>{{ data.p_detail ? data.p_detail.completed + '%': 0 + '%' }}</td>
+          <td>{{ data.e_detail ? data.e_detail.completed + '%': 0 + '%' }}</td>
+          <td>{{ data.f_detail ? data.f_detail.completed + '%': 0 + '%' }}</td>
+        </tr>
+        <tr [nzExpand]="expandSet.has(data.student_id)">
+          <nz-collapse nzGhost>
+            <nz-collapse-panel *ngFor="let panel of panels.get(data.student_id)" [nzHeader]="panel.title"
+              [nzActive]="panel.active">
+              <nz-collapse>
+                <nz-collapse-panel nzGhost *ngFor="let childPanel of panel.children" [nzHeader]="childPanel.title"
+                  [nzActive]="childPanel.active">
+                  <nz-collapse>
+                    <nz-collapse-panel nzGhost *ngFor="let detail of childPanel.detail" [nzHeader]="detail.description"
+                      [nzActive]="detail.active">
+                      <nz-progress
+                      nzType="circle"
+                      [nzPercent]="getPercent(detail)"
+                      [nzStrokeColor]="{ '0%': '#108ee9', '50%': '#2db7f5', '100%': '#87d068' }"
+                      [nzWidth]="80"
+                    ></nz-progress>
+                    </nz-collapse-panel>
+                  </nz-collapse>
+                </nz-collapse-panel>
+              </nz-collapse>
+            </nz-collapse-panel>
+          </nz-collapse>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+</div>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" nz-input placeholder="搜索" [(ngModel)]="searchValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">搜索</button>
+      <button nz-button nzSize="small" (click)="reset()">重置</button>
+    </div>
+  </div>
+</nz-dropdown-menu>

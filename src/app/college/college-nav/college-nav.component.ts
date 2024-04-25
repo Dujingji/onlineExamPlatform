@@ -1,3 +1,4 @@
+import { AuthService } from 'src/app/service/auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs';
 import { CollegesService } from 'src/app/service/college/college.service';
@@ -13,7 +14,7 @@ export class CollegeNavComponent implements OnInit
   public collegeName : string = ''
   public title : string = ''
 
-  constructor(private collegesService : CollegesService){
+  constructor(private collegesService : CollegesService, private authService : AuthService){
 
   }
 
@@ -22,10 +23,16 @@ export class CollegeNavComponent implements OnInit
   }
 
   fetchCollegeName(){
-    this.collegesService.getCollegeName(localStorage.getItem('college')!).pipe(first())
+    this.collegesService.getCollegeName(localStorage.getItem('college')!)
+    .pipe(first())
     .subscribe(data =>{
       this.title = data.data
+      this.collegesService.college_name = data.data
     })
+  }
+
+  logout(){
+    this.authService.logout()
   }
 
 }

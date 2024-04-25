@@ -151,7 +151,7 @@ export class HomePageComponent implements OnInit, OnDestroy{
   ngAfterViewInit() {
     this.cd.detectChanges()
     this.observer
-      .observe(['(max-width: 800px)'])
+      .observe(['(max-width: 1100px)'])
       .pipe(delay(1), untilDestroyed(this))
       .subscribe((res) => {
         if (res.matches) {

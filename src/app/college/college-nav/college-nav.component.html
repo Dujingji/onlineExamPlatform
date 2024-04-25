@@ -8,19 +8,19 @@
       <ul nz-menu nzTheme="dark" nzMode="inline">
         <li nz-submenu nzTitle="账号管理" nzIcon="user">
           <ul>
-            <li nz-menu-item>账号信息</li>
+            <li nz-menu-item routerLink="/college">账号信息</li>
           </ul>
         </li>
-        <li nz-submenu nzTitle="数据分析" nzIcon="team">
+        <li nz-submenu nzTitle="数据分析" nzIcon="solution">
           <ul>
-            <li nz-menu-item>专项练习</li>
-            <li nz-menu-item>单词打卡</li>
-            <li nz-menu-item>每日一练</li>
+            <li nz-menu-item routerLink="/college/student-exercise-list">专项练习</li>
+            <li nz-menu-item routerLink="/college/student-vocabulary-list">单词打卡</li>
+            <li nz-menu-item routerLink="/college/student-daily-list">每日一练</li>
           </ul>
         </li>
-        <li nz-submenu nzTitle="考试安排" nzIcon="team">
+        <li nz-submenu nzTitle="考试安排" nzIcon="schedule">
           <ul>
-            <li nz-menu-item>编辑考试</li>
+            <li nz-menu-item routerLink="/college/exam-list">编辑考试</li>
           </ul>
         </li>
       </ul>
@@ -31,11 +31,12 @@
           (click)="isCollapsed = !isCollapsed">
         </span>
         <span class="title">{{title}}</span>
+        <span class="logout" nz-icon [nzType]="'logout'" (click)="logout()"></span>
       </nz-header>
-      <nz-content>
+      <nz-content class="content">
         <router-outlet></router-outlet>
       </nz-content>
-      <nz-footer>博导教育</nz-footer>
+      <nz-footer>Design by Richard</nz-footer>
     </nz-layout>
   </nz-layout>
 </div>

@@ -79,7 +79,7 @@ export class VocabularyCalendarComponent implements OnInit {
           active: true,
           today: i === date.getDate() && year === date.getFullYear() && month === date.getMonth(),
           date: i,
-          selector: false
+          selector: index.indexOf(i) > -1
         })
       }
       // Check if the current date is today

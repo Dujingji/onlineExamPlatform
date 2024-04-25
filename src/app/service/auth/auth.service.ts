@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { Subject, catchError, tap, throwError } from "rxjs";
+import { Observable, Subject, catchError, first, tap, throwError } from "rxjs";
 import { AuthModel } from 'src/modules/auth/auth';
 import { user } from "src/modules/user/user";
 import { CollegesService } from "../college/college.service";
@@ -10,6 +10,7 @@ import { CollegesService } from "../college/college.service";
 export class AuthService {
 
   private token?: string;
+  private refresh?: string;
   private authenticatedSub = new Subject<boolean>();
   private loginSub = new Subject<void>();
   private isAuthenticated = false;
@@ -28,15 +29,29 @@ export class AuthService {
     } else {
       return false
     }
-
   }
 
   get AuthenticatedSub() {
     return this.loginSub
   }
 
+  setLogoutTime(accessToken: string, expiresIn: number, refresh_token: string) {
+    const now = new Date()
+    let expirationDate = new Date(now.getTime() + (expiresIn * 1000));
+    localStorage.setItem('token', accessToken);
+    localStorage.setItem('expiresIn', expirationDate.toISOString());
+    if (refresh_token)
+      localStorage.setItem('refresh_token', refresh_token);
+    clearTimeout(this.logoutTimer);
+    this.logoutTimer = setTimeout(() => { this.refreshToken() }, expiresIn * 1000);
+  }
+
   getToken() {
     return localStorage.getItem('token');
+  }
+
+  getRefreshToken() {
+    return localStorage.getItem('refresh_token');
   }
 
   getUserInformation(): any {
@@ -48,7 +63,7 @@ export class AuthService {
     const expiresIn = localStorage.getItem('expiresIn');
 
     if (!token || !expiresIn) {
-      return;
+      return undefined;
     }
     return {
       'token': token,
@@ -71,18 +86,56 @@ export class AuthService {
   clearLoginDetails() {
     localStorage.removeItem('token');
     localStorage.removeItem('expiresIn');
-    localStorage.removeItem("classroom");
     localStorage.removeItem("username");
-    localStorage.removeItem("information")
+    localStorage.removeItem("information");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("classroom");
+    localStorage.removeItem("college");
   }
 
-  loginUser(username: string, password: string) {
-    const authData: AuthModel = { username: username, password: password };
+  refreshToken() {
+    let token = this.getRefreshToken()
+    let username = localStorage.getItem('lastLoginUserName');
+    this.http.post<{ accessToken: string, expiresIn: number, refresh_token: string }>('https://exam.gwxgt.com/exam-api/auth/refresh', { token: token, username : username })
+      .pipe(catchError(this.handleRefreshError))
+      .subscribe(res => {
+        const now = new Date()
+        let expirationDate = new Date(now.getTime() + (res.expiresIn * 1000));
+        localStorage.setItem('token', res.accessToken);
+        localStorage.setItem('expiresIn', expirationDate.toISOString());
+        if (res.refresh_token)
+          localStorage.setItem('refresh_token', res.refresh_token);
+        clearTimeout(this.logoutTimer);
+        this.logoutTimer = setTimeout(() => { this.refreshToken() }, res.expiresIn * 1000);
+      })
+  }
 
-    this.http.post<{ token: string, expiresIn: number, body: user, college: string, username : string }>('https://exam.gwxgt.com/exam-api/auth/login/', authData)
+  autoRefreshToken(): Observable<{ accessToken: string, expiresIn: number, refresh_token: string }> {
+    let token = this.getRefreshToken()
+    let username = localStorage.getItem('lastLoginUserName');
+    return this.http.post<{ accessToken: string, expiresIn: number, refresh_token: string }>('https://exam.gwxgt.com/exam-api/auth/refresh', { token: token, username : username })
+  }
+
+  autoLogin(username: string, refresh_token : string){
+    this.http.post<{ _AT : string }>('https://exam.gwxgt.com/exam-api/auth/auto-login',
+    {username: username, token : refresh_token})
+    .pipe(catchError(this.handleAutoLoginError))
+    .pipe(first())
+    .subscribe(res =>{
+      localStorage.setItem('token', res._AT);
+      this.loginUser(username, '', res._AT, 'access');
+    })
+  }
+
+  loginUser(username: string, password: string, access_token : string, mark : string) {
+    const authData: AuthModel = { username: username, password: password, access_token : access_token, mark : mark };
+    this.http.post<{ token: string, expiresIn: number, body: user, college: string, username: string, refresh_token: string }>('https://exam.gwxgt.com/exam-api/auth/login/', authData)
       .pipe(catchError(this.handleError))
+      .pipe(first())
       .subscribe(res => {
         this.token = res.token;
+        if(res.refresh_token)
+          this.refresh = res.refresh_token
         if (this.token) {
           this.userInformation = res.body;
           localStorage.setItem("username", this.userInformation.username)
@@ -93,7 +146,7 @@ export class AuthService {
           if (this.account === "admin") {
             this.router.navigate(['/admin'])
           }
-          else if(this.account === "college") {
+          else if (this.account === "college") {
             this.router.navigate(['/college'])
             localStorage.setItem('college', res.college)
             this.collegesService.c_id = res.college
@@ -102,15 +155,50 @@ export class AuthService {
             this.router.navigate(['/teacher/0'])
           }
           else {
-            localStorage.setItem('lastLoginUserName', res.username)
             this.router.navigate(['/public/homePage/daily'])
           }
-          this.logoutTimer = setTimeout(() => { this.logout() }, res.expiresIn * 1000);
+          localStorage.setItem('lastLoginUserName', res.username)
+          this.logoutTimer = setTimeout(() => { this.refreshToken() }, res.expiresIn * 1000);
           const now = new Date();
           const expiresDate = new Date(now.getTime() + (res.expiresIn * 1000));
-          this.storeLoginDetails(this.token, expiresDate);
+          this.storeLoginDetails(this.token, expiresDate, this.refresh);
         }
       })
+  }
+
+  handleAutoLoginError(error : HttpErrorResponse){
+    if(error.status === 401){
+      console.error(error.error.message);
+      alert('验证过期，请重新登录！');
+    }
+    else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong.
+      console.error(
+        `异常代码： ${error.status}, 信息: `, error.error);
+      alert(error.error);
+    }
+    return throwError(() =>
+      new Error('自动登录失败！')
+    );
+  }
+
+  handleRefreshError(error: HttpErrorResponse) {
+    if (error.status === 401) {
+      this.logout()
+      console.error(error.error.message);
+      alert('请重新登录！');
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong.
+      console.error(
+        `异常代码： ${error.status}, 信息: `, error.error);
+      alert(error.error);
+    }
+
+    return throwError(() =>
+      new Error('刷新token失败！')
+    );
   }
 
   handleError(error: HttpErrorResponse) {
@@ -131,9 +219,11 @@ export class AuthService {
     );
   }
 
-  storeLoginDetails(token: string, expirationDate: Date) {
+  storeLoginDetails(token: string, expirationDate: Date, refresh_token: string | undefined) {
     localStorage.setItem('token', token);
     localStorage.setItem('expiresIn', expirationDate.toISOString());
+    if(refresh_token)
+      localStorage.setItem('refresh_token', refresh_token);
   }
 
   authenticateFromLocalStorage() {

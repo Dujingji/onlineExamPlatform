@@ -10,22 +10,50 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { StudentExerciseListComponent } from './student-exercise-list/student-exercise-list.component';
+import { StudentDaliyListComponent } from './student-daliy-list/student-daliy-list.component';
+import { StudentVocabularyListComponent } from './student-vocabulary-list/student-vocabulary-list.component';
+import { ExamsListComponent } from './exams-list/exams-list.component';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzTreeViewModule } from 'ng-zorro-antd/tree-view';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
 
 @NgModule({
   declarations: [
     CollegeNavComponent,
-    CollegeHomePageComponent
+    CollegeHomePageComponent,
+    StudentExerciseListComponent,
+    StudentDaliyListComponent,
+    StudentVocabularyListComponent,
+    ExamsListComponent
   ],
   imports: [
     CommonModule,
     CollegeRoutingModule,
+    ReactiveFormsModule,
     NzLayoutModule,
     NzBreadCrumbModule,
     NzIconModule,
     NzMenuModule,
     NzTableModule,
     NzDropDownModule,
-    NzInputModule
+    NzInputModule,
+    FormsModule,
+    NzFormModule,
+    NzButtonModule,
+    NzAlertModule,
+    NzSelectModule,
+    NzCheckboxModule,
+    NzTreeViewModule,
+    NzCollapseModule,
+    NzProgressModule
   ]
 })
 export class CollegeModule { }

@@ -17,20 +17,6 @@
           </nz-input-group>
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label>专业基础课</nz-form-label>
-        <nz-select nzMode="tags" nzPlaceHolder="专业基础课" formControlName="foundation_list">
-          <nz-option *ngFor="let option of foundationOption" [nzLabel]="option.label"
-            [nzValue]="option.value"></nz-option>
-        </nz-select>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label>专业综合课</nz-form-label>
-        <nz-select nzMode="tags" nzPlaceHolder="专业综合课" formControlName="comprehensive_list" >
-          <nz-option *ngFor="let option of comprehensiveOption" [nzLabel]="option.label"
-            [nzValue]="option.value"></nz-option>
-        </nz-select>
-      </nz-form-item>
     </div>
     <div nz-row>
       <div nz-col [nzSpan]="24" class="search-area">
@@ -42,16 +28,16 @@
       </div>
     </div>
   </form>
-
   <nz-table #sortTable [nzData]="listOfDisplayData" nzShowSizeChanger [nzFrontPagination]="false" [nzLoading]="loading"
     [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" [nzScroll]="{ y: '500px' }"
-    [nzPageSizeOptions]="[10,20,50,100, 500, 1000, total]" nzTableLayout="fixed"
-    (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)"  (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+    [nzPageSizeOptions]="[10,20,50,100, 500, 1000, total]" (nzPageIndexChange)="onPageIndexChange($event)"
+    (nzPageSizeChange)="onPageSizeChange($event)" nzTableLayout="fixed"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
     <thead>
       <tr>
         <th nzWidth="60px" [nzSelections]="listOfSelection" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
-        (nzCheckedChange)="onAllChecked($event)">
-      </th>
+          (nzCheckedChange)="onAllChecked($event)">
+        </th>
         <th [nzSortFn]="listOfColumn[0].compare" [nzSortPriority]="listOfColumn[0].priority" nzCustomFilter>
           {{ listOfColumn[0].title }}
           <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
@@ -62,33 +48,36 @@
           {{ listOfColumn[1].title }}
 
         </th>
-        <th nzCustomFilter>
+        <th [nzSortFn]="listOfColumn[2].compare" [nzSortPriority]="listOfColumn[2].priority" nzCustomFilter>
           {{ listOfColumn[2].title }}
 
         </th>
-        <th nzCustomFilter>
+        <th [nzSortFn]="listOfColumn[3].compare" [nzSortPriority]="listOfColumn[3].priority" nzCustomFilter>
           {{ listOfColumn[3].title }}
         </th>
-        <th [nzSortFn]="listOfColumn[4].compare" [nzSortPriority]="listOfColumn[4].priority" [nzFilters]="filterFound" [nzFilterFn]="listOfColumn[4].filterFn">
+        <th [nzSortFn]="listOfColumn[4].compare" [nzSortPriority]="listOfColumn[4].priority">
           {{ listOfColumn[4].title }}
 
         </th>
-        <th [nzSortFn]="listOfColumn[5].compare" [nzSortPriority]="listOfColumn[5].priority" [nzFilters]="filterCompe"
-          [nzFilterFn]="listOfColumn[5].filterFn">
+        <th [nzSortFn]="listOfColumn[5].compare" [nzSortPriority]="listOfColumn[5].priority">
           {{ listOfColumn[5].title }}
 
+        </th>
+        <th [nzSortFn]="listOfColumn[6].compare" [nzSortPriority]="listOfColumn[5].priority">
+          {{ listOfColumn[6].title }}
         </th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of sortTable.data">
-        <td [nzChecked]="setOfCheckedId.has(data.student_id)" (nzCheckedChange)="onItemChecked(data.student_id, $event)"></td>
-        <td>{{ data.student_name}}</td>
-        <td>{{ data.semester }}</td>
-        <td>{{ data.student_id}}</td>
-        <td>{{ data.password }}</td>
-        <td>{{ data.found }}</td>
-        <td>{{ data.comprehensive }}</td>
+        <td [nzChecked]="setOfCheckedId.has(data.std_id)" (nzCheckedChange)="onItemChecked(data.std_id, $event)"></td>
+        <td>{{ data.std_name}}</td>
+        <td>{{ data.grade }}</td>
+        <td>{{ data.total_day }}</td>
+        <td>{{ data.continue_day}}</td>
+        <td>{{ data.day_avg }}</td>
+        <td>{{ data.total_study }}</td>
+        <td>{{ data.precent + '%' }}</td>
       </tr>
     </tbody>
   </nz-table>
@@ -99,6 +88,7 @@
       <input type="text" nz-input placeholder="搜索" [(ngModel)]="searchValue" />
       <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">搜索</button>
       <button nz-button nzSize="small" (click)="reset()">重置</button>
+
     </div>
   </div>
 </nz-dropdown-menu>

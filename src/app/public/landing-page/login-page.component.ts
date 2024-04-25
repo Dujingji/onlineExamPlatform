@@ -23,11 +23,16 @@ export class LoginPageComponent implements OnInit {
       'username': new FormControl(localStorage.getItem('lastLoginUserName'), [Validators.required]),
       'password': new FormControl('', [Validators.required])
     })
+
+    if(localStorage.getItem('lastLoginUserName') && localStorage.getItem('refresh_token')){
+      let username = localStorage.getItem('lastLoginUserName')!
+      let re_token = localStorage.getItem('refresh_token')!
+      this.authService.autoLogin(username, re_token)
+    }
   }
 
   onSubmit(){
-    this.authService.loginUser(this.loginForm.value.username, this.loginForm.value.password);
-
+    this.authService.loginUser(this.loginForm.value.username, this.loginForm.value.password, '', '');
   }
 
   updateClock() {
