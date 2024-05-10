@@ -30,6 +30,7 @@ import { CreateExamDialogComponent } from './exams-list/create-exam-dialog/creat
 import { BaiduMapComponent } from '../shared/baidu-map/baidu-map.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { CreateClassroomDialogComponent } from './exams-list/create-classroom-dialog/create-classroom-dialog.component';
+import { UnitedRegisterComponent } from './united-register/united-register.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { CreateClassroomDialogComponent } from './exams-list/create-classroom-di
     ExamsListComponent,
     CreateExamDialogComponent,
     BaiduMapComponent,
-    CreateClassroomDialogComponent
+    CreateClassroomDialogComponent,
+    UnitedRegisterComponent
   ],
   imports: [
     CommonModule,

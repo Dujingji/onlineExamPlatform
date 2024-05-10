@@ -18,6 +18,7 @@ import { UnitedService } from 'src/app/service/united/united.service';
 export class UnitedRegisterInfoComponent implements OnInit {
 
   @Output() notify: EventEmitter<number> = new EventEmitter<number>()
+  @Output() goBack: EventEmitter<number> = new EventEmitter<number>()
 
   public _foudation: string = ''
   public _comphensive: string = ''
@@ -41,6 +42,10 @@ export class UnitedRegisterInfoComponent implements OnInit {
     })
   }
 
+  GoBack(){
+    this.goBack.emit(1)
+  }
+
   fetchAllUserData() {
     this.loading = true
     let std_id = localStorage.getItem('information')!
@@ -48,6 +53,10 @@ export class UnitedRegisterInfoComponent implements OnInit {
       this.loading = false
       this.payment = data.data.pay_statement
       this.data = data.data
+      this._comphensive = data.data.comphensive
+      this._foudation = data.data.found
+      this.foundChange()
+      this.comphensiveChange()
     })
   }
 
@@ -63,11 +72,11 @@ export class UnitedRegisterInfoComponent implements OnInit {
     this._foudation = ''
   }
 
-  onSubmit(){
-    this.unitedService.onSubmitSubjectInfo({_f : this._foudation, _c: this._comphensive}).pipe(first()).subscribe(data =>{
-      if(data.status){
+  onSubmit() {
+    this.unitedService.onSubmitSubjectInfo({ _f: this._foudation, _c: this._comphensive }).pipe(first()).subscribe(data => {
+      if (data.status) {
         this.notify.emit(data.current)
-      }else{
+      } else {
         this.modal.error({
           nzTitle: '提交失败！',
           nzContent: '提交信息失败，请稍后重试！'
@@ -76,27 +85,30 @@ export class UnitedRegisterInfoComponent implements OnInit {
     })
   }
 
-  onSave(){
-    this.unitedService.onSaveSubjectInfo({_f : this._foudation, _c: this._comphensive}).pipe(first()).subscribe(data =>{
-      if(data.status){
+  onSave() {
+    this.unitedService.onSaveSubjectInfo({ _f: this._foudation, _c: this._comphensive }).pipe(first()).subscribe(data => {
+      if (data.status) {
         this.modal.success({
           nzTitle: '保存成功！',
           nzContent: '提交信息成功!'
         })
 
-      }else{
+      } else {
 
       }
     })
   }
 
   comphensiveChange() {
-    if (this._comphensive.length !== 0) {
+    if (this._foudation.length !== 0) {
       this.validate = true
+    }
+    else{
+      this.validate = false
     }
   }
 
-  constructor(private unitedService: UnitedService, private observer: BreakpointObserver, private router: Router, private modal : NzModalService) {
+  constructor(private unitedService: UnitedService, private observer: BreakpointObserver, private router: Router, private modal: NzModalService) {
 
   }
 

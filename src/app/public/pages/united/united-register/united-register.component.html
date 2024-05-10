@@ -18,7 +18,7 @@
     <div class="content" *ngIf="current === 1" @fade> <app-united-register-user-info
         (notify)="next($event)"></app-united-register-user-info> </div>
     <div class="content" *ngIf="current === 2" @fade> <app-united-register-info
-        (notify)="next($event)"></app-united-register-info> </div>
+        (notify)="next($event)" (goBack)="next($event)"></app-united-register-info> </div>
     <div class="content" *ngIf="current === 3" @fade> <app-united-register-paid
         (notify)="next($event)"></app-united-register-paid> </div>
     <div class="content" *ngIf="current === 4" @fade> <app-united-exam-result></app-united-exam-result> </div>

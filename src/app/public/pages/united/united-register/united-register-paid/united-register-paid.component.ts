@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { first } from 'rxjs';
 import { UnitedService } from 'src/app/service/united/united.service';
 import { environment } from 'src/environments/environment';
@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 })
 export class UnitedRegisterPaidComponent implements OnInit {
 
+  @Output() notify: EventEmitter<number> = new EventEmitter<number>()
 
 
   ngOnInit(): void {
@@ -24,6 +25,14 @@ export class UnitedRegisterPaidComponent implements OnInit {
     this.unitedService.changePaidStatus().pipe(first()).subscribe(res =>{
       if(res.status){
         this.unitedService.step = 2
+      }
+    })
+  }
+
+  notPaid(){
+    this.unitedService.notPaid().pipe(first()).subscribe(res =>{
+      if(res.status){
+        this.unitedService.step = 1
       }
     })
   }

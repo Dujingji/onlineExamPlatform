@@ -9,6 +9,9 @@
 
   <div *ngIf="step === 2">
     <nz-result nzStatus="warning" nzTitle="请等待人工审核！请耐心等待...您也可以联系您的老师，反馈支付结果！">
+      <div nz-result-extra>
+        <button nz-button nzType="primary" (click)="notPaid()">我还没付款！</button>
+      </div>
     </nz-result>
   </div>
 </div>

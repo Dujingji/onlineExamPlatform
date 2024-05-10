@@ -2,9 +2,9 @@
 
   <mat-sidenav #sidenav="matSidenav" data-color="danger" data-background-color="white" class="mat-elevation-z8">
     <img class="avatar mat-elevation-z8"
-      src="https://exam.gwxgt.com/exam-api/profile/profile_{{random().toString()}}.jpg" />
+      src="{{getImgUrl()}}" />
 
-    <h4 class="name" *ngIf="isUser">{{username}}</h4>
+    <h4 class="name" *ngIf="isUser || isGuest">{{username}}</h4>
     <p class="designation" *ngIf="isUser">{{userInfor}}</p>
     <p class="designation" *ngIf="isUser">{{userInfor1}}</p>
 
@@ -70,7 +70,7 @@
           <mat-icon>logout</mat-icon>
         </button>
       </div>
-      <p class="welcome" *ngIf="isUser && sidenav.mode !== 'over'">{{username}} 考生，欢迎</p>
+      <p class="welcome" *ngIf="(isUser || isGuest) && sidenav.mode !== 'over'">{{username}} 考生，欢迎</p>
       <p class="welcome" *ngIf="isUser && menuList[menuIndex] && sidenav.mode === 'over'">{{menuList[menuIndex].name}}</p>
     </mat-toolbar>
     <div class="content mat-elevation-z5">

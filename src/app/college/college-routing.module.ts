@@ -7,6 +7,7 @@ import { StudentExerciseListComponent } from './student-exercise-list/student-ex
 import { StudentDaliyListComponent } from './student-daliy-list/student-daliy-list.component';
 import { StudentVocabularyListComponent } from './student-vocabulary-list/student-vocabulary-list.component';
 import { ExamsListComponent } from './exams-list/exams-list.component';
+import { UnitedRegisterComponent } from './united-register/united-register.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,9 @@ const routes: Routes = [
     },
     {
       path: 'exam-list', component: ExamsListComponent
+    },
+    {
+      path: 'register-student', component: UnitedRegisterComponent
     }
   ],
     canActivate: [canActivate]

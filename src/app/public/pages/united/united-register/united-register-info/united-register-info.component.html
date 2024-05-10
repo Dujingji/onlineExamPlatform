@@ -33,6 +33,7 @@
 </div>
 
 <div class="footer">
+  <button nz-button nzType="default" (click)="GoBack()" >上一级</button>
   <button nz-button nzType="primary" (click)="onSubmit()" [disabled]="!validate">报名参考</button>
   <button nz-button nzType="default" (click)="onSave()" [disabled]="loading || !validate">保存信息</button>
   <button nz-button nzType="primary" (click)="clear()" nzDanger [disabled]="loading || (_comphensive.length === 0 && _foudation.length === 0)">清除所选科目</button>

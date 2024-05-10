@@ -42,6 +42,10 @@ export class AuthService {
     return this.loginSub
   }
 
+  getUserProfile(): Observable<{ url : string, status : boolean }>{
+    return this.http.get<{ url : string, status : boolean }>(environment.apiUrl + 'united/get-avater')
+  }
+
   getCollegeList(): Observable<{ college: { name: string }[] }> {
     return this.http.get<{ college: { name: string }[] }>(environment.apiUrl + 'auth/college-list')
   }

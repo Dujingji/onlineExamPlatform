@@ -74,6 +74,10 @@ export class UnitedService {
     return this.http.get<{ able: boolean, subject: number }>(environment.apiUrl + 'united/get-result-info')
   }
 
+  notPaid() : Observable<{ status: boolean }> {
+    return this.http.get<{ status: boolean }>(environment.apiUrl + 'united/not-paid')
+  }
+
 }
 
 export interface unitedUserInfo {

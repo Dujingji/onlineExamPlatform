@@ -36,6 +36,12 @@ export class ExamPaperService {
     })
   }
 
+  getGuestInformation(): Observable<{ userInfo: userInfo }> {
+    return this.http.get<{ userInfo: userInfo }>(environment.apiUrl + 'united/get-user', {
+      params: new HttpParams()
+    })
+  }
+
   getStudentInformation(userInfo_id: string): Observable<{ major: string, college: string, EID: string }> {
     return this.http.get<{ major: string, college: string, EID: string }>(environment.apiUrl + 'exam/get-student-detail', {
       params: new HttpParams().set('info_id', userInfo_id)

@@ -6,6 +6,7 @@ import { Observable, Subject, tap } from "rxjs";
 import { option, studentAccountInfo } from "src/app/college/college-home-page/college-home-page.component";
 import { submitClassroomData, submitDataModel, unitedExamClassroomInfo, unitedExamInfo } from 'src/app/college/exams-list/exams-list.component';
 import { stduentVocabualryData } from "src/app/college/student-vocabulary-list/student-vocabulary-list.component";
+import { unitedRegisterUserInfo } from 'src/app/college/united-register/united-register.component';
 import { environment } from 'src/environments/environment';
 
 
@@ -104,6 +105,11 @@ export class CollegesService {
     return this.http.post<{ data: studentAccountInfo[], total: number }>(environment.apiUrl + 'college/get-search-student-info-data', data);
   }
 
+  getSearchUnitedRegisterInfo(pageSize: number, pageIndex: number, searchQuery: searchQuery, condition: string): Observable<{ data: unitedRegisterUserInfo[], total: number }> {
+    let data: sendData = {college_id:'', pageSize: pageSize, pageIndex: pageIndex, searchQuery: searchQuery, condition: condition }
+    return this.http.post<{ data: unitedRegisterUserInfo[], total: number }>(environment.apiUrl + 'college/get-search-united-register-info-data', data);
+  }
+
   getSearchExerciseInfoData(college_id: string, pageSize: number, pageIndex: number, searchQuery: searchQuery, condition: string): Observable<{ data: studentExerciseData[], total: number }> {
     let data: sendData = { college_id: college_id, pageSize: pageSize, pageIndex: pageIndex, searchQuery: searchQuery, condition: condition }
     return this.http.post<{ data: studentExerciseData[], total: number }>(environment.apiUrl + 'college/get-search-student-exercise-info-data', data)
@@ -156,12 +162,17 @@ export class CollegesService {
   }
 
   autoAssignMember(exam_id: string): Observable<{ status: boolean, message: string }> {
-    return this.http.post<{ status: boolean, message: string }>(environment.apiUrl + 'college/auto-assign-member', { exam_id : exam_id })
+    return this.http.post<{ status: boolean, message: string }>(environment.apiUrl + 'college/auto-assign-member', { exam_id: exam_id })
       .pipe(tap(() => {
         this.examEntriesSubject.next()
       }))
   }
 
+  getUnitedRegisterInfo(pageIndex: number, pageSize: number): Observable<{ data: unitedRegisterUserInfo[], total: number }> {
+    return this.http.get<{ data: unitedRegisterUserInfo[], total: number }>(environment.apiUrl + 'college/get-register-info', {
+      params: new HttpParams().set('pageSize', pageSize).set('pageIndex', pageIndex)
+    })
+  }
 }
 
 interface searchQuery {
@@ -170,7 +181,10 @@ interface searchQuery {
   _f?: string[],
   _c?: string[],
   accruate?: boolean,
-  completed?: number[]
+  completed?: number[],
+  paid? : number,
+  name? : string,
+  role? : string
 }
 
 interface sendData {

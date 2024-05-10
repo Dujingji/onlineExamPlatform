@@ -1,0 +1,98 @@
+<div class="container">
+  <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-label>学生姓名</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input formControlName="name" nz-input placeholder="学生姓名" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label>用户类别</nz-form-label>
+        <nz-select nzPlaceHolder="用户类别" formControlName="role">
+          <nz-option *ngFor="let option of roleOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label>缴费状态</nz-form-label>
+        <nz-select nzPlaceHolder="缴费状态" formControlName="paid">
+          <nz-option *ngFor="let option of PaidOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+    <div nz-row>
+      <div nz-col [nzSpan]="24" class="search-area">
+        <button nz-button [nzType]="'primary'" (click)="onSearchData()" [disabled]="checkSearchStatus()">搜索</button>
+        <button nz-button (click)="onResetSearchBar()">清空</button>
+        <button nz-button [nzType]="'primary'" [disabled]="setOfCheckedId.size === 0" (click)="jsonCheck(0)">导出选中数据</button>
+        <button nz-button [nzType]="'primary'" [disabled]="loading" (click)="checkSearchStatus() ? jsonCheck(2) : jsonCheck(1)">{{ checkSearchStatus() ? '导出全部数据' :
+          '导出搜索数据'}}</button>
+      </div>
+    </div>
+  </form>
+
+  <nz-table #sortTable [nzData]="listOfDisplayData" nzShowSizeChanger [nzFrontPagination]="false" [nzLoading]="loading"
+    [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" [nzScroll]="{ y: '500px' }"
+    [nzPageSizeOptions]="[10,20,50,100, 500, 1000, total]" nzTableLayout="fixed"
+    (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+    <thead>
+      <tr>
+        <th nzWidth="60px" [nzSelections]="listOfSelection" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
+          (nzCheckedChange)="onAllChecked($event)">
+        </th>
+        <th nzCustomFilter>
+          {{ listOfColumn[0].title }}
+          <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+            <span nz-icon nzType="search"></span>
+          </nz-filter-trigger>
+        </th>
+        <th [nzSortFn]="listOfColumn[1].compare" nzCustomFilter>
+          {{ listOfColumn[1].title }}
+
+        </th>
+        <th nzCustomFilter>
+          {{ listOfColumn[2].title }}
+        </th>
+        <th nzCustomFilter>
+          {{ listOfColumn[3].title }}
+
+        </th>
+        <th [nzSortFn]="listOfColumn[4].compare" nzCustomFilter>
+          {{ listOfColumn[4].title }}
+
+        </th>
+        <th>
+          操作
+
+
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of sortTable.data; let i = index ">
+        <tr>
+          <td [nzChecked]="setOfCheckedId.has(data._id)" (nzCheckedChange)="onItemChecked(data._id, $event)"></td>
+          <td>{{ data.std_name }}</td>
+          <td>{{ data.role === 'guest' ? '非在籍':'在籍' }}</td>
+          <td>{{ data.subject }}</td>
+          <td>{{ data.assignment ? '已分配' : '未分配' }}</td>
+          <td>{{ getPaidString(data.paid) }}</td>
+          <td>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+</div>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" nz-input placeholder="搜索" [(ngModel)]="searchValue" />
+      <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">搜索</button>
+      <button nz-button nzSize="small" (click)="reset()">重置</button>
+    </div>
+  </div>
+</nz-dropdown-menu>

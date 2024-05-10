@@ -10,6 +10,7 @@ import { exam } from 'src/modules/exams/exam';
 import { Subscription } from 'rxjs';
 import { user, userInfo } from 'src/modules/user/user';
 import { PublicService, menuItemModel, menuModel } from 'src/app/service/public/public.service';
+import { environment } from 'src/environments/environment';
 
 
 @UntilDestroy()
@@ -26,7 +27,9 @@ export class HomePageComponent implements OnInit, OnDestroy {
   public examEntriesSub = new Subscription()
   public userInformation?: userInfo;
   public isUser = false
+  public isGuest = false
   private random_n = 1
+  private urlImage?: string
 
   public menuItemList: menuItemModel[] = []
 
@@ -77,8 +80,24 @@ export class HomePageComponent implements OnInit, OnDestroy {
         this.retrieveUser()
       })
     this.retrieveUser()
+    this.getUserAvater()
     this.random_n = Math.floor(Math.random() * 6 + 1);
 
+  }
+
+  getUserAvater() {
+    this.authService.getUserProfile().pipe(first()).pipe(first()).subscribe((res) => {
+      if (res.status && res.url)
+        this.urlImage = res.url
+    })
+  }
+
+  getImgUrl() {
+    let url = ''
+    if (this.urlImage) {
+      return environment.apiUrl + this.urlImage
+    }
+    return "https://exam.gwxgt.com/exam-api/profile/profile_" + this.random().toString() + ".jpg"
   }
 
   changeMenuList(url: string) {
@@ -124,10 +143,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
         })
     }
     else if (this.authService.role === 'guest') {
-
+      this.isGuest = true
     }
     else {
-      setTimeout(() =>{
+      setTimeout(() => {
         this.examPaperService.examSubject.next()
       }, 1000)
     }

@@ -54,7 +54,7 @@ export class UnitedRegisterUserInfoComponent implements OnInit, OnDestroy {
         this.validateForm.patchValue({ 'grade': res.grade })
         this.validateForm.patchValue({ 'image_url': res.image_url })
         this.validateForm.patchValue({ 'gerden': res.gerden })
-        this.avatarUrl = environment.apiUrl + res.image_url
+        this.avatarUrl = (res.image_url && res.image_url.length !== 0) ? environment.apiUrl + res.image_url : undefined
       })
     }
   }
@@ -109,7 +109,7 @@ export class UnitedRegisterUserInfoComponent implements OnInit, OnDestroy {
       observer.complete();
     });
 
-  private getBase64(img: File, callback: (img: string) => void): void {
+  private getBase64(img: File, callback: (url: string) => void): void {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result!.toString()));
     reader.readAsDataURL(img);
