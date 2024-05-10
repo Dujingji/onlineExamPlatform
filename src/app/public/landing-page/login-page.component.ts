@@ -17,15 +17,24 @@ export class LoginPageComponent implements OnInit {
   hourTransform?: string;
   minuteTransform?: string;
   secondTransform?: string;
-  guestLoading : boolean = true;
+  guestLoading: boolean = true;
   guestRegisterForm: FormGroup;
   public isRegister: boolean = false;
   public searchValue: string | null = null;
   public gusetTarget: boolean = false;
 
   public college_list: option[] = []
-  public majorList: option[] = []
-  public comphensiveList: option[] = []
+
+  public gerdenList: optionA[] = [
+    {
+      value: '男',
+      label: '男'
+    },
+    {
+      value: '女',
+      label: '女'
+    }
+  ]
 
   constructor(private authService: AuthService) {
     this.loginForm = new FormGroup({})
@@ -45,12 +54,20 @@ export class LoginPageComponent implements OnInit {
     })
 
     this.guestRegisterForm = new FormGroup({
-      'username': new FormControl('', [Validators.required], [this.userNameAsyncValidator]),
+      'username': new FormControl('', [Validators.required, Validators.maxLength(18), Validators.minLength(18)], [this.userNameAsyncValidator]),
       'password': new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(12)]),
       'comfirm': new FormControl('', [Validators.required, this.confirmationValidator]),
       'college': new FormControl('', [Validators.required]),
-      'major': new FormControl('', [Validators.required]),
-      'comphensive': new FormControl('', [Validators.required])
+      'phone_number': new FormControl('', [Validators.required, Validators.maxLength(11), Validators.minLength(11)]),
+      'std_name': new FormControl('', [Validators.required]),
+      'gerden' : new FormControl('', [Validators.required]),
+      'grade': new FormControl(new Date().getFullYear(), [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(4),
+        Validators.min(new Date().getFullYear() - 3),
+        Validators.max(new Date().getFullYear())]),
+
     })
 
     if (localStorage.getItem('lastLoginUserName') && localStorage.getItem('refresh_token')) {
@@ -61,29 +78,21 @@ export class LoginPageComponent implements OnInit {
     else {
       this.loading = false
     }
-
-    this.guestRegisterForm.get('major')!.valueChanges.subscribe(value =>{
-      this.fetchComprehensiveList(value)
-    })
-  }
-
-  fetchComprehensiveList(major : string){
-    this.authService.getMajorList(1, major).pipe(first()).subscribe(data =>{
-      this.comphensiveList = data.data
-    })
   }
 
   userNameAsyncValidator: AsyncValidatorFn = (control: AbstractControl) =>
     new Observable((observer: Observer<{ comfirm: boolean, error: boolean } | null>) => {
       setTimeout(() => {
-        if (control.value === 'JasonWood') {
-          observer.next({
-            comfirm: true, error: true
-          });
-        } else {
-          observer.next(null);
-        }
-        observer.complete();
+        this.authService.vaildaUserName(control.value).pipe(first()).subscribe(data => {
+          if (!data.status) {
+            observer.next({
+              comfirm: true, error: true
+            });
+          } else {
+            observer.next(null);
+          }
+          observer.complete();
+        })
       }, 1000);
     });
 
@@ -101,7 +110,7 @@ export class LoginPageComponent implements OnInit {
       this.authService.loginUser(this.loginForm.value.username, this.loginForm.value.password, '', '');
     }
     else {
-      this.authService.guesterLogin()
+      this.authService.guestLogin(this.guestLoginForm.value.username, this.guestLoginForm.value.password)
     }
   }
 
@@ -110,18 +119,15 @@ export class LoginPageComponent implements OnInit {
       this.isRegister = false
     }
     this.gusetTarget = !this.gusetTarget
-    if(this.gusetTarget && this.college_list.length === 0 && this.majorList.length === 0){
-      this.authService.getCollegeList().pipe(first()).subscribe(data =>{
+    if (this.gusetTarget && this.college_list.length === 0 ) {
+      this.authService.getCollegeList().pipe(first()).subscribe(data => {
         this.college_list = data.college
-      })
-      this.authService.getMajorList(0, '').pipe(first()).subscribe(data =>{
-        this.majorList = data.data
       })
     }
   }
 
   register() {
-
+    this.authService.guestRegister(this.guestRegisterForm.value)
   }
 
   updataComfirmValidators() {
@@ -150,8 +156,13 @@ export class LoginPageComponent implements OnInit {
   dots: any[] = [];
 }
 
-interface option{
-  name : string
+interface option {
+  name: string
+}
+
+interface optionA{
+  label : string,
+  value : string
 }
 
 export type MyErrorsOptions = { error: string } & Record<string, NzSafeAny>;

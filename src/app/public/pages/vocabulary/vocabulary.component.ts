@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class VocabularyComponent implements OnInit {
 
+  public loading : boolean = true
   public button: boolean = false
   public tip: boolean = false
   private currrent_i = 0
@@ -79,16 +80,19 @@ export class VocabularyComponent implements OnInit {
         if(this.dailyService.v_words.length === 0)
           this.dailyService.v_words = data.data.words
         this.current = data.data.current
+        this.loading = false
         if(this.current)
          this.playAudio(this.current.vocabulary)
       })
   }
 
-  vocabularyDetail(text : string, index : number){
-    if(this.words[index].flip){
+  vocabularyDetail(text : string, index : number, event : MouseEvent){
+    const clickElement =  event.target as HTMLElement;
+    console.log(clickElement.id)
+    if(this.words[index].flip ){
       this.router.navigate(['/public/homePage/vocabulary-detail/' + text])
     }
-    else{
+    else {
       this.words[index].flip = !this.words[index].flip
       this.dailyService.current_c = this.dailyService.current_c + 1
       if(this.dailyService.current_c >= this.dailyService.v_length){

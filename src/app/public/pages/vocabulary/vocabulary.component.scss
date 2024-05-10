@@ -116,6 +116,16 @@ mat-toolbar {
   font-size: larger;
 }
 
+.sound-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  background-color: rgb(221, 250, 248)
+}
+
 .card-g {
   box-shadow: 0 0 8px 2px lightblue;
   margin: 10%;
@@ -205,6 +215,7 @@ mat-toolbar {
 
 .list_text {
   display: flex;
+  align-items: center;
   margin-top: 8px;
   margin-bottom: 8px;
   font-size: 1.25rem;

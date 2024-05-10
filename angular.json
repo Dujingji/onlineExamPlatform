@@ -42,7 +42,8 @@
               "node_modules/bootstrap/scss/bootstrap.scss",
               "node_modules/ngx-spinner/animations/ball-scale-multiple.css"
             ],
-            "scripts": ["node_modules/@ckeditor/ckeditor5-build-decoupled-document/build/translations/zh-cn.js"]
+            "scripts": ["node_modules/@ckeditor/ckeditor5-build-decoupled-document/build/translations/zh-cn.js",
+            "./node_modules/hammerjs/hammer.min.js"]
           },
           "configurations": {
             "production": {

@@ -1,0 +1,20 @@
+.content{
+  width: 100%;
+}
+
+.footer{
+  padding: 20px 12px 20px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  button{
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+}
+
+.payment{
+  font-weight: 600;
+  color : red
+}

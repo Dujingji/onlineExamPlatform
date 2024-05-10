@@ -42,6 +42,15 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { VocabularyDetailListComponent } from '../pages/vocabulary-detail-list/vocabulary-detail-list.component';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { WordsListComponent } from 'src/app/shared/words-list/words-list.component';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
 
 @NgModule({
   declarations: [
@@ -61,7 +70,9 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
     HighlightPipe,
     VocabularyDetailPageComponent,
     VocabularyHomepageComponent,
-    VocabularyCalendarComponent
+    VocabularyCalendarComponent,
+    VocabularyDetailListComponent,
+    WordsListComponent,
   ],
   exports: [],
   imports: [
@@ -89,7 +100,14 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
     NzCardModule,
     NzSpinModule,
     NzDescriptionsModule,
-    NzBadgeModule
+    NzBadgeModule,
+    NzListModule,
+    NzCollapseModule,
+    NzSkeletonModule,
+    NzIconModule,
+    NzButtonModule,
+    NzAlertModule,
+    NzStepsModule
   ],
   providers: []
 })

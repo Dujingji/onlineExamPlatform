@@ -10,22 +10,9 @@
 
     <mat-divider></mat-divider>
 
-    <button mat-button class="menu-button" (click)="changeMenuList('/public/homePage/daily')" >
-      <mat-icon>today</mat-icon>
-      <span class="text">练习模块</span>
-    </button>
-
-    <button mat-button class="menu-button" (click)="changeMenuList('/public/homePage/exam')" >
-      <mat-icon>home</mat-icon>
-      <span class="text">线上考试</span>
-    </button>
-    <!-- <button mat-button class="menu-button" routerLink="/public/homePage/register">
-      <mat-icon>add</mat-icon>
-      <span class="text">报考页面</span>
-    </button> -->
-    <button mat-button class="menu-button"(click)="changeMenuList('/public/homePage/result')" >
-      <mat-icon>person</mat-icon>
-      <span class="text">查询成绩</span>
+    <button  mat-button class="menu-button" *ngFor="let item of menuItemList" (click)="changeMenuList(item.url)" >
+      <mat-icon>{{item.icon}}</mat-icon>
+      <span class="text">{{item.name}}</span>
     </button>
 
     <!-- <button mat-button class="menu-button" routerLink="/public/homePage/exercise">
@@ -74,12 +61,12 @@
         </button>
 
         <div class="sub_menu" *ngIf="sidenav.mode === 'side' && menuList.length > 1">
-          <div class="sub_menu_item" [ngClass]="{'red' : item.url === currentUrl}" *ngFor="let item of menuList; let i = index" (click)="changeMenuIndex(i, item.url)" >
+          <div class="sub_menu_item" [ngClass]="{'red' : currentUrl.includes(item.url)}" *ngFor="let item of menuList; let i = index" (click)="changeMenuIndex(i, item.url)" >
             <div class="divider"></div>
             {{item.name}}
           </div>
         </div>
-        <button mat-icon-button class="logout" (click)="logout()">
+        <button mat-icon-button class="logout" (click)="logout()" >
           <mat-icon>logout</mat-icon>
         </button>
       </div>

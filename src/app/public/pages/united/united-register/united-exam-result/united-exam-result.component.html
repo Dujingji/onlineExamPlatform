@@ -1,0 +1,11 @@
+<div class="container">
+  <nz-spin [nzSpinning]="loading">
+    <nz-result nzStatus="success" nzTitle="您已成功报名参考本次大联考！"
+      nzSubTitle="{{'考试科目：' + subject_number + '，请等待分配班级后再打印准考证' }}">
+      <div nz-result-extra>
+        <button nz-button nzType="primary" [disabled]="!ablePrint">打印准考证</button>
+        <button nz-button [disabled]="true">预览准考证</button>
+      </div>
+    </nz-result>
+  </nz-spin>
+</div>

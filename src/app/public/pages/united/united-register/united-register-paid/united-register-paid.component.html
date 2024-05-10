@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="image" *ngIf="step !== 2">
+    <img nz-image width="350px" height="550px" nzSrc="{{getUrl()}}" alt="" />
+  </div>
+
+  <div class="footer"  *ngIf="step !== 2">
+    <button nz-button nzType="primary" (click)="paid()">我已付款！</button>
+  </div>
+
+  <div *ngIf="step === 2">
+    <nz-result nzStatus="warning" nzTitle="请等待人工审核！请耐心等待...您也可以联系您的老师，反馈支付结果！">
+    </nz-result>
+  </div>
+</div>
+

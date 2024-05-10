@@ -1,20 +1,19 @@
 <audio #audioControl autoplay></audio>
 
 <div class="container" *ngIf="length > studied">
+
   <mat-toolbar>
     <div class="status-bar">
       <span>学习进度：</span>
       <span>{{ studied + ' / ' + length}}</span>
     </div>
   </mat-toolbar>
-
   <div class="page-container" *ngIf="length > studied">
     <div class="text">
       <div class="vocabulary">{{current.vocabulary}}</div>
       <div class="p_symbol">
-        <button class="icon-button" (click)="playAudio(current.vocabulary)">
-          <i class="fas fa-volume-up"></i>
-          {{ '/' + current.p_symbol + '/'}}
+        <button nz-button nzType="default" class="sound-button" (click)="playAudio(current.vocabulary)">
+          <span nz-icon nzType="sound" nzTheme="outline"> </span>  {{ '/' + current.p_symbol + '/'}}
         </button>
       </div>
     </div>
@@ -30,7 +29,8 @@
       提示一下
     </div>
 
-    <div class="card-b" *ngIf="length > studied && tip" routerLink="/public/homePage/vocabulary-detail/{{current.vocabulary}}">
+    <div class="card-b" *ngIf="length > studied && tip"
+      routerLink="/public/homePage/vocabulary-detail/{{current.vocabulary}}">
       没想起来
     </div>
 
@@ -41,32 +41,33 @@
       我认识
     </div>
   </div>
+
 </div>
 
 <div class="list-container" *ngIf="length <= studied && studied > 0">
   <div class="list_text_container">
     <div class="title_text">
       <div class="title_text_t">单词总结</div>
-      <mat-slide-toggle class="list_button" color="warn" labelPosition="before" (change)="settingChange()" [checked]="allFlip"
-        [ngStyle]="{ 'transform': 'scale(1.15)' }">
+      <mat-slide-toggle class="list_button" color="warn" labelPosition="before" (change)="settingChange()"
+        [checked]="allFlip" [ngStyle]="{ 'transform': 'scale(1.15)' }">
 
       </mat-slide-toggle>
     </div>
     <mat-divider></mat-divider>
-    <div class="detail_container" *ngFor="let word of words; let i = index" (click)="vocabularyDetail(word.vocabulary, i) ">
-      <div class="list_text">
+    <div class="detail_container" *ngFor="let word of words; let i = index"
+      (click)="vocabularyDetail(word.vocabulary, i, $event) ">
+      <div  class="list_text">
         <div class="word_text">{{word.vocabulary}}</div>
-        <button class="icon-button" (click)="playAudio(word.vocabulary)">
-          <i class="fas fa-volume-up"></i>
-          {{ '/' + word.symbol + '/'}}
+        <button  nz-button nzType="default" class="sound-button" (click)="playAudio(word.vocabulary)">
+          <span nz-icon nzType="sound" nzTheme="outline"> </span>  {{ '/' + word.symbol + '/'}}
         </button>
       </div>
-      <div *ngIf="!allFlip || word.flip">
+      <div id="flip_card" *ngIf="!allFlip || word.flip">
         <div class="mean_text" *ngFor="let t of word.v_type; let i = index">
           <div>{{t + ' ' + (word.v_mean[i] )}}</div>
         </div>
       </div>
-      <div *ngIf="allFlip && !word.flip" class="colum_container">
+      <div id="flip_card" *ngIf="allFlip && !word.flip" class="colum_container">
         <div class="shadow_colum"></div>
       </div>
       <mat-divider></mat-divider>

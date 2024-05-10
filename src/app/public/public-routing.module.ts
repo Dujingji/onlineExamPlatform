@@ -12,6 +12,7 @@ import { VocabularyComponent } from './pages/vocabulary/vocabulary.component';
 import { VocabularyDetailPageComponent } from './pages/vocabulary-detail/vocabulary-detail-page/vocabulary-detail-page.component';
 import { VocabularyHomepageComponent } from './pages/vocabulary-homepage/vocabulary-homepage.component';
 import { VocabularyCalendarComponent } from './pages/vocabulary-calendar/vocabulary-calendar.component';
+import { VocabularyDetailListComponent } from './pages/vocabulary-detail-list/vocabulary-detail-list.component';
 
 const routes: Routes = [
   {
@@ -25,7 +26,9 @@ const routes: Routes = [
       { path: 'vocabulary', component:  VocabularyHomepageComponent},
       { path: 'vocabulary-study', component: VocabularyComponent },
       { path: 'vocabulary-detail/:word', component: VocabularyDetailPageComponent },
-      { path: 'vocabulary-calendar', component: VocabularyCalendarComponent }
+      { path: 'vocabulary-calendar', component: VocabularyCalendarComponent },
+      { path: 'vocabulary-detail-list/:day/:month/:year', component: VocabularyDetailListComponent},
+      { path: 'united', loadChildren: () => import('./pages/united/united.module').then((m) => m.UnitedModule), canActivate: [canActivate] }
     ],
     canActivate: [canActivate]
   },

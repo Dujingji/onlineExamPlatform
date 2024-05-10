@@ -45,13 +45,56 @@ export class CalendarComponent implements OnInit {
   public match: boolean = false
   public calendar: Array<Array<DateModel>> = []
   public state = 'expanded';
+  public year: number = 0;
+  public month: number = 0;
 
 
   ngOnInit(): void {
+    this.year = this.dailyService.daily_c_year;
+    this.month = this.dailyService.daily_c_month;
     this.getAllUserDailyEntries()
     this.submitForm = new FormGroup({
       'major': new FormControl(undefined, [Validators.required])
     })
+  }
+
+
+  goNextMonth(condition: number) {
+    this.calendar = []
+    this.current = {
+      active: false,
+      today: false,
+      date: -1,
+      selector: false,
+      status: -1,
+      expanded: false,
+      click: false,
+      dailys: []
+    }
+    this.expendedDate = undefined
+    if (condition === 0) {
+      this.month -= 1
+      this.dailyService.daily_c_month -= 1
+      if (this.month < 1) {
+        this.dailyService.daily_c_year -= 1
+        this.year -= 1
+        this.dailyService.daily_c_month = 12
+        this.month = 12
+      }
+      this.getAllUserDailyEntries()
+    }
+    else {
+      this.month += 1
+      this.dailyService.daily_c_month += 1
+      if (this.month > 12) {
+        this.year += 1
+        this.dailyService.daily_c_year += 1
+        this.month = 1
+        this.dailyService.daily_c_month = 1
+      }
+      this.getAllUserDailyEntries()
+    }
+
   }
 
 
@@ -100,7 +143,7 @@ export class CalendarComponent implements OnInit {
   }
 
   getAllUserDailyEntries() {
-    this.dailyService.getDailyInformation(localStorage.getItem('information')!)
+    this.dailyService.getDailyInformation(localStorage.getItem('information')!, this.year, this.month)
       .pipe(first())
       .subscribe(data => {
         this.dailyData = data.data
@@ -110,14 +153,16 @@ export class CalendarComponent implements OnInit {
   }
 
   getDailyMajorList(data: DateModel) {
-    let notifier = new Subject<void>()
-    this.dailyService.getMajorList(localStorage.getItem('information')!, this.getYear(), this.getMonth(), data.date)
-      .pipe(takeUntil(notifier))
-      .subscribe(data => {
-        this.majorList = data.major
-        notifier.next()
-        notifier.complete()
-      })
+    if (data.today) {
+      let notifier = new Subject<void>()
+      this.dailyService.getMajorList(localStorage.getItem('information')!, this.getYear(), this.getMonth(), data.date)
+        .pipe(takeUntil(notifier))
+        .subscribe(data => {
+          this.majorList = data.major
+          notifier.next()
+          notifier.complete()
+        })
+    }
   }
 
   // getDailyData(data: DateModel){
@@ -137,14 +182,14 @@ export class CalendarComponent implements OnInit {
     let now = new Date()
 
     if (mode === 0) {
-      return now.getFullYear() + '-' + (now.getMonth() + 1)
+      return this.year + '-' + this.month
     }
     else {
-      if(this.current){
-        return now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + (this.current.date)
+      if (this.current) {
+        return this.year + '-' + this.month + '-' + (this.current.date)
       }
-      else{
-        return  now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + (now.getDate())
+      else {
+        return this.year + '-' + this.month
       }
     }
 
@@ -187,8 +232,8 @@ export class CalendarComponent implements OnInit {
 
   createCalender(data: dailyDataModel) {
     let date = new Date();
-    let year = date.getFullYear();
-    let month = date.getMonth();
+    let year = this.year;
+    let month = this.month - 1;
     let index_list = new Array<number>()
     data.daily_data.forEach(e => {
       index_list.push(e.Index)
@@ -279,7 +324,7 @@ export class CalendarComponent implements OnInit {
     return new Array(input).fill(0).map((item, index) => index);
   }
 
-  getUrl(major : string){
+  getUrl(major: string) {
     return major + ".jpg"
   }
 

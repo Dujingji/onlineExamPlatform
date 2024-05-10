@@ -9,6 +9,13 @@ import { LandingPageModule } from './public/landing-page/landing-page.module';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
 import * as AllIcons from '@ant-design/icons-angular/icons';
 import { IconDefinition } from '@ant-design/icons-angular';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { LOCALE_ID } from '@angular/core';
+import { NZ_DATE_LOCALE, NZ_I18N, zh_CN } from 'ng-zorro-antd/i18n';
+import { registerLocaleData } from '@angular/common';
+import localeZh from '@angular/common/locales/zh';
+import { zhCN } from 'date-fns/locale';
+registerLocaleData(localeZh);
 
 
 const antDesignIcons = AllIcons as {
@@ -26,10 +33,13 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     BrowserAnimationsModule,
     HttpClientModule,
     LandingPageModule,
+    NzNotificationModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: NZ_ICONS, useValue: icons }
+    { provide: NZ_ICONS, useValue: icons },
+    { provide: NZ_I18N, useValue: zh_CN },
+    { provide: NZ_DATE_LOCALE, useValue: zhCN }
   ],
   bootstrap: [AppComponent]
 })

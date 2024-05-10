@@ -1,0 +1,32 @@
+.content{
+  padding: 20px 12px 20px 12px;
+
+  .title{
+    display: flex;
+    flex-direction: column;
+    font-weight: 600;
+    font-size: 1.35rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .body{
+    padding: 8px 12px 8px 12px;
+    font-size: 1.15rem;
+  }
+
+  .p1{
+    font-weight: 600;
+  }
+
+  .p2{
+    margin-left: 16px;
+  }
+
+}
+
+.footer{
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+}

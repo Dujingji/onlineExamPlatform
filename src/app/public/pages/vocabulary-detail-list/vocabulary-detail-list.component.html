@@ -1,0 +1,20 @@
+<audio #audioControl autoplay></audio>
+
+<div class="container">
+  <div class="title">
+    <div>{{year + '-' + month + '-' + date}}</div>
+    <button nz-button [nzType]="'default'" class="back" (click)="goBack()"> <span nz-icon nzType="carry-out"
+        nzTheme="outline"></span> </button>
+  </div>
+
+  <mat-divider></mat-divider>
+  <nz-spin nzTip="Loading..." [nzSpinning]="loading">
+    <nz-collapse nzAccordion>
+      <nz-collapse-panel *ngFor="let item of date_deteil" [nzHeader]="'第' + item.group + '组'" [nzActive]="false">
+
+        <app-words-list [words]="item.words"></app-words-list>
+
+      </nz-collapse-panel>
+    </nz-collapse>
+  </nz-spin>
+</div>

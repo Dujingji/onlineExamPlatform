@@ -1,0 +1,29 @@
+<div class="container">
+  <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-label nzRequired="true">班级名称</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input formControlName="name" nz-input placeholder="班级名称" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-label nzRequired="true">座位总数</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input type="number" (min)="0" formControlName="site_number" nz-input placeholder="座位总数" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </form>
+</div>
+
+<div *nzModalFooter>
+  <button nz-button nzType="default" (click)="close(0)">取消</button>
+  <button nz-button nzType="primary" [disabled]="!this.validateForm.valid" (click)="close(1)">提交</button>
+</div>

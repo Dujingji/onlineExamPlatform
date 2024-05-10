@@ -32,9 +32,7 @@ export class AuthInterceptor implements HttpInterceptor {
           if(error.status === 401){
             this.authService.logout();
           }
-
           return next.handle(req);
-
         }))
     }
     else if (token && !expires) {

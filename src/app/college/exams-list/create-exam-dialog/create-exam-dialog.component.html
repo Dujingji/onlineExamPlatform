@@ -1,0 +1,54 @@
+<div class="container">
+  <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-label nzRequired>考试名称</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input formControlName="name" nz-input placeholder="考试名称" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzRequired>科目</nz-form-label>
+        <nz-select nzPlaceHolder="科目" formControlName="major">
+          <nz-option *ngFor="let option of majorList" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-label>位置</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input formControlName="location" nz-input placeholder="不填则默认为教学点" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-label nzRequired>考试时间</nz-form-label>
+        <nz-range-picker [nzShowTime]="true" formControlName="date"></nz-range-picker>
+      </nz-form-item>
+    </div>
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-label nzRequired>考试状态</nz-form-label>
+        <nz-select nzMode="default" nzPlaceHolder="考试状态" formControlName="status">
+          <nz-option *ngFor="let option of statusList" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+  </form>
+  <div>
+    <nz-form-label nzRequired="true"> 注意事项 </nz-form-label>
+    <ckeditor [(ngModel)]="model.editorData" [editor]="Editor" (ready)="onReady($event)" (change)="onChange($event)">
+    </ckeditor>
+  </div>
+</div>
+
+<div *nzModalFooter>
+  <button nz-button nzType="default" (click)="close(0)">取消</button>
+  <button nz-button nzType="primary" [disabled]="!this.validateForm.valid" (click)="close(1)">提交</button>
+</div>

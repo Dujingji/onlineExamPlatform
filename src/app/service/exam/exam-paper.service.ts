@@ -8,6 +8,7 @@ import { exam, examEntries, examEntriesA } from 'src/modules/exams/exam';
 import { userInfo } from 'src/modules/user/user';
 import { answerModel } from 'src/app/public/pages/exam-page/exam-paper/exam-paper.component';
 import { major } from 'src/modules/major/major';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,6 @@ export class ExamPaperService {
   private _examOninitSubject = new Subject<void>();
   public examStatus = false
 
-
   get examSubject() {
     return this._examSubject
   }
@@ -31,25 +31,25 @@ export class ExamPaperService {
   }
 
   getUserInformation(userInfo_id: string): Observable<{ userInfo: userInfo }> {
-    return this.http.get<{ userInfo: userInfo }>('https://exam.gwxgt.com/exam-api/exam/get-user', {
+    return this.http.get<{ userInfo: userInfo }>(environment.apiUrl + 'exam/get-user', {
       params: new HttpParams().set('info_id', userInfo_id)
     })
   }
 
   getStudentInformation(userInfo_id: string): Observable<{ major: string, college: string, EID: string }> {
-    return this.http.get<{ major: string, college: string, EID: string }>('https://exam.gwxgt.com/exam-api/exam/get-student-detail', {
+    return this.http.get<{ major: string, college: string, EID: string }>(environment.apiUrl + 'exam/get-student-detail', {
       params: new HttpParams().set('info_id', userInfo_id)
     })
   }
 
   getUserAnswer(userInfo_id: string, paper_id: string, exam_id: string): Observable<{ answer: result }> {
-    return this.http.get<{ answer: result }>('https://exam.gwxgt.com/exam-api/exam/get-user-answer', {
+    return this.http.get<{ answer: result }>(environment.apiUrl +'exam/get-user-answer', {
       params: new HttpParams().set('info_id', userInfo_id).set('paper_id', paper_id).set('exam_id', exam_id)
     })
   }
 
   getExamDetailInfo(exam_id : string) : Observable<{ detail : exam, total : number, cost: number }>{
-    return this.http.get<{ detail : exam, total : number, cost: number }>('https://exam.gwxgt.com/exam-api/exam/get-exam-detail-info', {
+    return this.http.get<{ detail : exam, total : number, cost: number }>(environment.apiUrl + 'exam/get-exam-detail-info', {
       params: new HttpParams().set('exam_id', exam_id)
     })
   }
@@ -61,7 +61,7 @@ export class ExamPaperService {
     return this.http.get<{
       current: exam[], _e: exam[], _p: exam[], recent: exam[], all : exam[][],
       _f: exam[], _c: exam[], major: major[], type: number, _fl: major[], _cl: major[], u_c?: string
-    }>('https://exam.gwxgt.com/exam-api/exam/get-register-exam', {
+    }>(environment.apiUrl +'exam/get-register-exam', {
       params: new HttpParams().set('id', id)
     })
   }
@@ -73,13 +73,13 @@ export class ExamPaperService {
     return this.http.get<{
       current: resultInfo[], _e: resultInfo[], _p: resultInfo[], _f: resultInfo[],
       _c: resultInfo[], major: major[], type: number
-    }>('https://exam.gwxgt.com/exam-api/exam/get-result-exam', {
+    }>(environment.apiUrl +'exam/get-result-exam', {
       params: new HttpParams().set('id', id)
     })
   }
 
   getPaperEntry(id: string, std_id: string): Observable<paperModel> {
-    return this.http.get<paperModel>('https://exam.gwxgt.com/exam-api/exam/get-paper', {
+    return this.http.get<paperModel>(environment.apiUrl + 'exam/get-paper', {
       params: new HttpParams().set('id', id).set('std_id', std_id)
     })
       .pipe(
@@ -90,7 +90,7 @@ export class ExamPaperService {
   }
 
   getExamEntries(id: string): Observable<examEntriesA> {
-    return this.http.get<examEntriesA>('https://exam.gwxgt.com/exam-api/exam/get-exam', {
+    return this.http.get<examEntriesA>(environment.apiUrl + 'exam/get-exam', {
       params: new HttpParams().set('id', id)
     })
   }
@@ -103,7 +103,7 @@ export class ExamPaperService {
 
   autoSubmit(userInfo: string, exam_id: string, paperId: string, result: answerModel, length: number, index: number) {
     const examData = { id: userInfo, exam_id: exam_id, paperId: paperId, result: result, length: length, index: index };
-    this.http.post<{ status: boolean }>('https://exam.gwxgt.com/exam-api/exam/auto-submit/', examData)
+    this.http.post<{ status: boolean }>(environment.apiUrl + 'exam/auto-submit/', examData)
       .subscribe(res => {
         this.examStatus = res.status;
       })
@@ -112,7 +112,7 @@ export class ExamPaperService {
   submitPaper(userInfo: string, exam_id: string, paperId: string, result: answerModel[], mark: number, marker: string, status: number) {
     this.examStatus = false
     const examData: submitModle = { id: userInfo, exam_id: exam_id, paperId: paperId, results: result, mark: mark, marker: marker, status: status };
-    this.http.post<{ status: boolean }>('https://exam.gwxgt.com/exam-api/exam/submit/', examData)
+    this.http.post<{ status: boolean }>(environment.apiUrl + 'exam/submit/', examData)
       .pipe(first())
       .pipe(catchError(this.handleError))
       .subscribe(res => {
@@ -122,7 +122,7 @@ export class ExamPaperService {
 
   setSubject(userInfo: string, type: number, subject?: string) {
     const examData: any = { id: userInfo, type: type, subject: subject };
-    return this.http.post<{ status: boolean }>('https://exam.gwxgt.com/exam-api/exam/set-subject/', examData)
+    return this.http.post<{ status: boolean }>(environment.apiUrl + 'exam/set-subject/', examData)
       .pipe(first())
       .pipe(
         tap(() => {
@@ -134,7 +134,7 @@ export class ExamPaperService {
   updateRegister(user_id: string, exam_id: string, type: number) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/exam/update-exam',
+        environment.apiUrl + 'exam/update-exam',
         { user: user_id, exam: exam_id, type: type }
       )
       .pipe(

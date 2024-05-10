@@ -18,6 +18,7 @@ import { teacherInfoSubmitModel } from 'src/app/admin/teacher/teacher.component'
 import { exerciseModel } from 'src/modules/exercise/exercise';
 import { exerciseSection } from 'src/app/admin/exercise/exercise-list/exercise-list.component';
 import { exericseDetailModel } from 'src/modules/exercise/exercise-detail';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -89,20 +90,20 @@ export class AdminService {
 
   EndTime(): Observable<{}> {
     return this.http.post<{}>(
-      'https://exam.gwxgt.com/exam-api/admin/end-time',
+      environment.apiUrl + 'admin/end-time',
       {}
     )
   }
 
   answerModelCreate(): Observable<any> {
     return this.http.post<{}>(
-      'https://exam.gwxgt.com/exam-api/admin/answer-model-create',
+      environment.apiUrl + 'admin/answer-model-create',
       {}
     )
   }
 
   examDetailExport(): Observable<any> {
-    return this.http.get<{}>('https://exam.gwxgt.com/exam-api/admin/detail-export',
+    return this.http.get<{}>(environment.apiUrl + 'admin/detail-export',
       {}
     )
   }
@@ -112,21 +113,21 @@ export class AdminService {
   }
 
   getAllTeacherEntries(): Observable<{ data: Teacher[] }> {
-    return this.http.get<{ data: Teacher[] }>('https://exam.gwxgt.com/exam-api/admin/get-all-teachers')
+    return this.http.get<{ data: Teacher[] }>(environment.apiUrl + 'admin/get-all-teachers')
   }
 
   getAllExamEntries(key: string, value: string): Observable<{ exams: exam[], paperName: string[] }> {
-    return this.http.get<{ exams: exam[], paperName: string[] }>('https://exam.gwxgt.com/exam-api/admin/get-all-exams', {
+    return this.http.get<{ exams: exam[], paperName: string[] }>(environment.apiUrl + 'admin/get-all-exams', {
       params: new HttpParams().set('key', key).set('value', value)
     });
   }
 
   getAllPaperEntries(): Observable<paperEntries> {
-    return this.http.get<paperEntries>('https://exam.gwxgt.com/exam-api/admin/get-all-papers');
+    return this.http.get<paperEntries>(environment.apiUrl + 'admin/get-all-papers');
   }
 
   getAllStudentEntries(page: number, perPage: number, type: number, condition: string): Observable<{ userInfos: student[], classInfo: className[], total: number }> {
-    return this.http.get<{ userInfos: student[], classInfo: className[], total: number }>('https://exam.gwxgt.com/exam-api/admin/get-all-students',
+    return this.http.get<{ userInfos: student[], classInfo: className[], total: number }>(environment.apiUrl + 'admin/get-all-students',
       {
         params: new HttpParams().set('perPage', perPage).set('page', page).set('type', type).set('condition', condition)
       }
@@ -134,7 +135,7 @@ export class AdminService {
   }
 
   getAllExerciseTitle(page: number, perPage: number, type: number, condition: string): Observable<{ data: exerciseModel[], total: number }> {
-    return this.http.get<{ data: exerciseModel[], total: number }>('https://exam.gwxgt.com/exam-api/admin/get-all-exercise-title',
+    return this.http.get<{ data: exerciseModel[], total: number }>(environment.apiUrl + 'admin/get-all-exercise-title',
       {
         params: new HttpParams().set('perPage', perPage).set('page', page).set('type', type).set('condition', condition)
       }
@@ -142,65 +143,65 @@ export class AdminService {
   }
 
   getAllExericiseSection(id: string): Observable<{ data: exerciseSection[] }> {
-    return this.http.get<{ data: exerciseSection[] }>('https://exam.gwxgt.com/exam-api/admin/get-all-exercise-section',
+    return this.http.get<{ data: exerciseSection[] }>(environment.apiUrl + 'admin/get-all-exercise-section',
       { params: new HttpParams().set('id', id) }
     );
   }
 
   getAllClassroomEntries(): Observable<{ data: any[] }> {
-    return this.http.get<{ data: any[] }>('https://exam.gwxgt.com/exam-api/admin/get-all-classrooms');
+    return this.http.get<{ data: any[] }>(environment.apiUrl + 'admin/get-all-classrooms');
   }
 
   getAllCollegeEntries(): Observable<{ college: college[] }> {
-    return this.http.get<{ college: college[] }>('https://exam.gwxgt.com/exam-api/admin/get-all-colleges');
+    return this.http.get<{ college: college[] }>(environment.apiUrl + 'admin/get-all-colleges');
   }
 
   getAllMajorEntries(): Observable<{ major: major[], _f: string[] }> {
-    return this.http.get<{ major: major[], _f: string[] }>('https://exam.gwxgt.com/exam-api/admin/get-all-major');
+    return this.http.get<{ major: major[], _f: string[] }>(environment.apiUrl + 'admin/get-all-major');
   }
 
   getAllClassroomStudentDetail(id: string): Observable<{ classroomData: classroomDetailModel[] }> {
-    return this.http.get<{ classroomData: classroomDetailModel[] }>('https://exam.gwxgt.com/exam-api/admin/get-classroom-detail', {
+    return this.http.get<{ classroomData: classroomDetailModel[] }>(environment.apiUrl + 'admin/get-classroom-detail', {
       params: new HttpParams().set('id', id),
     });
   }
 
   getAllExamsDetails(id: string): Observable<{ examInfos: studentExamsModel[] }> {
-    return this.http.get<{ examInfos: studentExamsModel[] }>('https://exam.gwxgt.com/exam-api/admin/get-user-exams-detail', {
+    return this.http.get<{ examInfos: studentExamsModel[] }>(environment.apiUrl + 'admin/get-user-exams-detail', {
       params: new HttpParams().set('id', id),
     });
   }
 
   getAllQuestionsEntries(id: string): Observable<{ questions: questions[] }> {
-    return this.http.get<{ questions: questions[] }>('https://exam.gwxgt.com/exam-api/admin/get-all-questions', {
+    return this.http.get<{ questions: questions[] }>(environment.apiUrl + 'admin/get-all-questions', {
       params: new HttpParams().set('id', id),
     });
   }
 
   getAllExerciseQuestionsEntries(id: string): Observable<{ questions: questions[] }> {
-    return this.http.get<{ questions: questions[] }>('https://exam.gwxgt.com/exam-api/admin/get-all-exercise-questions', {
+    return this.http.get<{ questions: questions[] }>(environment.apiUrl + 'admin/get-all-exercise-questions', {
       params: new HttpParams().set('id', id),
     });
   }
 
   getPaperView(id: string): Observable<{ paper: Paper }> {
-    return this.http.get<{ paper: Paper }>('https://exam.gwxgt.com/exam-api/admin/paper-view', {
+    return this.http.get<{ paper: Paper }>(environment.apiUrl + 'admin/paper-view', {
       params: new HttpParams().set('id', id)
     })
   }
 
-  getFeedbackData(page: number, perPage: number): Observable<{ feedback: feedback[], total : number }> {
-    return this.http.get<{ feedback: feedback[], total : number }>('https://exam.gwxgt.com/exam-api/admin/get-feedback',
-    {
-      params: new HttpParams().set('perPage', perPage).set('page', page)
-    })
+  getFeedbackData(page: number, perPage: number): Observable<{ feedback: feedback[], total: number }> {
+    return this.http.get<{ feedback: feedback[], total: number }>(environment.apiUrl + 'admin/get-feedback',
+      {
+        params: new HttpParams().set('perPage', perPage).set('page', page)
+      })
 
   }
 
   updateTeacherExam(teacher: string[], type: number, college: string, exam: string, classroom: string[]): Observable<{ exams: exam[] }> {
     const updateData = { teacher: teacher, college: college, exam: exam, classroom: classroom, type: type }
     return this.http.post<{ exams: exam[] }>(
-      'https://exam.gwxgt.com/exam-api/admin/update-teacher-exam',
+      environment.apiUrl + 'admin/update-teacher-exam',
       {}
     )
       .pipe(
@@ -212,7 +213,7 @@ export class AdminService {
 
   updateExamStatus(): Observable<{ status: boolean }> {
     return this.http.get<{ status: boolean }>(
-      'https://exam.gwxgt.com/exam-api/admin/update-exam-status'
+      environment.apiUrl + 'admin/update-exam-status'
     )
       .pipe(
         tap(() => {
@@ -223,7 +224,7 @@ export class AdminService {
 
   addCollege(data: college) {
     return this.http.post<{ status: boolean }>(
-      'https://exam.gwxgt.com/exam-api/admin/add-college',
+      environment.apiUrl + 'admin/add-college',
       data
     )
       .pipe(
@@ -235,7 +236,7 @@ export class AdminService {
 
   addMajor(data: major) {
     return this.http.post<{ status: boolean }>(
-      'https://exam.gwxgt.com/exam-api/admin/add-major',
+      environment.apiUrl + 'admin/add-major',
       data
     )
       .pipe(
@@ -248,7 +249,7 @@ export class AdminService {
   addClassroom(data: classroom) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/add-classroom',
+        environment.apiUrl + 'admin/add-classroom',
         data
       )
       .pipe(
@@ -270,7 +271,7 @@ export class AdminService {
     }
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/add-teacher',
+        environment.apiUrl + 'admin/add-teacher',
         userData
       )
       .pipe(
@@ -295,7 +296,7 @@ export class AdminService {
     }
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/add-user',
+        environment.apiUrl + 'admin/add-user',
         userData
       )
       .pipe(
@@ -320,7 +321,7 @@ export class AdminService {
 
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/add-paper',
+        environment.apiUrl + 'admin/add-paper',
         paperData
       )
       .pipe(
@@ -342,7 +343,7 @@ export class AdminService {
 
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/add-question',
+        environment.apiUrl + 'admin/add-question',
         { id: id, data: questionData }
       )
       .pipe(
@@ -354,7 +355,7 @@ export class AdminService {
   }
 
   uploadPaper(file: FormData) {
-    return this.http.post<{ status: boolean }>('https://exam.gwxgt.com/exam-api/admin/upload-paper',
+    return this.http.post<{ status: boolean }>(environment.apiUrl + 'admin/upload-paper',
       file, {
       reportProgress: true,
       observe: 'events'
@@ -364,8 +365,8 @@ export class AdminService {
       );
   }
 
-  uploadVocabulary(file: FormData){
-    return this.http.post<{ status: boolean }>('https://exam.gwxgt.com/exam-api/admin/upload-vocabulary',
+  uploadVocabulary(file: FormData) {
+    return this.http.post<{ status: boolean }>(environment.apiUrl + 'admin/upload-vocabulary',
       file, {
       reportProgress: true,
       observe: 'events'
@@ -376,7 +377,7 @@ export class AdminService {
   }
 
   uploadExc(file: FormData) {
-    return this.http.post<{ status: boolean }>('https://exam.gwxgt.com/exam-api/admin/upload-exc',
+    return this.http.post<{ status: boolean }>(environment.apiUrl + 'admin/upload-exc',
       file, {
       reportProgress: true,
       observe: 'events'
@@ -387,7 +388,7 @@ export class AdminService {
   }
 
   uploadStudents(file: FormData) {
-    return this.http.post<{ status: boolean }>('https://exam.gwxgt.com/exam-api/admin/upload-students',
+    return this.http.post<{ status: boolean }>(environment.apiUrl + 'admin/upload-students',
       file, {
       reportProgress: true,
       observe: 'events'
@@ -398,19 +399,19 @@ export class AdminService {
   }
 
   downloadPaperTemp() {
-    return this.http.get('https://exam.gwxgt.com/exam-api/admin/download/paper-template', { responseType: 'blob' })
+    return this.http.get(environment.apiUrl + 'admin/download/paper-template', { responseType: 'blob' })
   }
 
   downloadExerciseTemp() {
-    return this.http.get('https://exam.gwxgt.com/exam-api/admin/download/exc-template', { responseType: 'blob' })
+    return this.http.get(environment.apiUrl + 'admin/download/exc-template', { responseType: 'blob' })
   }
 
   downloadstudentsTemp() {
-    return this.http.get('https://exam.gwxgt.com/exam-api/admin/download/student-template', { responseType: 'blob' })
+    return this.http.get(environment.apiUrl + 'admin/download/student-template', { responseType: 'blob' })
   }
 
   downloadClassroomData(id: string) {
-    return this.http.get('https://exam.gwxgt.com/exam-api/admin/download/classroom-data', { params: new HttpParams().set('id', id), responseType: 'blob' })
+    return this.http.get(environment.apiUrl + 'admin/download/classroom-data', { params: new HttpParams().set('id', id), responseType: 'blob' })
   }
 
   postSubmitExam(description: string, major: string, date: Date, time: Time, paperId: string, isAuto: boolean) {
@@ -429,7 +430,7 @@ export class AdminService {
 
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/submit-exam',
+        environment.apiUrl + 'admin/submit-exam',
         examData
       )
       .pipe(
@@ -442,7 +443,7 @@ export class AdminService {
   deleteExam(id: string) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/delete-exam',
+        environment.apiUrl + 'admin/delete-exam',
         { id: id }
       )
       .pipe(
@@ -455,7 +456,7 @@ export class AdminService {
   deleteQuestion(id: string, index: number) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/delete-question',
+        environment.apiUrl + 'admin/delete-question',
         { id: id, index: index }
       )
       .pipe(
@@ -468,7 +469,7 @@ export class AdminService {
   deleteExerciseQuestion(id: string, index: number) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/delete-exercise-question',
+        environment.apiUrl + 'admin/delete-exercise-question',
         { id: id, index: index }
       )
       .pipe(
@@ -482,7 +483,7 @@ export class AdminService {
   deleteTeacherClassroom(id: string, classroom: string) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/delete-teacher-classroom',
+        environment.apiUrl + 'admin/delete-teacher-classroom',
         { id: id, data: classroom }
       )
       .pipe(
@@ -495,7 +496,7 @@ export class AdminService {
   deleteClassroomExam(id: string, examId: string) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/delete-classroom-exam',
+        environment.apiUrl + 'admin/delete-classroom-exam',
         { id: id, data: examId }
       )
       .pipe(
@@ -508,7 +509,7 @@ export class AdminService {
   deleteCollege(id: string) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/delete-college',
+        environment.apiUrl + 'admin/delete-college',
         { id: id }
       )
       .pipe(
@@ -521,7 +522,7 @@ export class AdminService {
   deleteMajor(id: string) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/delete-major',
+        environment.apiUrl + 'admin/delete-major',
         { id: id }
       )
       .pipe(
@@ -534,7 +535,7 @@ export class AdminService {
   deleteClassroom(id: string) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/delete-classroom',
+        environment.apiUrl + 'admin/delete-classroom',
         { id: id }
       )
       .pipe(
@@ -547,7 +548,7 @@ export class AdminService {
   deleteTeacherExam(id: string) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/delete-teacher-exam',
+        environment.apiUrl + 'admin/delete-teacher-exam',
         { id: id }
       )
       .pipe(
@@ -560,7 +561,7 @@ export class AdminService {
   deleteTeacher(id: string, classroom: string[]) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/delete-teacher',
+        environment.apiUrl + 'admin/delete-teacher',
         { id: id, classroom: classroom }
       )
       .pipe(
@@ -573,7 +574,7 @@ export class AdminService {
   deleteUser(id: string, classroom: string) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/delete-user',
+        environment.apiUrl + 'admin/delete-user',
         { id: id, classroom: classroom }
       )
       .pipe(
@@ -586,7 +587,7 @@ export class AdminService {
   deletePaper(id: string) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/delete-paper',
+        environment.apiUrl + 'admin/delete-paper',
         { id: id }
       )
       .pipe(
@@ -599,7 +600,7 @@ export class AdminService {
   deleteExercise(id: string) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/delete-exercise',
+        environment.apiUrl + 'admin/delete-exercise',
         { id: id }
       )
       .pipe(
@@ -612,7 +613,7 @@ export class AdminService {
   updateUser(id: string, updateData: userInfoSubmitModel) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/update-user',
+        environment.apiUrl + 'admin/update-user',
         { id: id, data: updateData }
       )
       .pipe(
@@ -626,7 +627,7 @@ export class AdminService {
     if (type == 0) {
       return this.http
         .post<{ status: boolean }>(
-          'https://exam.gwxgt.com/exam-api/admin/update-teacher-classroom',
+          environment.apiUrl + 'admin/update-teacher-classroom',
           { id: id, classroom: data }
         )
         .pipe(
@@ -637,7 +638,7 @@ export class AdminService {
     } else {
       return this.http
         .post<{ status: boolean }>(
-          'https://exam.gwxgt.com/exam-api/admin/update-teacher-paper',
+          environment.apiUrl + 'admin/update-teacher-paper',
           { id: id, paper: data, i: index }
         )
         .pipe(
@@ -652,7 +653,7 @@ export class AdminService {
   updateClassroom(id: string, updateData: classroom) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/update-class',
+        environment.apiUrl + 'admin/update-class',
         { id: id, data: updateData, type: 1 }
       )
       .pipe(
@@ -665,7 +666,7 @@ export class AdminService {
   updateExam(id: string, updateData: examUpdateModel) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/update-exam',
+        environment.apiUrl + 'admin/update-exam',
         { id: id, data: updateData }
       )
       .pipe(
@@ -678,7 +679,7 @@ export class AdminService {
   updatePaper(id: string, updateData: paperUpdateMode) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/update-paper-details',
+        environment.apiUrl + 'admin/update-paper-details',
         { id: id, data: updateData }
       )
       .pipe(
@@ -691,7 +692,7 @@ export class AdminService {
   updateQuestion(id: string, index: string, updateData: questions) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/update-question',
+        environment.apiUrl + 'admin/update-question',
         { id: id, index: index, data: updateData }
       )
       .pipe(
@@ -704,7 +705,7 @@ export class AdminService {
   updateExerciseQuestion(id: string, index: string, updateData: questions) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/update-exericse-question',
+        environment.apiUrl + 'admin/update-exericse-question',
         { id: id, index: index, data: updateData }
       )
       .pipe(
@@ -717,7 +718,7 @@ export class AdminService {
   updatePaperId(id: string, paperId: string) {
     return this.http
       .post<{ status: boolean }>(
-        'https://exam.gwxgt.com/exam-api/admin/update-paperId',
+        environment.apiUrl + 'admin/update-paperId',
         { id: id, PaperId: paperId }
       )
       .pipe(
@@ -728,7 +729,7 @@ export class AdminService {
   }
 
   exportExerciseData(id: string) {
-    return this.http.get('https://exam.gwxgt.com/exam-api/admin/download/M_exercise-data', { params: new HttpParams().set('id', id), responseType: 'blob' })
+    return this.http.get(environment.apiUrl + 'admin/download/M_exercise-data', { params: new HttpParams().set('id', id), responseType: 'blob' })
   }
 }
 

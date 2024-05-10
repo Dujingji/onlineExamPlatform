@@ -34,10 +34,16 @@
           <div class="top_2" *ngIf="state === 'collapsed'" (click)="toggleBlock()">
             <mat-icon>keyboard_arrow_down</mat-icon>
           </div>
-          <div class="top_2" *ngIf="state === 'expanded'" (click)="toggleBlock()"> <mat-icon>keyboard_arrow_up</mat-icon> </div>
+          <div class="top_2" *ngIf="state === 'expanded'" (click)="toggleBlock()">
+            <mat-icon>keyboard_arrow_up</mat-icon> </div>
         </div>
-
-        <div class="divider"></div>
+        <div class="top_sub">
+          <div class="top_sub_content" *ngIf="state === 'expanded'">
+            <span nz-icon nzType="left" nzTheme="outline" (click)="goNextMonth(0)"></span>
+            <span nz-icon nzType="right" nzTheme="outline" (click)="goNextMonth(1)"></span>
+          </div>
+          <div class="divider"></div>
+        </div>
         <div class="calendar" #content [@expandCollapse]="state">
           <div class="week-day" *ngFor="let week of calendar; let i = index">
             <div class="day" (click)="toggleEvents(day)" *ngFor="let day of week; let i = index" [ngClass]="
@@ -68,7 +74,8 @@
           {{element}}</div>
       </div>
     </div>
-    <div class="empty" *ngIf="(current ? current.dailys.length === 0 : true) &&(expendedDate ? expendedDate.today === false : true)">
+    <div class="empty"
+      *ngIf="(current ? current.dailys.length === 0 : true) &&(expendedDate ? expendedDate.today === false : true)">
       <nz-empty></nz-empty>
     </div>
     <div class="row_r" *ngFor="let item of current ? current.dailys : []; let i = index">

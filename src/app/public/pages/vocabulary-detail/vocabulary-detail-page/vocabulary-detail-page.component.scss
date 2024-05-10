@@ -15,6 +15,17 @@ audio {
   /* 当鼠标悬停时变为手指形状 */
 }
 
+.sound-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: lightblue;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+
 .means {
   font-size: larger;
 }

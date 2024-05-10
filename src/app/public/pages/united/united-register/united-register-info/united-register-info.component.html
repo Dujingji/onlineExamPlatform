@@ -1,0 +1,39 @@
+<div class="content">
+  <nz-spin [nzSpinning]="loading" nzTip="加载中...">
+    <nz-descriptions nzTitle="报考信息" nzBordered>
+      <nz-descriptions-item nzTitle="学生姓名"> {{data ? data.std_name : ''}} </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="性别">
+        {{data ? data.gerden : ''}}
+      </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="证件号" [nzSpan]="3"> {{data ? data.ID : ''}} </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="所属院校" [nzSpan]="24"> {{data ? data.college : ''}} </nz-descriptions-item>
+    </nz-descriptions>
+    <nz-descriptions nzBordered nzLayout="vertical">
+      <nz-descriptions-item nzTitle="公共课" [nzSpan]="24"> 英语、政治理论 </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="专业基础课" [nzSpan]="24">
+        <div>
+          <nz-radio-group [(ngModel)]="_foudation" (ngModelChange)="foundChange()">
+            <label nz-radio *ngFor="let found of _foundList" [nzValue]="found.value">{{found.label}}</label>
+          </nz-radio-group>
+        </div>
+      </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="专业综合课" [nzSpan]="24">
+        <div>
+          <nz-radio-group [(ngModel)]="_comphensive" (ngModelChange)="comphensiveChange()">
+            <label nz-radio *ngFor="let comphensive of _comphensiveList"
+              [nzValue]="comphensive.value">{{comphensive.label}}</label>
+          </nz-radio-group>
+        </div>
+      </nz-descriptions-item>
+      <nz-descriptions-item nzTitle="收费标准" [nzSpan]="24">
+        <div class="payment">{{payment}}</div>
+      </nz-descriptions-item>
+    </nz-descriptions>
+  </nz-spin>
+</div>
+
+<div class="footer">
+  <button nz-button nzType="primary" (click)="onSubmit()" [disabled]="!validate">报名参考</button>
+  <button nz-button nzType="default" (click)="onSave()" [disabled]="loading || !validate">保存信息</button>
+  <button nz-button nzType="primary" (click)="clear()" nzDanger [disabled]="loading || (_comphensive.length === 0 && _foudation.length === 0)">清除所选科目</button>
+</div>

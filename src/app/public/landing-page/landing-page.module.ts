@@ -11,6 +11,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
     NzFormModule,
     NzSelectModule,
     NzGridModule,
-    NzAlertModule
+    NzAlertModule,
+    NzInputModule
   ],
 })
 export class LandingPageModule { }

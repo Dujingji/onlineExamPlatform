@@ -199,6 +199,18 @@
     display: flex;
     flex-direction: column;
 
+    .top_sub{
+      margin-top: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 8px;
+      .top_sub_content{
+        display: flex;
+        flex-direction: row;
+      }
+    }
+
     .date {
       font-size: 1.25rem;
       font-weight: bolder;

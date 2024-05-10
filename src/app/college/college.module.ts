@@ -24,6 +24,12 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzTreeViewModule } from 'ng-zorro-antd/tree-view';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { CreateExamDialogComponent } from './exams-list/create-exam-dialog/create-exam-dialog.component';
+import { BaiduMapComponent } from '../shared/baidu-map/baidu-map.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { CreateClassroomDialogComponent } from './exams-list/create-classroom-dialog/create-classroom-dialog.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +38,10 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
     StudentExerciseListComponent,
     StudentDaliyListComponent,
     StudentVocabularyListComponent,
-    ExamsListComponent
+    ExamsListComponent,
+    CreateExamDialogComponent,
+    BaiduMapComponent,
+    CreateClassroomDialogComponent
   ],
   imports: [
     CommonModule,
@@ -53,7 +62,10 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
     NzCheckboxModule,
     NzTreeViewModule,
     NzCollapseModule,
-    NzProgressModule
+    NzProgressModule,
+    NzDatePickerModule,
+    NzModalModule,
+    CKEditorModule
   ]
 })
 export class CollegeModule { }

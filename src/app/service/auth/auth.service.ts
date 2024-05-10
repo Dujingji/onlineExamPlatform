@@ -5,6 +5,8 @@ import { Observable, Subject, catchError, first, tap, throwError } from "rxjs";
 import { AuthModel } from 'src/modules/auth/auth';
 import { user } from "src/modules/user/user";
 import { CollegesService } from "../college/college.service";
+import { environment } from "src/environments/environment";
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Injectable({ providedIn: "root" })
 export class AuthService {
@@ -18,9 +20,14 @@ export class AuthService {
   private account: string = "student";
   private logoutTimer: any;
   private loginStatus?: boolean
+  private accountRole?: string
 
   getAdmin() {
     return this.account
+  }
+
+  get role(){
+    return this.accountRole
   }
 
   getIsAuthenticated() {
@@ -35,18 +42,39 @@ export class AuthService {
     return this.loginSub
   }
 
-  getCollegeList(): Observable<{ college: {name : string}[] }> {
-    return this.http.get<{ college:  {name : string}[] }>('https://exam.gwxgt.com/exam-api/auth/college-list')
+  getCollegeList(): Observable<{ college: { name: string }[] }> {
+    return this.http.get<{ college: { name: string }[] }>(environment.apiUrl + 'auth/college-list')
   }
 
-  getMajorList(condition: number, major: string): Observable<{ data:  {name : string}[] }> {
-    return this.http.get<{ data:  {name : string}[] }>('https://exam.gwxgt.com/exam-api/auth/major', {
+  getMajorList(condition: number, major: string): Observable<{ data: { name: string }[] }> {
+    return this.http.get<{ data: { name: string }[] }>(environment.apiUrl + 'auth/major', {
       params: new HttpParams().set('condition', condition).set('major', major)
     })
   }
 
-  guesterLogin() {
+  getAccountRole() {
+    return this.http.get<{ data: { role: string }, status : boolean }>(environment.apiUrl + 'united/get-role')
+      .pipe(tap(res => {
+        if(res.status)
+          this.accountRole = res.data.role
+      }))
+  }
 
+  guestLogin(username: string, password: string) {
+    const authData = { username: username, password: password }
+    this.http.post<{ token: string, expiresIn: number, username: string, uid: string }>(environment.apiUrl + 'auth/guest-login', authData)
+      .pipe(first())
+      .pipe(catchError(this.handleError))
+      .subscribe(res => {
+        this.token = res.token;
+        localStorage.setItem("username", res.username);
+        localStorage.setItem("information", res.uid);
+        this.logoutTimer = setTimeout(() => { this.logout() }, res.expiresIn * 1000);
+        const now = new Date();
+        const expiresDate = new Date(now.getTime() + (res.expiresIn * 1000));
+        this.storeLoginDetails(this.token, expiresDate, this.refresh);
+        this.router.navigate(['/public/homePage/united/register'])
+      })
   }
 
   setLogoutTime(accessToken: string, expiresIn: number, refresh_token: string) {
@@ -85,10 +113,40 @@ export class AuthService {
     }
   }
 
-  constructor(private http: HttpClient, private router: Router, private collegesService: CollegesService) { }
+  constructor(private http: HttpClient, private router: Router, private collegesService: CollegesService, private notification: NzNotificationService) { }
 
+  vaildaUserName(username: string): Observable<{ status: boolean }> {
+    return this.http.get<{ status: boolean }>(environment.apiUrl + 'auth/vaildat-username', {
+      params: new HttpParams().set('username', username)
+    })
+  }
+
+  guestRegister(userData: any) {
+    this.http.post<{ status: boolean, token: string, expiresIn: number, username: string, uid: string, message: string }>(environment.apiUrl + 'auth/guest-register', userData)
+      .pipe(first())
+      .pipe(catchError(this.handleGuestError))
+      .subscribe(data => {
+        if (data.status) {
+          this.token = data.token;
+          localStorage.setItem("username", data.username);
+          localStorage.setItem("information", data.uid);
+          this.logoutTimer = setTimeout(() => { this.logout() }, data.expiresIn * 1000);
+          const now = new Date();
+          const expiresDate = new Date(now.getTime() + (data.expiresIn * 1000));
+          this.storeLoginDetails(this.token, expiresDate, this.refresh);
+          this.router.navigate(['/public/homePage/united/register'])
+        } else {
+          this.notification.blank(
+            '注册失败',
+            data.message,
+            { nzPlacement: 'top' }
+          );
+        }
+      })
+  }
 
   logout() {
+    this.accountRole = undefined
     this.token = '';
     this.isAuthenticated = false;
     this.authenticatedSub.next(false);
@@ -110,7 +168,7 @@ export class AuthService {
   refreshToken() {
     let token = this.getRefreshToken()
     let username = localStorage.getItem('lastLoginUserName');
-    this.http.post<{ accessToken: string, expiresIn: number, refresh_token: string }>('https://exam.gwxgt.com/exam-api/auth/refresh', { token: token, username: username })
+    this.http.post<{ accessToken: string, expiresIn: number, refresh_token: string }>(environment.apiUrl + 'auth/refresh', { token: token, username: username })
       .pipe(catchError(this.handleRefreshError))
       .subscribe(res => {
         const now = new Date()
@@ -127,11 +185,11 @@ export class AuthService {
   autoRefreshToken(): Observable<{ accessToken: string, expiresIn: number, refresh_token: string }> {
     let token = this.getRefreshToken()
     let username = localStorage.getItem('lastLoginUserName');
-    return this.http.post<{ accessToken: string, expiresIn: number, refresh_token: string }>('https://exam.gwxgt.com/exam-api/auth/refresh', { token: token, username: username })
+    return this.http.post<{ accessToken: string, expiresIn: number, refresh_token: string }>(environment.apiUrl + 'auth/refresh', { token: token, username: username })
   }
 
   autoLogin(username: string, refresh_token: string) {
-    this.http.post<{ _AT: string }>('https://exam.gwxgt.com/exam-api/auth/auto-login',
+    this.http.post<{ _AT: string }>(environment.apiUrl + 'auth/auto-login',
       { username: username, token: refresh_token })
       .pipe(catchError(this.handleAutoLoginError))
       .pipe(first())
@@ -143,7 +201,7 @@ export class AuthService {
 
   loginUser(username: string, password: string, access_token: string, mark: string) {
     const authData: AuthModel = { username: username, password: password, access_token: access_token, mark: mark };
-    this.http.post<{ token: string, expiresIn: number, body: user, college: string, username: string, refresh_token: string }>('https://exam.gwxgt.com/exam-api/auth/login/', authData)
+    this.http.post<{ token: string, expiresIn: number, body: user, college: string, username: string, refresh_token: string }>(environment.apiUrl + 'auth/login/', authData)
       .pipe(catchError(this.handleError))
       .pipe(first())
       .subscribe(res => {
@@ -194,6 +252,14 @@ export class AuthService {
     }
     return throwError(() =>
       new Error('自动登录失败！')
+    );
+  }
+
+  handleGuestError(error: HttpErrorResponse) {
+    console.error(error.error.message);
+    alert('注册失败！');
+    return throwError(() =>
+      new Error('注册失败！')
     );
   }
 

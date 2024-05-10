@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { first } from 'rxjs';
 import { DailyService } from 'src/app/service/daily/daily-service.service';
 
@@ -10,25 +11,60 @@ import { DailyService } from 'src/app/service/daily/daily-service.service';
 export class VocabularyCalendarComponent implements OnInit {
 
   public calendar: Array<Array<day>> = []
-  public total : number = 0
+  public total: number = 0
+  private startY: number = 0
+  private scolled: number = 0
+  private index: number[] = []
+  private year: number = 0;
+  private month: number = 0
 
   ngOnInit(): void {
-
-    this.fetchData()
+    const date = new Date()
+    this.year = this.dailyService.calendar_year
+    this.month = this.dailyService.calendar_month
+    this.fetchData(this.year, this.month)
   }
 
-  constructor(private dailyService: DailyService) {
+  constructor(private dailyService: DailyService, private router: Router) {
 
   }
 
-  fetchData(){
-    this.dailyService.getFetchCheckDate(localStorage.getItem('information')!)
-    .pipe(first())
-    .subscribe(data =>{
-      this.total = data.data.length
-      this.createCalender(data.data)
-    })
+  goNextMonth(condition: number) {
+    this.calendar = []
+    if (condition === 0) {
+      this.month -= 1
+      this.dailyService.calendar_month -= 1
+      if(this.month < 1){
+        this.dailyService.calendar_year -= 1
+        this.year -= 1
+        this.dailyService.calendar_month = 12
+        this.month = 12
+      }
+      this.fetchData(this.year, this.month)
+    }
+    else{
 
+      this.month += 1
+      this.dailyService.calendar_month += 1
+      if(this.month > 12){
+        this.year += 1
+        this.dailyService.calendar_year += 1
+        this.month = 1
+        this.dailyService.calendar_month = 1
+      }
+      this.fetchData(this.year, this.month)
+    }
+
+  }
+
+  fetchData(year: number, month: number) {
+    this.dailyService.getFetchCheckDate(localStorage.getItem('information')!, year, month)
+      .pipe(first())
+      .subscribe(data => {
+        this.total = data.data.length
+        this.index = data.data
+        this.createCalender(data.data)
+      })
   }
 
   createCalender(index: number[]) {
@@ -67,7 +103,7 @@ export class VocabularyCalendarComponent implements OnInit {
       if (week.length < 7) {
         week.push({
           active: true,
-          today: i === date.getDate() && year === date.getFullYear() && month === date.getMonth(),
+          today: i === date.getDate() && this.year === date.getFullYear() && this.month === date.getMonth() + 1,
           date: i,
           selector: index.indexOf(i) > -1
         })
@@ -77,7 +113,7 @@ export class VocabularyCalendarComponent implements OnInit {
         week = new Array<day>()
         week.push({
           active: true,
-          today: i === date.getDate() && year === date.getFullYear() && month === date.getMonth(),
+          today: i === date.getDate() && this.year === date.getFullYear() && this.month === date.getMonth() + 1,
           date: i,
           selector: index.indexOf(i) > -1
         })
@@ -95,20 +131,23 @@ export class VocabularyCalendarComponent implements OnInit {
       })
     }
     this.calendar.push(week)
-    console.log(this.calendar)
   }
 
-
+  goToDetailList(day: day) {
+    const date = new Date()
+    let url = '/public/homePage/vocabulary-detail-list/' + day.date + '/' + (this.month) + '/' + this.year
+    this.router.navigate([url])
+  }
 
   getDate(mode: number) {
 
     let now = new Date()
 
     if (mode === 0) {
-      return now.getFullYear() + '-' + (now.getMonth() + 1)
+      return this.year + '-' + this.month
     }
     else {
-      return now.getFullYear() + '-' + (now.getMonth() + 2)
+      return this.year + '-' + (this.month + 1)
     }
 
   }

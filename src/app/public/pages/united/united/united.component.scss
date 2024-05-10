@@ -1,0 +1,63 @@
+.container{
+  height: 100%;
+  width: 100%;
+  max-width: 800px;
+  background-color: white;
+  padding: 20px 16px 20px 16px ;
+  overflow: scroll;
+}
+
+.description-box{
+  border: 2px dashed grey;
+  padding: 8px 8px 8px 8px;
+
+}
+
+nz-list-item{
+  flex-direction: column;
+}
+
+mat-icon{
+  margin-right: 4px;
+  margin-left: 4px;
+}
+
+.top{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  align-items: center;
+  padding: 8px 8px 8px 8px;
+  .top_title{
+    font-size: 1.35rem;
+    font-family: kaiti;
+    font-weight: 600;
+  }
+
+  .top_button{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    right: 16px;
+    font-weight: 600;
+  }
+}
+
+mat-divider{
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+nz-descriptions .ant-descriptions-header {
+  font-size: 1.15rem;
+}
+
+
+*{
+  scrollbar-width: 0;
+}
+
+:host ::-webkit-scrollbar{
+  display: none;
+}

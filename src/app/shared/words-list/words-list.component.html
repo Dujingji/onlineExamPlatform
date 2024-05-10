@@ -1,0 +1,32 @@
+
+<div class="list-container" >
+  <div class="list_text_container">
+    <div class="title_text">
+      <div class="title_text_t">单词总结</div>
+      <mat-slide-toggle class="list_button" color="warn" labelPosition="before" (change)="settingChange()"
+        [checked]="allFlip" [ngStyle]="{ 'transform': 'scale(1.15)' }">
+
+      </mat-slide-toggle>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="detail_container" *ngFor="let word of words; let i = index"
+      (click)="vocabularyDetail(word.vocabulary, i, $event) " >
+      <div class="list_text">
+        <div class="word_text">{{word.vocabulary}}</div>
+        <button id="sound_b" nz-button nzType="default" class="sound-button" (click)="playAudio(word.vocabulary)">
+          <span nz-icon nzType="sound" nzTheme="outline"> </span>  {{ '/' + word.symbol + '/'}}
+        </button>
+      </div>
+      <div *ngIf="!allFlip || word.flip">
+        <div class="mean_text" *ngFor="let t of word.v_type; let i = index">
+          <div>{{t + ' ' + (word.v_mean[i] )}}</div>
+        </div>
+      </div>
+      <div *ngIf="allFlip && !word.flip" class="colum_container">
+        <div class="shadow_colum"></div>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+
+  </div>
+</div>

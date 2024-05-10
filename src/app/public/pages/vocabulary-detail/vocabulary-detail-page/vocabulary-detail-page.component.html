@@ -1,49 +1,51 @@
 <div class="container">
   <audio #audioControl autoplay></audio>
   <div class="top-s">
-    <div class="top-button">
+    <div class="top-button" *ngIf="!PageStatus">
       <div class="remake" *ngIf="!status" (click)="nextVocabulary(0)">重新学习</div>
       <div class="deleted" *ngIf="!status" (click)="nextVocabulary(2)">太简单了</div>
     </div>
   </div>
   <div class="detail-container">
-    <div class="text">
-      <div class="vocabulary">{{vocabulary ? vocabulary.vocabulary : ''}}</div>
-      <div class="p_symbol">
-        <button class="icon-button" (click)="playAudio(vocabulary ? vocabulary.vocabulary : '', -1, 0)">
-          <i class="fas fa-volume-up"></i>
-          {{ '/' + (vocabulary ? vocabulary.p_symbol : '' )+ '/'}}
-        </button>
+    <nz-skeleton [nzLoading]="loading" [nzActive]="true" [nzAvatar]="true">
+      <div class="text">
+        <div class="vocabulary">{{vocabulary ? vocabulary.vocabulary : ''}}</div>
+        <div class="p_symbol">
+          <button nz-button nzType="default" class="sound-button"  (click)="playAudio(vocabulary ? vocabulary.vocabulary : '', -1, 0)">
+            <span nz-icon nzType="sound" nzTheme="outline"> </span>  {{ '/' + (vocabulary ? vocabulary.p_symbol : '' )+ '/'}}
+          </button>
+        </div>
       </div>
-    </div>
 
-    <mat-divider></mat-divider>
-
-    <div class="means" *ngFor="let t of vocabulary ? vocabulary.v_type : []; let i = index">
-      <div>{{t + ' ' + (vocabulary ? vocabulary.v_mean[i] : '')}}</div>
-    </div>
-
-    <mat-divider></mat-divider>
-
-    <div class="a-sentences">词性变化</div>
-    <div class="exchange" *ngFor="let t of vocabulary ? vocabulary.exchange : []; let i = index">
-      <div>{{t.length !== 0 ? t + '；' : ''}}</div>
-    </div>
-    <div class="exchange" *ngIf="vocabulary ? vocabulary.exchange.length === 0 : false">无</div>
-
-    <mat-divider></mat-divider>
-    <div class="a-sentences">例句</div>
-    <div *ngFor="let s of vocabulary ? vocabulary.sentences : []; let i = index">
-      <div class="hover-click-area" [innerHTML]="s.en | highlight: vocabulary ? vocabulary.vocabulary : ''"
-        (click)="playAudio(vocabulary ? vocabulary.vocabulary : '', i, 1)"></div>
-      <div class="cn">{{s.cn}}</div>
       <mat-divider></mat-divider>
-    </div>
+
+      <div class="means" *ngFor="let t of vocabulary ? vocabulary.v_type : []; let i = index">
+        <div>{{t + ' ' + (vocabulary ? vocabulary.v_mean[i] : '')}}</div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="a-sentences">词性变化</div>
+      <div class="exchange" *ngFor="let t of vocabulary ? vocabulary.exchange : []; let i = index">
+        <div>{{t.length !== 0 ? t + '；' : ''}}</div>
+      </div>
+      <div class="exchange" *ngIf="vocabulary ? vocabulary.exchange.length === 0 : false">无</div>
+
+      <mat-divider></mat-divider>
+      <div class="a-sentences">例句</div>
+      <div *ngFor="let s of vocabulary ? vocabulary.sentences : []; let i = index">
+        <div class="hover-click-area" [innerHTML]="s.en | highlight: vocabulary ? vocabulary.vocabulary : ''"
+          (click)="playAudio(vocabulary ? vocabulary.vocabulary : '', i, 1)"></div>
+        <div class="cn">{{s.cn}}</div>
+        <mat-divider></mat-divider>
+      </div>
+    </nz-skeleton>
 
     <div class="button-t"></div>
   </div>
   <div class="button-s">
-    <div class="next" *ngIf="!status" (click)="nextVocabulary(1)">下一个</div>
-    <div class="next" *ngIf="status" (click)="nextVocabulary(-1)">返回</div>
+    <div class="next" *ngIf="!status && !PageStatus" (click)="nextVocabulary(1)">下一个</div>
+    <div class="next" *ngIf="status && !PageStatus" (click)="nextVocabulary(-1)">返回</div>
+    <div  *ngIf="PageStatus" class="next" (click)="goBack()"> 返回 </div>
   </div>
 </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { first } from 'rxjs';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter, first } from 'rxjs';
 import { DailyService, vocabularyModel } from 'src/app/service/daily/daily-service.service';
 
 @Component({
@@ -10,8 +10,11 @@ import { DailyService, vocabularyModel } from 'src/app/service/daily/daily-servi
 })
 export class VocabularyDetailPageComponent implements OnInit {
 
-
+  public loading : boolean = true;
   public vocabulary?: vocabularyModel
+  public PageStatus : boolean = false
+  previousUrl: string | null = null;
+
   constructor(private dailyService: DailyService, private route: ActivatedRoute, private router: Router) {
 
   }
@@ -21,7 +24,16 @@ export class VocabularyDetailPageComponent implements OnInit {
   }
 
 
+  getStatus(){
+
+  }
+
+  goBack(){
+    window.history.back();
+  }
+
   ngOnInit(): void {
+    this.getStatus()
     this.fetchData(this.route.snapshot.paramMap.get('word')!)
   }
 
@@ -49,6 +61,7 @@ export class VocabularyDetailPageComponent implements OnInit {
       .pipe(first())
       .subscribe(data => {
         if (data)
+          this.loading = false
           this.vocabulary = data.data
       })
   }

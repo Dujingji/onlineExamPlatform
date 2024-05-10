@@ -1,0 +1,334 @@
+.page-container {
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  // flex-direction: column;
+  // max-width: 800px;
+  // width: 100%;
+  // height: 100%;
+  // position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  background-color: white;
+  max-width: 800px;
+  width: 100%;
+  height: 60%;
+}
+
+.status-bar {
+  flex-direction: row;
+}
+
+.text {
+  flex-direction: row;
+}
+
+audio {
+  display: none;
+}
+
+.sound-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: lightblue;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.container {
+  padding: 0px 0px 0px 0px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  /* 为浮动块定位 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* 居中子元素 */
+  overflow: hidden;
+}
+
+.p_symbol {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+  font-size: 1.2rem;
+  color: grey;
+}
+
+.vocabulary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+mat-toolbar {
+  background-color: lightblue;
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-container {
+  position: relative;
+  flex-direction: row;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 800px;
+  width: 100%;
+  background-color: white;
+  height: 40%;
+}
+
+.card-b {
+  box-shadow: 0 0 8px 2px lightblue;
+  margin: 10%;
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: orange;
+}
+
+::ng-deep .highlight {
+  color: orange;
+}
+
+.tip {
+  width: 100%;
+  max-width: 800px;
+  background-color: white;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.tip-text {
+  margin-left: 8px;
+  margin-right: 8px;
+  font-weight: bold;
+  font-size: larger;
+}
+
+.card-g {
+  box-shadow: 0 0 8px 2px lightblue;
+  margin: 10%;
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: lightseagreen;
+}
+
+.list-container {
+  background-color: white;
+  padding: 0px 0px 0px 0px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  /* 为浮动块定位 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* 居中子元素 */
+  overflow: hidden;
+}
+
+
+.list_text_container {
+  border-radius: 10px;
+  padding-left: 16px;
+  padding-top: 16px;
+  padding-right: 8px;
+  width: 100%;
+  max-width: 800px;
+  height: 100%;
+  overflow-y: scroll;
+  /* 允许垂直滚动 */
+  background-color: white;
+}
+
+.mean_text {
+  font-size: 1rem;
+}
+
+.word_text {
+  margin-right: 16px;
+}
+
+.list_button {
+  display: flex;
+  position: absolute;
+  right: 16px;
+}
+
+.title_text {
+  width: 100%;
+  display: flex;
+  position: relative;
+  align-items: center;
+  font-size: larger;
+  font-weight: bold;
+}
+
+.colum_container{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 12px;
+}
+
+.shadow_colum{
+  width: 100%; /* 长方形的宽度 */
+  height: 25px; /* 长方形的高度 */
+  border-radius: 10px;
+  background: repeating-linear-gradient(
+    45deg,   /* 斜杠的角度 */
+    #c0c0c0, /* 第一种颜色 */
+    #c0c0c0 10px,   /* 斜杠的宽度 10px */
+    #d3d3d3 10px,   /* 两种颜色之间无间隔，第二斜杠开始 */
+    #d3d3d3 20px    /* 第二斜杠结束位置 (10px + 10px 的宽度) */
+  );
+
+}
+
+.list_text {
+  display: flex;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-size: 1.25rem;
+  font-weight: bolder;
+}
+
+mat-divider {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.button-s {
+  position: absolute;
+  top: 80%;
+  /* 根据内容区高度调整 */
+  width: 100%;
+  max-width: 800px;
+  height: 20%;
+  background-color: rgba(255, 255, 255, 0.8);
+  /* 透视效果 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  /* 确保位于最顶层 */
+}
+
+.next {
+  background-color: lightseagreen;
+  height: 30%;
+  color: white;
+  margin: 16px;
+  width: 100%;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: large;
+  font-weight: bold;
+}
+
+.button-t {
+  width: 100%;
+  max-width: 800px;
+  height: 20%;
+  background-color: white;
+}
+
+
+// .upper-section, .lower-section {
+//   flex: 0.6 0.4; /* 这会使上下两个部分各占总空间的一半 */
+//   display: flex; /* 如果需要，可以在这里也使用flex布局来进一步组织内容 */
+//   justify-content: center; /* 中心对齐子元素 */
+//   align-items: center; /* 中心对齐子元素 */
+//   position: relative;
+//   width: 100%;
+//   height: 100%;
+// }
+
+// .card-container {
+//   width: 100%;
+//   height: 100%;
+//   display: flex;
+//   justify-content: center; /* 中心对齐子元素 */
+//   align-items: center; /* 中心对齐子元素 */
+//   overflow-x: hidden; /* 隐藏水平滚动条 */
+//   max-width: 100%; /* 避免容器超出视口宽度 */
+//   padding: 20px; /* 根据需要调整，为了有足够空间显示所有卡片 */
+// }
+
+// app-vocabulary-card{
+//   display: flex;
+//   justify-content: center; /* 中心对齐子元素 */
+//   align-items: center; /* 中心对齐子元素 */
+//   width: 100%;
+//   height: 100%;
+// }
+
+// app-vocabulary-card.unselected{
+//   margin-right: -22.5%; /* 通过负margin实现卡片之间的部分覆盖 */
+//   transition: transform 0.5s ease, opacity 0.5s ease; /* 平滑变换效果 */
+//   position: relative; /* 用于z-index堆叠 */
+//   opacity: 1; /* 未选中卡片透明度降低 */
+//   transform: scale(1); /* 未选中卡片缩小 */
+//   cursor: pointer; /* 改善用户交互体验 */
+// }
+
+// .card-container::-webkit-scrollbar {
+//   display: none; /* 对于Chrome、Safari和Opera */
+// }
+
+// .card-container {
+//   -ms-overflow-style: none; /* 对于IE和Edge */
+//   scrollbar-width: none; /* 对于Firefox */
+// }
+
+// app-vocabulary-card.selected {
+//   z-index: 2; /* 选中卡片显示在最上层 */
+//   transform: scale(1); /* 稍微放大并旋转选中卡片以突出显示 */
+// }
+
+// /* 修正第一个和最后一个卡片的样式，避免它们过于贴近容器边缘 */
+// app-vocabulary-card:first-child {
+//   margin-left: 20px; /* 根据需要调整 */
+// }
+
+// app-vocabulary-card:last-child {
+//   margin-right: 20px; /* 根据需要调整 */
+// }
+
+// app-vocabulary-card.unselected:hover {
+//   margin-right: 0;
+// }
+
+// app-vocabulary-card.selected:hover {
+//   margin-right: 0;
+// }

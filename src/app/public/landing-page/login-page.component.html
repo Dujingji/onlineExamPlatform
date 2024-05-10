@@ -70,14 +70,8 @@
             </form>
           </nz-spin>
         </nz-tab>
-        <nz-tab [nzTitle]="'访客登录'" (nzClick)="onChangeGuestTarget()">
-          <nz-alert
-              [nzType]="'info'"
-              [nzMessage]="'未开放'"
-              [nzDescription]="'请等待功能开放'"
-            ></nz-alert>
-            <p></p>
-          <nz-spin [nzSpinning]="guestLoading" [nzDelay]="500">
+        <nz-tab [nzTitle]="'注册账号'" (nzClick)="onChangeGuestTarget()">
+          <nz-spin [nzSpinning]="false" [nzDelay]="500">
             <div *ngIf="!isRegister">
               <form class="m-t-30" [formGroup]="guestLoginForm">
                 <mat-label for="username" class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">用户号</mat-label>
@@ -93,7 +87,7 @@
                   <a nz-button class="register-link" nzType="link" (click)="RegisterTarget()" nzBlock="true">没有账户？</a>
                 </div>
               </form>
-              <button [disabled]="!loginForm.valid" mat-flat-button color="primary" class="w-100">
+              <button [disabled]="!guestLoginForm.valid" mat-flat-button color="primary" (click)="onSubmit(0)" class="w-100">
                 访客登录
               </button>
             </div>
@@ -107,12 +101,14 @@
             <mat-divider></mat-divider>
             <form nz-form [formGroup]="guestRegisterForm">
               <nz-form-item>
-                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="username">用户名</nz-form-label>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="username">身份证号</nz-form-label>
                 <nz-form-control [nzSm]="14" [nzXs]="24" nzValidatingTip="验证中..." [nzErrorTip]="errorUserNameTip">
                   <input nz-input formControlName="username" id="username" />
                   <ng-template #errorUserNameTip let-control>
-                    <ng-container *ngIf="control.hasError('comfirm')"> 用户名已存在！</ng-container>
-                    <ng-container *ngIf="control.hasError('required')"> 用户名不能为空 </ng-container>
+                    <ng-container *ngIf="control.hasError('comfirm')"> 身份证号已注册！</ng-container>
+                    <ng-container *ngIf="control.hasError('required')"> 身份证号不能为空 </ng-container>
+                    <ng-container *ngIf="control.hasError('maxlength')"> 请输入18位有效身份证号码 </ng-container>
+                    <ng-container *ngIf="control.hasError('minlength')"> 请输入18位有效身份证号码 </ng-container>
                   </ng-template>
                 </nz-form-control>
               </nz-form-item>
@@ -141,30 +137,54 @@
                 </nz-form-control>
               </nz-form-item>
               <nz-form-item>
-                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="comfirm" nzRequired>选择教学点</nz-form-label>
-                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择教学点">
-                  <nz-select formControlName="college" nzShowSearch nzPlaceHolder="选择你的教学点..." nzAllowClear>
+                <nz-form-label nzRequired="true">性别</nz-form-label>
+                <nz-form-control>
+                  <nz-select formControlName="gerden" nzPlaceHolder="请选择您的性别" nzAllowClear>
+                    <nz-option *ngFor="let gerden of gerdenList" nzLabel="{{gerden.label}}"
+                      nzValue="{{gerden.value}}"> </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="grade">年级</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorGradeTip">
+                  <input nz-input type="number" formControlName="grade" id="grade" />
+                  <ng-template #errorGradeTip let-control>
+                    <ng-container *ngIf="control.hasError('minlength')">请输入正确的年级！</ng-container>
+                    <ng-container *ngIf="control.hasError('maxlength')"> 请输入正确的年级！</ng-container>
+                    <ng-container *ngIf="control.hasError('required')"> 请选择年级！ </ng-container>
+                    <ng-container *ngIf="control.hasError('min')"> 年级不符合要求！ </ng-container>
+                    <ng-container *ngIf="control.hasError('max')"> 年级不符合要求！ </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="comfirm" nzRequired>选择所属院校</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择所属院校">
+                  <nz-select formControlName="college" nzShowSearch nzPlaceHolder="选择你在的院校..." nzAllowClear>
                     <nz-option *ngFor="let college of college_list" nzLabel="{{college.name}}"
                       nzValue="{{college.name}}"> </nz-option>
                   </nz-select>
                 </nz-form-control>
               </nz-form-item>
               <nz-form-item>
-                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="major" nzRequired>专业基础课</nz-form-label>
-                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择类别">
-                  <nz-select formControlName="major" nzShowSearch nzPlaceHolder="选择你的类别" nzAllowClear>
-                    <nz-option *ngFor="let major of majorList" nzLabel="{{major.name}}" nzValue="{{major.name}}">
-                    </nz-option>
-                  </nz-select>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="phone_number">手机号</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzValidatingTip="验证中..." [nzErrorTip]="errorUserPNTip">
+                  <input nz-input formControlName="phone_number" id="phone_number" />
+                  <ng-template #errorUserPNTip let-control>
+                    <ng-container *ngIf="control.hasError('required')"> 手机号不能为空 </ng-container>
+                    <ng-container *ngIf="control.hasError('maxlength')"> 请输入11位有效手机号码 </ng-container>
+                    <ng-container *ngIf="control.hasError('minlength')"> 请输入11位有效手机号码 </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
-              <nz-form-item *ngIf="guestRegisterForm.value.major">
-                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="comphensive" nzRequired>专业综合课</nz-form-label>
-                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择专业综合课">
-                  <nz-select formControlName="comphensive" nzShowSearch nzPlaceHolder="选择你的专业综合课" nzAllowClear>
-                    <nz-option *ngFor="let element of comphensiveList" nzLabel="{{element.name}}"
-                      nzValue="{{element.name}}"></nz-option>
-                  </nz-select>
+              <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="std_name">学生姓名</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzValidatingTip="验证中..." [nzErrorTip]="errorUserStdNameTip">
+                  <input nz-input formControlName="std_name" id="std_name" />
+                  <ng-template #errorUserStdNameTip let-control>
+                    <ng-container *ngIf="control.hasError('required')"> 姓名不能为空 </ng-container>
+                  </ng-template>
                 </nz-form-control>
               </nz-form-item>
               <div class="cf-turnstile" data-sitekey="0x4AAAAAAAYFJRZapKWijDGw"></div>

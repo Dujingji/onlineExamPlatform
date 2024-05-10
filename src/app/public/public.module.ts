@@ -8,13 +8,14 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
-
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 
 import { HomePageModule } from './home-page/home-page.module';
 
+
 @NgModule({
   declarations: [
-    PublicComponent,
+    PublicComponent
   ],
   exports:[],
   imports: [

@@ -21,24 +21,29 @@
 
   <div class="calendar-container">
     <div class="date-title_top">
-      <div class="date"> {{getDate(0)}} <div>
-      <div class="divider"></div>
-    </div>
-
-    <div class="calendar">
-      <div class="week-day" *ngFor="let week of calendar; let i = index">
-        <div class="day" *ngFor="let day of week; let i = index" [ngClass]="{'active': day.active, 'inactive': !day.active, 'today': day.today, 'checked' : day.selector}">
-          <p>{{day.date}}</p>
+      <div class="date"> {{getDate(0)}}
+        <div class="top_1">
+          <div class="top_2">
+            <span nz-icon nzType="left" nzTheme="outline" (click)="goNextMonth(0)"></span>
+            <span nz-icon nzType="right" nzTheme="outline" (click)="goNextMonth(1)"></span>
+          </div>
+          <div class="divider"></div>
         </div>
+
+        <div class="calendar">
+          <div class="week-day" *ngFor="let week of calendar; let i = index">
+            <div class="day" *ngFor="let day of week; let i = index" (click)="day.selector ? goToDetailList(day) : '' "
+              [ngClass]="{'active': day.active, 'inactive': !day.active, 'today': day.today, 'checked' : day.selector}">
+              <p>{{day.date}}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="date-title_bottom">
+          <div class="date"> {{getDate(1)}} </div>
+          <div class="divider"></div>
+        </div>
+
       </div>
+
     </div>
-
-    <div class="date-title_bottom">
-      <div class="date"> {{getDate(1)}} </div>
-      <div class="divider"></div>
-    </div>
-
-  </div>
-
-</div>
-

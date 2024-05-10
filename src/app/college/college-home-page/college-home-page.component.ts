@@ -335,7 +335,6 @@ export class CollegeHomePageComponent implements OnInit {
           })
       }
     }
-
   }
 }
 

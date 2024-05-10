@@ -1,0 +1,89 @@
+.search-box {
+  padding: 8px;
+}
+
+.search-box input {
+  width: 188px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.search-box button {
+  width: 90px;
+}
+
+.search-button {
+  margin-right: 8px;
+  background-color: lightblue;
+}
+
+nz-table{
+  margin-top: 16px;
+  max-height: 520px;
+  max-width: 100%; /* 确保表格宽度不会超出其父容器 */
+  width: auto !important; /* 强制表格宽度根据内容自适应 */
+}
+
+.container{
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  overflow: scroll;
+}
+
+nz-form-item{
+  margin-right: 20px;
+}
+
+nz-select{
+  width: 250px
+}
+
+.ant-advanced-search-form {
+  margin-top: 16px;
+  padding: 24px;
+  background: #fbfbfb;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+}
+
+[nz-form-label] {
+  overflow: visible;
+}
+
+button {
+  margin-left: 8px;
+}
+
+.collapse {
+  margin-left: 8px;
+  font-size: 12px;
+}
+
+.search-area {
+  text-align: right;
+}
+
+.detail_container{
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+
+  .detail{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    margin-top: 4;
+    flex-direction: column;
+    border-right: 1px dashed #d9d9d9;
+  }
+}
+
+::ng-deep ::-webkit-scrollbar{
+  display: none;
+}
+
+::ng-deep *{
+  scrollbar-width: 0px;
+}
