@@ -31,6 +31,8 @@ import { BaiduMapComponent } from '../shared/baidu-map/baidu-map.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { CreateClassroomDialogComponent } from './exams-list/create-classroom-dialog/create-classroom-dialog.component';
 import { UnitedRegisterComponent } from './united-register/united-register.component';
+import { UnitedSubjectEditorComponent } from './united-register/united-subject-editor/united-subject-editor.component';
+import { UnitedPaperComponent } from './united-register/united-paper/united-paper.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { UnitedRegisterComponent } from './united-register/united-register.compo
     CreateExamDialogComponent,
     BaiduMapComponent,
     CreateClassroomDialogComponent,
-    UnitedRegisterComponent
+    UnitedRegisterComponent,
+    UnitedSubjectEditorComponent,
+    UnitedPaperComponent
   ],
   imports: [
     CommonModule,

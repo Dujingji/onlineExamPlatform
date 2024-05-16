@@ -7,6 +7,7 @@ import { option, studentAccountInfo } from "src/app/college/college-home-page/co
 import { submitClassroomData, submitDataModel, unitedExamClassroomInfo, unitedExamInfo } from 'src/app/college/exams-list/exams-list.component';
 import { stduentVocabualryData } from "src/app/college/student-vocabulary-list/student-vocabulary-list.component";
 import { unitedRegisterUserInfo } from 'src/app/college/united-register/united-register.component';
+import { unitedPaper } from 'src/app/public/pages/united/united-register/united-user-paper/united-user-paper.component';
 import { environment } from 'src/environments/environment';
 
 
@@ -21,6 +22,8 @@ export class CollegesService {
   public exam_data?: unitedExamInfo
   public classroom_data?: unitedExamClassroomInfo
 
+  public change_subject_data?: unitedRegisterUserInfo
+
 
   set change_exam_id(data: string) {
     this._change_exam_id = data
@@ -30,8 +33,12 @@ export class CollegesService {
     return this._change_exam_id
   }
 
-
   private _examEntriesSubject = new Subject<void>();
+  private _unitedExamPaperEntriesSubject = new Subject<void>();
+
+  get unitedExamPaperEntriesSubject() {
+    return this._unitedExamPaperEntriesSubject
+  }
 
   set c_id(data: string) {
     this.college_id = data;
@@ -106,7 +113,7 @@ export class CollegesService {
   }
 
   getSearchUnitedRegisterInfo(pageSize: number, pageIndex: number, searchQuery: searchQuery, condition: string): Observable<{ data: unitedRegisterUserInfo[], total: number }> {
-    let data: sendData = {college_id:'', pageSize: pageSize, pageIndex: pageIndex, searchQuery: searchQuery, condition: condition }
+    let data: sendData = { college_id: '', pageSize: pageSize, pageIndex: pageIndex, searchQuery: searchQuery, condition: condition }
     return this.http.post<{ data: unitedRegisterUserInfo[], total: number }>(environment.apiUrl + 'college/get-search-united-register-info-data', data);
   }
 
@@ -173,6 +180,28 @@ export class CollegesService {
       params: new HttpParams().set('pageSize', pageSize).set('pageIndex', pageIndex)
     })
   }
+
+  validateAccount(std_id: string, condition: number, std_id_list: string[], cancel: boolean): Observable<{ status: boolean }> {
+    const submit = { std_id: std_id, condition: condition, std_id_list: std_id_list, cancel: cancel }
+    return this.http.post<{ status: boolean }>(environment.apiUrl + 'college/validate-status', submit)
+      .pipe(tap(() => {
+        this.unitedExamPaperEntriesSubject.next()
+      }))
+  }
+
+  changeSubject(id: string, _f: string | null, _c: string | null): Observable<{ status: boolean, message: string }> {
+    const submit = { id: id, _f: _f, _c: _c }
+    return this.http.post<{ status: boolean, message: string }>(environment.apiUrl + 'college/change-united-subject', submit)
+      .pipe(tap(() => {
+        this.unitedExamPaperEntriesSubject.next()
+      }))
+  }
+
+  getAllStudentsUnitedInfo(college_id : string): Observable<{ data: unitedPaper[] }> {
+    return this.http.get<{ data: unitedPaper[] }>(environment.apiUrl + 'college/get-all-students-united-info', {
+      params : new HttpParams().set('college_id', college_id)
+    })
+  }
 }
 
 interface searchQuery {
@@ -182,9 +211,9 @@ interface searchQuery {
   _c?: string[],
   accruate?: boolean,
   completed?: number[],
-  paid? : number,
-  name? : string,
-  role? : string
+  paid?: number,
+  name?: string,
+  role?: string
 }
 
 interface sendData {

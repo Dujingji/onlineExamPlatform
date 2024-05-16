@@ -1,5 +1,5 @@
 .content{
-  padding: 20px 12px 20px 12px;
+  padding: 12px 12px 12px 12px;
 
   .title{
     display: flex;
@@ -8,19 +8,29 @@
     font-size: 1.35rem;
     justify-content: center;
     align-items: center;
+    text-align: center;
+    margin-bottom: 8px;
+    font-family: kaiti;
+    p{
+      line-height: 1.5;
+    }
   }
 
   .body{
-    padding: 8px 12px 8px 12px;
+    text-indent: 1rem;
     font-size: 1.15rem;
+    font-family: fangsong;
+    font-family: fangsong;
   }
 
   .p1{
     font-weight: 600;
+    line-height: 1.3;
   }
 
   .p2{
     margin-left: 16px;
+    line-height: 1.1;
   }
 
 }

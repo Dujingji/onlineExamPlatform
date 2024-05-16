@@ -1,20 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, ComponentRef, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { first } from 'rxjs';
+import { Subject, first, takeUntil } from 'rxjs';
 import { CollegesService } from 'src/app/service/college/college.service';
 import * as XLSX from 'xlsx';
+import { UnitedSubjectEditorComponent } from './united-subject-editor/united-subject-editor.component';
+import { PrintService } from 'src/app/service/print/print.service';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
+import { UnitedPaperComponent } from './united-paper/united-paper.component';
+import { unitedPaper } from 'src/app/public/pages/united/united-register/united-user-paper/united-user-paper.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-united-register',
   templateUrl: './united-register.component.html',
   styleUrls: ['./united-register.component.scss']
 })
-export class UnitedRegisterComponent implements OnInit {
+export class UnitedRegisterComponent implements OnInit, OnDestroy {
+
+  @ViewChild('pdfContainer', { read: ViewContainerRef }) container?: ViewContainerRef;
+  private canvasCache: HTMLCanvasElement | null = null;
+  private componentRefs: ComponentRef<any>[] = [];
+
 
   private college_id?: string
 
   public loading: boolean = true
+  public exporting: boolean = false
   public pageSize = 10
   public pageIndex = 1
   public total = 1
@@ -36,9 +49,15 @@ export class UnitedRegisterComponent implements OnInit {
 
   public expandSet = new Set<String>();
 
+  private notification: Subject<void> = new Subject<void>()
+
   ngOnInit(): void {
     this.college_id = localStorage.getItem('college')!
     this.fetchUnitedRegisterInfo()
+
+    this.collegeService.unitedExamPaperEntriesSubject.pipe(takeUntil(this.notification)).subscribe(() => {
+      this.fetchUnitedRegisterInfo()
+    })
   }
 
   fetchUnitedRegisterInfo() {
@@ -49,6 +68,47 @@ export class UnitedRegisterComponent implements OnInit {
       this.listOfDisplayData = [...this.register_data]
       this.loading = false
     })
+  }
+
+  changeSubject(id: unitedRegisterUserInfo) {
+    this.collegeService.change_subject_data = id
+    const modal = this.modal.create({
+      nzTitle: '修改科目',
+      nzContent: UnitedSubjectEditorComponent,
+      nzFooter: null,
+      nzCentered: true,
+      nzStyle: { minWidth: '700px' }
+    })
+
+    modal.afterClose.subscribe(result => {
+      if (result) {
+        this.collegeService.changeSubject(id._id, result._f, result._c).pipe(first()).subscribe(res => {
+          if (res.status) {
+            this.modal.success({
+              nzTitle: '修改成功',
+              nzContent: '修改科目信息成功！'
+            })
+          }
+          else {
+            this.modal.error({
+              nzTitle: '修改失败',
+              nzContent: res.message
+            })
+          }
+
+        })
+      }
+    })
+  }
+
+  getSubjectString(subject: string[]) {
+    if (subject && subject.length === 2) {
+      let result = ''
+      subject[0] && subject[0].length !== 0 ? subject[1] && subject[1].length !== 0 ? result = `${subject[0]}，${subject[1]}` : result = subject[0] : subject[1] && subject[1].length !== 0 ? result += subject[1] : result = '公共课'
+      return result
+    } else {
+      return subject.toString()
+    }
   }
 
   onResetSearchBar() {
@@ -124,6 +184,42 @@ export class UnitedRegisterComponent implements OnInit {
       && !(this.validateForm.value.paid! >= 0)
   }
 
+  onValidate(condition: number, id: string) {
+    const std_id_list = Array.from(this.setOfCheckedId)
+    if (condition == 0) {
+      this.collegeService.validateAccount(id, condition, [], false).subscribe(data => {
+        if (data.status) {
+          this.modal.success({
+            nzTitle: '审核通过',
+            nzContent: '审核状态通过'
+          })
+        }
+      })
+    }
+    else if (condition === 1) {
+      this.collegeService.validateAccount('', condition, std_id_list, false).subscribe(data => {
+        if (data.status) {
+          this.modal.success({
+            nzTitle: '审核通过',
+            nzContent: '审核状态通过'
+          })
+        }
+
+      })
+    }
+    else {
+      this.collegeService.validateAccount(id, condition, [], true).subscribe(data => {
+        if (data.status) {
+          this.modal.success({
+            nzTitle: '审核取消',
+            nzContent: '已取消审核资质'
+          })
+        }
+
+      })
+    }
+  }
+
   onAllChecked(value: boolean): void {
     this.listOfCurrentPageData.forEach(item => this.updateCheckedSet(item._id, value));
     this.refreshCheckedStatus();
@@ -158,7 +254,8 @@ export class UnitedRegisterComponent implements OnInit {
     const fieldsMapList: any = {
       std_name: '学生姓名',
       role: '账户类别',
-      subject: '报考科目',
+      found: '专业基础课',
+      comphen: '专业综合课',
       paid: '缴费状态',
       assignment: '分配状态'
     }
@@ -174,18 +271,19 @@ export class UnitedRegisterComponent implements OnInit {
             item[key] = item[key] ? '已分配' : '未分配'
           }
 
-          else if(key === 'role'){
+          else if (key === 'role') {
             item[key] = item[key] === 'guest' ? '非在籍' : '在籍'
           }
 
-          else if (key === 'subject') {
-            let newOne = ''
-            item[key].map((e : any) => {
-              newOne += (e + ' / ')
-            })
-            item[key] = newOne
-          }
           newItem[fieldsMapList[key]] = item[key];
+        }
+        else {
+          if (key === 'found' && item['subject'].length > 0) {
+            newItem[fieldsMapList['found']] = item['subject'][0]
+          }
+          else if (key === 'comphen' && item['subject'].length > 1) {
+            newItem[fieldsMapList['comphen']] = item['subject'][1]
+          }
         }
       });
       return newItem;
@@ -235,7 +333,127 @@ export class UnitedRegisterComponent implements OnInit {
     }
   }
 
-  constructor(private collegeService: CollegesService, private fb: NonNullableFormBuilder, private modal: NzModalService) { }
+  constructor(private collegeService: CollegesService, private fb: NonNullableFormBuilder,
+    private modal: NzModalService, private printService: PrintService) { }
+
+  ngOnDestroy(): void {
+    this.componentRefs.forEach(ref => ref.destroy());
+    this.notification.next()
+    this.notification.complete()
+  }
+
+  generatePDFs() {
+    this.pdf = new jsPDF('l', 'mm', 'a4');
+    this.exporting = true
+
+    this.collegeService.getAllStudentsUnitedInfo(localStorage.getItem('information')!).pipe(first()).subscribe(async res => {
+      const united_infos: unitedPaper[] = res.data
+
+      let i = 0;
+      let length = united_infos.length
+      while (i < length) {
+        let info = united_infos[i]
+        await new Promise((resolve, reject) => {
+          const image = new Image();
+          let url = environment.apiUrl + info.image_url
+          image.onload = () => { this.imageCache.set(url, image); resolve(image)};  // 成功加载后解析Promise
+          image.onerror = reject;               // 加载失败时拒绝Promise
+          image.src = url;                      // 设置源URL开始加载图像
+        });
+
+        i++
+      }
+      console.log(i)
+      console.log(this.imageCache)
+
+      united_infos.forEach((info, index) => {
+        setTimeout(() => {
+          const componentRef = this.container!.createComponent(UnitedPaperComponent);
+          componentRef.instance.united_info = info
+          componentRef.instance.imageCache = this.imageCache
+          this.componentRefs.push(componentRef);
+
+
+          // Generate PDF with a delay between items
+          setTimeout(() => {
+            this.exportToPDF(componentRef.location.nativeElement, 'temp', index === united_infos.length - 1);
+            componentRef.destroy(); // Destroy component after use
+          }, 200 * index); // Adding delay to stagger processing
+        }, 0);
+      });
+    })
+  }
+
+  download() {
+    this.pdf.save('download.pdf')
+  }
+
+  exportToPDF(element: HTMLElement, filename: string, isLast: boolean) {
+    if (this.canvasCache) {
+      this.updateCanvas(element, this.canvasCache, filename, isLast);
+    } else {
+      html2canvas(element, {
+        scale: 2, // 增加分辨率以提高图像质量
+        useCORS: true // 允许加载跨域图片
+      }).then(canvas => {
+        this.canvasCache = canvas; // Cache the canvas for future use
+        this.createPDF(canvas, filename, isLast);
+      });
+    }
+  }
+
+  private updateCanvas(element: HTMLElement, canvas: HTMLCanvasElement, filename: string, isLast: boolean) {
+    const context = canvas.getContext('2d');
+    if (context) {
+      context.clearRect(0, 0, canvas.width, canvas.height); // Clear previous drawings
+      html2canvas(element, { canvas }).then(() => {
+        this.createPDF(canvas, filename, isLast);
+      });
+    }
+  }
+
+  private imageCache: Map<string, HTMLImageElement> = new Map();
+
+  private pdf = new jsPDF('l', 'mm', 'a4');
+
+  private createPDF(canvas: HTMLCanvasElement, filename: string, isLast: boolean) {
+    const contentDataURL = canvas.toDataURL('image/png');
+
+    const imgHeight = 210; // A4 height in mm for landscape
+    const imgWidth = 297; // A4 width in mm for landscape
+    const imgRatio = canvas.width / canvas.height;
+    const a4Ratio = imgWidth / imgHeight;
+
+    let finalWidth, finalHeight;
+
+    // Adjust dimensions to fit A4 landscape
+    if (imgRatio > a4Ratio) {
+      // Image is wider
+      finalWidth = imgWidth;
+      finalHeight = imgWidth / imgRatio;
+    } else {
+      // Image is taller or the same
+      finalHeight = imgHeight;
+      finalWidth = imgHeight * imgRatio;
+    }
+
+    // Center the image on the page
+    const x = (imgWidth - finalWidth) / 2;
+    const y = (imgHeight - finalHeight) / 2;
+
+
+    this.pdf.addImage(contentDataURL, 'PNG', x, y, finalWidth, finalHeight);
+
+    if (isLast) {
+      this.pdf.save('document.pdf');
+      this.exporting = false
+    } else {
+      // Add a new page if not the last component
+      this.pdf.addPage();
+    }
+
+  }
+
 
 
   public validateForm: FormGroup<{

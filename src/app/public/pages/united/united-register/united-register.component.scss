@@ -5,22 +5,40 @@
   background-color: white;
   padding: 20px 16px 20px 16px;
   max-width: 100%;
+
+  .step_info{
+    margin: 8px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .title{
+    font-weight: 600;
+  }
 }
+
+
 
 mat-divider{
   margin-top : 8px;
   margin-bottom: 8px;
 }
 
-.content{
-  width: 100%;
-  padding: 20px 16px 20px 16px;
+nz-step{
+  overflow: scroll;
 }
 
-*{
+.content{
+  width: 100%;
+
+}
+
+::ng-deep *{
   scrollbar-width: 0;
 }
 
-:host ::-webkit-scrollbar{
+::ng-deep ::-webkit-scrollbar{
   display: none;
 }

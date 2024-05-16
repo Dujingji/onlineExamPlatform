@@ -130,8 +130,9 @@ mat-sidenav-container {
 .avatar {
   margin-top: 16px;
   width: 100px;
-  height: 100px;
+  height: auto;
   border-radius: 50%;
+  object-fit: contain;
 }
 
 .name {

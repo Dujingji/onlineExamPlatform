@@ -26,15 +26,18 @@
       <div nz-col [nzSpan]="24" class="search-area">
         <button nz-button [nzType]="'primary'" (click)="onSearchData()" [disabled]="checkSearchStatus()">搜索</button>
         <button nz-button (click)="onResetSearchBar()">清空</button>
-        <button nz-button [nzType]="'primary'" [disabled]="setOfCheckedId.size === 0" (click)="jsonCheck(0)">导出选中数据</button>
-        <button nz-button [nzType]="'primary'" [disabled]="loading" (click)="checkSearchStatus() ? jsonCheck(2) : jsonCheck(1)">{{ checkSearchStatus() ? '导出全部数据' :
+        <button nz-button [nzType]="'primary'" [disabled]="setOfCheckedId.size === 0"
+          (click)="jsonCheck(0)">导出选中数据</button>
+        <button nz-button [nzType]="'primary'" [disabled]="loading"
+          (click)="checkSearchStatus() ? jsonCheck(2) : jsonCheck(1)">{{ checkSearchStatus() ? '导出全部数据' :
           '导出搜索数据'}}</button>
+        <button nz-button [nzType]="'primary'" (click)="generatePDFs()" [nzLoading]="exporting">导出学生准考证</button>
       </div>
     </div>
   </form>
 
   <nz-table #sortTable [nzData]="listOfDisplayData" nzShowSizeChanger [nzFrontPagination]="false" [nzLoading]="loading"
-    [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" [nzScroll]="{ y: '500px' }"
+    [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" [nzScroll]="{ y: '500px'}"
     [nzPageSizeOptions]="[10,20,50,100, 500, 1000, total]" nzTableLayout="fixed"
     (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)"
     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
@@ -66,8 +69,10 @@
         </th>
         <th>
           操作
-
-
+          <button [disabled]="setOfCheckedId.size === 0" (click)="onValidate(1, '')" nz-button nzSize="small"
+            nzType="primary">
+            审核通过选择数据
+          </button>
         </th>
       </tr>
     </thead>
@@ -77,10 +82,18 @@
           <td [nzChecked]="setOfCheckedId.has(data._id)" (nzCheckedChange)="onItemChecked(data._id, $event)"></td>
           <td>{{ data.std_name }}</td>
           <td>{{ data.role === 'guest' ? '非在籍':'在籍' }}</td>
-          <td>{{ data.subject }}</td>
+          <td>{{ getSubjectString(data.subject) }} </td>
           <td>{{ data.assignment ? '已分配' : '未分配' }}</td>
           <td>{{ getPaidString(data.paid) }}</td>
           <td>
+            <button *ngIf="data.paid < 2" (click)="onValidate(0, data._id)" nz-button nzSize="small" nzType="primary">
+              审核通过
+            </button>
+            <button *ngIf="data.paid >= 2 && data.role === 'guest'" (click)="onValidate(2, data._id)" nz-button
+              nzSize="small" nzType="primary" nzDanger>
+              取消审核
+            </button>
+            <button class="green" nz-button nzType="default" (click)="changeSubject(data)" nzSize="small">修改科目</button>
           </td>
         </tr>
       </ng-container>
@@ -96,3 +109,9 @@
     </div>
   </div>
 </nz-dropdown-menu>
+
+<div class="print-section">
+  <ng-template #pdfContainer>
+
+  </ng-template>
+</div>

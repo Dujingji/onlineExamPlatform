@@ -1,6 +1,6 @@
 <div class="container">
 
-  <nz-steps [nzCurrent]="current" nzSize="small">
+  <nz-steps *ngIf="!matchScreem" [nzCurrent]="current" nzSize="small">
     <nz-step nzTitle="考前承诺书" nzDescription="{{matchScreem ? '' : '请仔细阅读承诺书，并选择是否同意'}}"></nz-step>
     <nz-step nzTitle="基本信息" nzDescription="{{matchScreem ? '' : '请确认基本信息是否正确！'}}"></nz-step>
     <nz-step nzTitle="报考科目" nzDescription="{{matchScreem ? '' : '请选择科目进行报考'}}"></nz-step>
@@ -8,17 +8,32 @@
     <nz-step nzTitle="打印准考证" nzDescription="{{matchScreem ? '' : '请浏览准考证的信息是否正确，并打印准考证！'}}"> </nz-step>
   </nz-steps>
 
+  <nz-steps *ngIf="matchScreem" [nzCurrent]="current" nzSize="small">
+    <nz-step></nz-step>
+    <nz-step></nz-step>
+    <nz-step></nz-step>
+    <nz-step></nz-step>
+    <nz-step></nz-step>
+  </nz-steps>
 
+  <div *ngIf="matchScreem" class="step_info">
+    <div nz-row class="title">
+      {{getStepInfo().title}}
+    </div>
+    <div nz-row class="info">
+      {{getStepInfo().info}}
+    </div>
+  </div>
   <mat-divider>
   </mat-divider>
 
-  <nz-spin [nzSpinning]="loading" >
+  <nz-spin [nzSpinning]="loading">
     <div class="content" *ngIf="current === 0" @fade> <app-united-register-commitment
         (notify)="next($event)"></app-united-register-commitment> </div>
     <div class="content" *ngIf="current === 1" @fade> <app-united-register-user-info
         (notify)="next($event)"></app-united-register-user-info> </div>
-    <div class="content" *ngIf="current === 2" @fade> <app-united-register-info
-        (notify)="next($event)" (goBack)="next($event)"></app-united-register-info> </div>
+    <div class="content" *ngIf="current === 2" @fade> <app-united-register-info (notify)="next($event)"
+        (goBack)="next($event)"></app-united-register-info> </div>
     <div class="content" *ngIf="current === 3" @fade> <app-united-register-paid
         (notify)="next($event)"></app-united-register-paid> </div>
     <div class="content" *ngIf="current === 4" @fade> <app-united-exam-result></app-united-exam-result> </div>

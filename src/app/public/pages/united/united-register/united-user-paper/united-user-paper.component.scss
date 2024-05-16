@@ -1,0 +1,235 @@
+@media print {
+  body * {
+    display: none;
+    /* 默认隐藏所有内容 */
+  }
+
+  #print-section,
+  #print-section * {
+    display: block;
+    /* 只显示需要打印的部分 */
+  }
+}
+
+.not-printable{
+  button{
+    margin: 4px;
+  }
+}
+
+
+.container {
+  width: auto;
+  height: auto;
+  min-width: 1100px;
+  max-width: 1100px;
+  min-height: 794px;
+  max-height: 794px;
+  padding: 8px 8px 8px 8px;
+  display: flex;
+  overflow: scroll;
+
+  .info {
+    width: 50%;
+    padding: 8px 12px 8px 12px;
+    margin-right: 12px;
+    border: 1px solid black;
+
+    .header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      font-weight: 600;
+      font-size: 1.25rem;
+      text-align: center;
+      font-family: heiti;
+      margin: 0px 0px 16px 0px;
+
+      p {
+        margin: 16px
+      }
+    }
+
+    ;
+
+    .profile {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      margin-top: 12px;
+      margin-bottom: 12px;
+    }
+
+    .schedule {
+      margin-top: 12px;
+      width: 100%;
+      font-family: songti,'Times New Roman';
+
+      .title {
+        padding: 12px 0px 12px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid black;
+        font-weight: 600;
+        font-family: heiti;
+      }
+
+      .table_header {
+        width: 100%;
+        flex-direction: row;
+        display: flex;
+
+        .table_content_1 {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 12px 0px 12px 0px;
+          width: 30%;
+          border-top: none;
+          /* 上边框 */
+          border-right: none;
+          /* 右边框 */
+          border-bottom: 1px solid black;
+          /* 下边框 */
+          border-left: 1px solid black;
+        }
+
+        .table_content_2 {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 12px 0px 12px 0px;
+          width: 30%;
+          border-top: none;
+          /* 上边框 */
+          border-right: 1px solid black;
+          /* 右边框 */
+          border-bottom: 1px solid black;
+          /* 下边框 */
+          border-left: 1px solid black;
+        }
+
+        .table_content_3 {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 12px 0px 12px 0px;
+          width: 20%;
+          border-top: none;
+          /* 上边框 */
+          border-right: 1px solid black;
+          /* 右边框 */
+          border-bottom: 1px solid black;
+          /* 下边框 */
+          border-left: none;
+        }
+
+        .table_content_4 {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 12px 0px 12px 0px;
+          width: 20%;
+          border-top: none;
+          /* 上边框 */
+          border-right: 1px solid black;
+          /* 右边框 */
+          border-bottom: 1px solid black;
+          /* 下边框 */
+          border-left: none;
+        }
+
+        .statement_title {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 12px 0px 12px 0px;
+          width: 30%;
+          border-top: none;
+          /* 上边框 */
+          border-right: none;
+          /* 右边框 */
+          border-bottom: 1px solid black;
+          /* 下边框 */
+          border-left: 1px solid black;
+        }
+      }
+
+      .statement_content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 12px 0px 12px 0px;
+        width: 70%;
+        border-top: none;
+        /* 上边框 */
+        border-right: 1px solid black;
+        /* 右边框 */
+        border-bottom: 1px solid black;
+        /* 下边框 */
+        border-left: 1px solid black;
+      }
+
+
+    }
+  }
+
+  .notification {
+    margin-left: 12px;
+    max-width: 50%;
+    width: 50%;
+    border: 1px solid black;
+    padding: 8px 12px 8px 12px;
+    display: flex;
+    flex-direction: column;
+
+    .title {
+      font-size: larger;
+      font-weight: 600;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: heiti;
+      margin: 8px;
+    }
+
+    p {
+      font-family: songti,'Times New Roman';
+      font-size: xx-small;
+    }
+  }
+}
+
+.information {
+  width: 75%;
+  font-family: songti, 'Times New Roman';
+  text-align: justify;
+
+  nz-row {
+    width: 100%;
+  }
+
+  .p_2 {
+    font-weight: 550;
+    width: 50%;
+  }
+
+  .p_1 {
+    font-weight: 550;
+    width: 100%;
+  }
+}
+
+.profile_img {
+  width: 25%;
+  display: flex;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: auto;
+    background-size: cover;
+  }
+}

@@ -118,12 +118,24 @@ mat-divider{
   width: 100%;
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   min-width: 100%;
   background-size: cover;
   background-image: url(../../../assets/background1.png);
+  overflow: scroll;
+  padding-top: 16px;
+  padding-bottom: 40px;
+}
+
+::ng-deep ::-webkit-scrollbar{
+  display: none;
+}
+
+::ng-deep * {
+  scrollbar-width: 0px;
 }
 
 @keyframes gradient {
@@ -191,6 +203,27 @@ mat-divider{
   }
 }
 
+
+.footer{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  .content{
+
+    img{
+      margin-right: 4px;
+      margin-left: 4px;
+    }
+  }
+
+  position: absolute;
+  bottom: 8px;
+}
+
+
 .boxed-auth {
   width: 100%;
   max-width: 480px;
@@ -205,6 +238,7 @@ mat-divider{
   box-shadow: 0 0 20px 6px lightblue;
   border-radius: 20px;
   opacity: .90;
+  overflow: scroll;
 }
 
 .clock {

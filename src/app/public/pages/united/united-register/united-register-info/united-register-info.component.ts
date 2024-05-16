@@ -20,8 +20,8 @@ export class UnitedRegisterInfoComponent implements OnInit {
   @Output() notify: EventEmitter<number> = new EventEmitter<number>()
   @Output() goBack: EventEmitter<number> = new EventEmitter<number>()
 
-  public _foudation: string = ''
-  public _comphensive: string = ''
+  public _foudation?: string
+  public _comphensive?: string
   public payment: string = ''
   public matchScreem: boolean = false
   public data?: unitedUserInfo
@@ -42,7 +42,7 @@ export class UnitedRegisterInfoComponent implements OnInit {
     })
   }
 
-  GoBack(){
+  GoBack() {
     this.goBack.emit(1)
   }
 
@@ -61,7 +61,7 @@ export class UnitedRegisterInfoComponent implements OnInit {
   }
 
   foundChange() {
-    if (this._foudation.length !== 0) {
+    if (this._foudation && this._foudation.length !== 0) {
       this.validate = true
     }
   }
@@ -73,20 +73,30 @@ export class UnitedRegisterInfoComponent implements OnInit {
   }
 
   onSubmit() {
-    this.unitedService.onSubmitSubjectInfo({ _f: this._foudation, _c: this._comphensive }).pipe(first()).subscribe(data => {
-      if (data.status) {
-        this.notify.emit(data.current)
-      } else {
-        this.modal.error({
-          nzTitle: '提交失败！',
-          nzContent: '提交信息失败，请稍后重试！'
+    const confirm = this.modal.confirm({
+      nzTitle: '确认报考',
+      nzContent: '报考后，无法自主修改科目，请仔细核对科目信息！' + `科目：${this._foudation}、${this._comphensive}`,
+      nzOnOk: () => { return true}
+    })
+
+    confirm.afterClose.subscribe((result) => {
+      if(result){
+        this.unitedService.onSubmitSubjectInfo({ _f: this._foudation ? this._foudation : '', _c: this._comphensive ? this._comphensive : '' }).pipe(first()).subscribe(data => {
+          if (data.status) {
+            this.notify.emit(data.current)
+          } else {
+            this.modal.error({
+              nzTitle: '提交失败！',
+              nzContent: '提交信息失败，请稍后重试！'
+            })
+          }
         })
       }
     })
   }
 
   onSave() {
-    this.unitedService.onSaveSubjectInfo({ _f: this._foudation, _c: this._comphensive }).pipe(first()).subscribe(data => {
+    this.unitedService.onSaveSubjectInfo({ _f: this._foudation ? this._foudation : '', _c: this._comphensive ? this._comphensive : '' }).pipe(first()).subscribe(data => {
       if (data.status) {
         this.modal.success({
           nzTitle: '保存成功！',
@@ -100,10 +110,10 @@ export class UnitedRegisterInfoComponent implements OnInit {
   }
 
   comphensiveChange() {
-    if (this._foudation.length !== 0) {
+    if (this._foudation && this._foudation.length !== 0) {
       this.validate = true
     }
-    else{
+    else {
       this.validate = false
     }
   }

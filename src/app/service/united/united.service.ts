@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, tap } from 'rxjs';
 import { unitedExamInfo } from 'src/app/college/exams-list/exams-list.component';
 import { MajorOption } from 'src/app/public/pages/united/united-register/united-register-info/united-register-info.component';
+import { unitedPaper } from 'src/app/public/pages/united/united-register/united-user-paper/united-user-paper.component';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -70,12 +71,16 @@ export class UnitedService {
     return this.http.post<{ status: boolean }>(environment.apiUrl + 'united/save-subjext-info', data)
   }
 
-  getResult(): Observable<{ able: boolean, subject: number }> {
-    return this.http.get<{ able: boolean, subject: number }>(environment.apiUrl + 'united/get-result-info')
+  getResult(): Observable<{ able: boolean, subject: number, _f : string, _c : string }> {
+    return this.http.get<{ able: boolean, subject: number,  _f : string, _c : string }>(environment.apiUrl + 'united/get-result-info')
   }
 
   notPaid() : Observable<{ status: boolean }> {
     return this.http.get<{ status: boolean }>(environment.apiUrl + 'united/not-paid')
+  }
+
+  getUnitedPaper() : Observable<{data : unitedPaper}>{
+    return this.http.get<{ data : unitedPaper }>(environment.apiUrl + 'united/get-united-paper')
   }
 
 }

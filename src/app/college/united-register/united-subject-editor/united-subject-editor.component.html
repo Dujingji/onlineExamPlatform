@@ -1,0 +1,14 @@
+<div class="ant-advanced-search-form">
+  <nz-select [(ngModel)]="found" nzAllowClear nzPlaceHolder="专业基础课">
+    <nz-option *ngFor="let option of fountList" [nzValue]="option.name" [nzLabel]="option.name"></nz-option>
+  </nz-select>
+
+  <nz-select [(ngModel)]="comp" nzAllowClear nzPlaceHolder="专业综合课">
+    <nz-option *ngFor="let option of compList" [nzValue]="option.name" [nzLabel]="option.name"></nz-option>
+  </nz-select>
+</div>
+
+<div *nzModalFooter>
+  <button nz-button nzType="default" (click)="close(0)">取消</button>
+  <button nz-button nzType="primary" (click)="close(1)">提交</button>
+</div>

@@ -31,6 +31,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { UnitedResultComponent } from './united-result/united-result.component';
+import { UnitedUserPaperComponent } from './united-register/united-user-paper/united-user-paper.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { UnitedResultComponent } from './united-result/united-result.component';
     UnitedExamResultComponent,
     UnitedRegisterUserInfoComponent,
     UnitedRegisterPaidComponent,
-    UnitedResultComponent
+    UnitedResultComponent,
+    UnitedUserPaperComponent
   ],
   imports: [
     CommonModule,
@@ -68,7 +70,7 @@ import { UnitedResultComponent } from './united-result/united-result.component';
     NzModalModule,
     NzImageModule,
     NzResultModule,
-    NzEmptyModule
+    NzEmptyModule,
   ]
 })
 export class UnitedModule { }
