@@ -26,18 +26,21 @@ export class UnitedRegisterUserInfoComponent implements OnInit, OnDestroy {
   loading = false;
   collegeList: MajorOption[] = []
 
-  private notification : Subject<void> = new Subject<void>()
+  private notification: Subject<void> = new Subject<void>()
+  public campusList: MajorOption[] = []
+
+  private role: string = ''
 
   ngOnInit(): void {
     this.fetchCollegeList()
     this.fetchUserBaseInfo()
 
-    this.unitedService.baseInfoEntriesSubjct.pipe(takeUntil(this.notification)).subscribe(res =>{
+    this.unitedService.baseInfoEntriesSubjct.pipe(takeUntil(this.notification)).subscribe(res => {
       this.fetchUserBaseInfo()
     })
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.notification.next()
     this.notification.complete()
   }
@@ -54,9 +57,18 @@ export class UnitedRegisterUserInfoComponent implements OnInit, OnDestroy {
         this.validateForm.patchValue({ 'grade': res.grade })
         this.validateForm.patchValue({ 'image_url': res.image_url })
         this.validateForm.patchValue({ 'gerden': res.gerden })
+        this.validateForm.patchValue({ 'campus': res.campus ? res.campus.name : ''})
         this.avatarUrl = (res.image_url && res.image_url.length !== 0) ? environment.apiUrl + res.image_url : undefined
+        this.unitedService.college_name = res.college
+        this.fetchCampusList(res.college)
       })
     }
+  }
+
+  fetchCampusList(college: string){
+    this.unitedService.fetchAllCampus(college).pipe(first()).subscribe(res =>{
+      this.campusList = res.data
+    })
   }
 
   fetchCollegeList() {
@@ -68,12 +80,13 @@ export class UnitedRegisterUserInfoComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+
     this.unitedService.onSubmitBaseInfo(this.validateForm.value).pipe(first()).subscribe(res => {
       if (res.status) {
         this.notify.emit(2)
-      }else{
+      } else {
         this.modal.error({
-          nzTitle:'提交失败！',
+          nzTitle: '提交失败！',
           nzContent: '似乎遇到了问题，请检查提交的信息！'
         })
       }
@@ -85,10 +98,15 @@ export class UnitedRegisterUserInfoComponent implements OnInit, OnDestroy {
       if (res.status) {
         this.modal.success({
           nzTitle: '保存成功！',
-          nzContent:'数据保存成功！'
+          nzContent: '数据保存成功！'
         })
       }
     })
+  }
+
+  collegeOnChange(){
+    this.fetchCampusList(this.validateForm.value.college)
+    this.validateForm.patchValue({'campus' : ''})
   }
 
   beforeUpload = (file: NzUploadFile, _fileList: NzUploadFile[]): Observable<boolean> =>
@@ -142,7 +160,7 @@ export class UnitedRegisterUserInfoComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private unitedService: UnitedService, private msg: NzMessageService, private authService: AuthService, private modal : NzModalService) {
+  constructor(private unitedService: UnitedService, private msg: NzMessageService, private authService: AuthService, private modal: NzModalService) {
     this.validateForm = new FormGroup({
       'name': new FormControl('', [Validators.required]),
       'college': new FormControl('', [Validators.required]),
@@ -150,7 +168,8 @@ export class UnitedRegisterUserInfoComponent implements OnInit, OnDestroy {
       'phone_number': new FormControl('', [Validators.required, Validators.maxLength(11), Validators.minLength(11)]),
       'ID': new FormControl('', [Validators.required, Validators.maxLength(18), Validators.minLength(18)]),
       'image_url': new FormControl('', [Validators.required]),
-      'grade': new FormControl('', [Validators.required])
+      'grade': new FormControl('', [Validators.required]),
+      'campus': new FormControl('', [Validators.required])
     })
   }
 

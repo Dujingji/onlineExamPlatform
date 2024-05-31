@@ -1,16 +1,18 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
-import { first } from 'rxjs';
+import { Subject, first, takeUntil } from 'rxjs';
 import { CollegesService } from 'src/app/service/college/college.service';
 import * as XLSX from 'xlsx';
+import { EditStudentDialogComponent } from './edit-student-dialog/edit-student-dialog.component';
 
 @Component({
   selector: 'app-college-home-page',
   templateUrl: './college-home-page.component.html',
   styleUrls: ['./college-home-page.component.scss']
 })
-export class CollegeHomePageComponent implements OnInit {
+export class CollegeHomePageComponent implements OnInit, OnDestroy {
 
   public searchValue: string = '';
   public visible = false;
@@ -38,6 +40,8 @@ export class CollegeHomePageComponent implements OnInit {
   private listOfCurrentPageData: readonly studentAccountInfo[] = [];
 
   private college_id?: string
+
+  private notify : Subject<void> = new Subject<void>()
 
   public validateForm: FormGroup<{
     username: FormControl<string>;
@@ -109,14 +113,22 @@ export class CollegeHomePageComponent implements OnInit {
     }
   ]
 
-  constructor(private collegesService: CollegesService, private cd: ChangeDetectorRef, private fb: NonNullableFormBuilder) {
+  constructor(private collegesService: CollegesService, private cd: ChangeDetectorRef, private fb: NonNullableFormBuilder, private modal: NzModalService) {
 
+  }
+  ngOnDestroy(): void {
+    this.notify.next()
+    this.notify.complete()
   }
 
   ngOnInit(): void {
     this.college_id = localStorage.getItem('college')!
     this.fetchData()
     this.fetchMajor()
+
+    this.collegesService.studentsEntriesSubject.pipe(takeUntil(this.notify)).subscribe(res =>{
+      this.fetchData()
+    })
   }
 
   reset(): void {
@@ -165,6 +177,36 @@ export class CollegeHomePageComponent implements OnInit {
         this.comprehensiveOption = data._c
         this.foundationOption = data._f
       })
+  }
+
+  onEdit(data : studentAccountInfo){
+    this.collegesService.student_info = data
+    const modal = this.modal.create({
+      nzTitle: '修改信息',
+      nzContent: EditStudentDialogComponent,
+      nzFooter: null,
+      nzCentered: true,
+      nzStyle: {minWidth: '700px'}
+    })
+
+    modal.afterClose.subscribe(res =>{
+      if(res){
+        this.collegesService.editStudentInfo(res, data._id).pipe(first()).subscribe(res =>{
+          if(res.status){
+            this.modal.success({
+              nzTitle: '修改成功',
+              nzContent: '修改信息成功！'
+            })
+          }
+          else{
+            this.modal.error({
+              nzTitle: '修改失败',
+              nzContent: '修改信息失败！错误：' + res.message
+            })
+          }
+        })
+      }
+    })
   }
 
   fetchData() {

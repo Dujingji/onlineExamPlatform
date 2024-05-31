@@ -17,7 +17,7 @@
           </nz-radio-group>
         </div>
       </nz-descriptions-item>
-      <nz-descriptions-item nzTitle="专业综合课" [nzSpan]="24">
+      <nz-descriptions-item nzTitle="专业综合课" [nzSpan]="24" *ngIf="data ? data.college !== '广州华夏职业学院' : true">
         <div>
           <nz-radio-group [(ngModel)]="_comphensive" (ngModelChange)="comphensiveChange()">
             <label nz-radio *ngFor="let comphensive of _comphensiveList"
@@ -37,5 +37,5 @@
   <button nz-button nzType="primary" (click)="onSubmit()">报名参考</button>
   <button nz-button nzType="default" (click)="onSave()" [disabled]="loading">保存信息</button>
   <button nz-button nzType="primary" (click)="clear()" nzDanger
-    [disabled]="loading || ( _foudation && _comphensive && _comphensive.length === 0 && _foudation.length === 0)">清除所选科目</button>
+    [disabled]="loading || hasChoose()">清除所选科目</button>
 </div>

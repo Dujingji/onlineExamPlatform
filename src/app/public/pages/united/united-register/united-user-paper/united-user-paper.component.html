@@ -1,37 +1,36 @@
 
 <div id="not-printable" class="not-printable">
   <button nz-button (click)="print()" nzType="primary">输出为PDF</button>
-  <button nz-button (click)="goBack()" nzType="primary" nzDanger>返回</button>
 </div>
 
 <div id="print-section" class="container">
   <div class="info">
     <div class="header">
       <p> 广东省2024年普通专升本高校联考 </p>
-      <p> 准考证 </p>
+      <p> 准 考 证 </p>
     </div>
     <div class="profile">
       <div class="information">
-        <div nz-row>
+        <div class="row" nz-row>
           <p class="p_2">考 生 号：{{getDetail(0)}}</p>
-          <p class="p_2">考试类型：高校联考</p>
+          <p class="p_3">考试类型：高校联考</p>
         </div>
-        <div nz-row>
-          <p class="p_2">姓 名：{{getDetail(1)}}</p>
-          <p class="p_2">性 别：{{getDetail(2)}}</p>
+        <div class="row" nz-row>
+          <p class="p_2">姓&nbsp;&nbsp;&nbsp;&nbsp;名：{{getDetail(1)}}</p>
+          <p class="p_3">性&nbsp;&nbsp;&nbsp;&nbsp;别：{{getDetail(2)}}</p>
         </div>
-        <div nz-row>
+        <div class="row" nz-row>
           <p class="p_1">证 件 号：{{getDetail(3)}}</p>
         </div>
-        <div nz-row>
-          <p class="p_1">考 点：{{getDetail(4)}}</p>
+        <div class="row" nz-row>
+          <p class="p_1">考&nbsp;&nbsp;&nbsp;&nbsp;点：{{getDetail(4)}}</p>
         </div>
-        <div nz-row>
+        <div class="row" nz-row>
           <p class="p_1">考点地址：{{getDetail(5)}}</p>
         </div>
       </div>
       <div class="profile_img">
-        <img src="{{getDetail(6)}}" alt="证件照片">
+        <img [src]="getDetail(6)" alt="证件照片">
       </div>
     </div>
     <div class="schedule">
@@ -43,18 +42,23 @@
         <div class="table_content_4">座位</div>
       </div>
       <div class="table_header" *ngFor="let element of [].constructor(4); let i = index">
-        <div class="table_content_1"><p>{{getTimeString(i)}}</p></div>
-        <div class="table_content_2"><p>{{getMajorString(i)}}</p></div>
-        <div class="table_content_3"><p>{{getClassroomString(i)}}</p></div>
-        <div class="table_content_4"><p>{{getNumberSite(1)}}</p></div>
+        <div class="table_content_1">{{getTimeString(i)}}</div>
+        <div class="table_content_2">{{getMajorString(i)}}</div>
+        <div class="table_content_3">{{getClassroomString(i)}}</div>
+        <div class="table_content_4">{{getNumberSite(i)}}</div>
       </div>
-      <div class="table_header">
+      <div class="notification_header">
         <div class="statement_title">考点说明</div>
-        <div class="statement_content"></div>
+        <div class="statement_content">
+          <p>考场号：</p>
+          <div >
+            <p *ngFor="let item of getNotification()">{{item}}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="notification">
+  <!-- <div class="notification">
     <div class="title">广东省2024年普通专升本高校联考考生须知</div>
     <div class="content">
       <p>一、考生凭准考证和身份证按规定时间和准考证上各科目的考场、座位号参加考试。</p>
@@ -68,6 +72,6 @@
       <p>九、考试过程中，考生如需上洗手间应先举手示意，经监考员允许，由工作人员陪同前往</p>
       <p>十、考试终了信号发出后，立即停笔，在监考员依序收齐答卷、试卷、草稿纸后，根据监考员指令依次退出考场，不准在考场附近逗留</p>
     </div>
-  </div>
+  </div> -->
 </div>
 

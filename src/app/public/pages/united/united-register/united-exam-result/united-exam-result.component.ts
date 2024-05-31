@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewContainerRef } from '@angular/core';
 import { first } from 'rxjs';
 import { PrintService } from 'src/app/service/print/print.service';
 import { UnitedService } from 'src/app/service/united/united.service';
@@ -19,6 +19,7 @@ export class UnitedExamResultComponent implements OnInit {
 
   public current : number = 0
 
+  @Output() backTo: EventEmitter<number> = new EventEmitter<number>()
 
   ngOnInit(): void {
     this.fetchResultInfo()
@@ -40,6 +41,10 @@ export class UnitedExamResultComponent implements OnInit {
 
   back(data : number){
     this.current = data
+  }
+
+  goBack(){
+    this.backTo.emit(1)
   }
 
   getSubjectString(){

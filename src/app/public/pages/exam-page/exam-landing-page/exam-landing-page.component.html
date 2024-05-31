@@ -8,6 +8,7 @@
     </nz-descriptions-item>
     <nz-descriptions-item nzTitle="状态" [nzSpan]="1">
       <nz-badge *ngIf="examStatus() === 1" nzStatus="success" nzText="进行中"></nz-badge>
+      <nz-badge *ngIf="examStatus() === 3" nzStatus="error" nzText="已交卷"></nz-badge>
       <nz-badge *ngIf="examStatus() === 0" nzStatus="default" nzText="未开始"></nz-badge>
       <nz-badge *ngIf="examStatus() === 2" nzStatus="error" nzText="已结束"></nz-badge>
       <nz-spin nzSimple *ngIf="examStatus() === -1"></nz-spin>
@@ -16,6 +17,6 @@
   </nz-descriptions>
 
   <div class="footer">
-    <button mat-button class="button mat-elevation-z2" routerLink="/public/exam/{{exam_id}}">开始考试</button>
+    <button [disabled]="examStatus() !== 1" mat-button class="button mat-elevation-z2" routerLink="/public/exam/{{exam_id}}">开始考试</button>
   </div>
 </div>

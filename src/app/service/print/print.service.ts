@@ -21,9 +21,9 @@ export class PrintService {
       }).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF({
-          orientation: 'l', // 设置为横向
+          orientation: 'p', // 设置为横向
           unit: 'mm',
-          format: 'a4'
+          format: [148, 210]
         });
 
         const pageWidth = pdf.internal.pageSize.getWidth();

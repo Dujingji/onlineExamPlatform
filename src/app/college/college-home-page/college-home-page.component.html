@@ -26,7 +26,7 @@
       </nz-form-item>
       <nz-form-item>
         <nz-form-label>专业综合课</nz-form-label>
-        <nz-select nzMode="tags" nzPlaceHolder="专业综合课" formControlName="comprehensive_list" >
+        <nz-select nzMode="tags" nzPlaceHolder="专业综合课" formControlName="comprehensive_list">
           <nz-option *ngFor="let option of comprehensiveOption" [nzLabel]="option.label"
             [nzValue]="option.value"></nz-option>
         </nz-select>
@@ -34,24 +34,27 @@
     </div>
     <div nz-row>
       <div nz-col [nzSpan]="24" class="search-area">
-        <button nz-button [nzType]="'primary'" (click)="onSearchData()"
-          [disabled]="checkSearchStatus()">搜索</button>
+        <button nz-button [nzType]="'primary'" (click)="onSearchData()" [disabled]="checkSearchStatus()">搜索</button>
         <button nz-button (click)="onResetSearchBar()">清空</button>
-        <button nz-button [nzType]="'primary'" [disabled]="setOfCheckedId.size === 0" (click)="jsonCheck(0)">导出选中数据</button>
-        <button nz-button [nzType]="'primary'" [disabled]="loading" (click)="checkSearchStatus() ? jsonCheck(2) : jsonCheck(1)">{{ checkSearchStatus() ?  '导出全部数据'  : '导出搜索数据'}}</button>
+        <button nz-button [nzType]="'primary'" [disabled]="setOfCheckedId.size === 0"
+          (click)="jsonCheck(0)">导出选中数据</button>
+        <button nz-button [nzType]="'primary'" [disabled]="loading"
+          (click)="checkSearchStatus() ? jsonCheck(2) : jsonCheck(1)">{{ checkSearchStatus() ? '导出全部数据' :
+          '导出搜索数据'}}</button>
       </div>
     </div>
   </form>
 
   <nz-table #sortTable [nzData]="listOfDisplayData" nzShowSizeChanger [nzFrontPagination]="false" [nzLoading]="loading"
-    [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" [nzScroll]="{ y: '500px' }"
+    [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" [nzScroll]="{ y: '500px', x :'800px' }"
     [nzPageSizeOptions]="[10,20,50,100, 500, 1000, total]" nzTableLayout="fixed"
-    (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)"  (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+    (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
     <thead>
       <tr>
         <th nzWidth="60px" [nzSelections]="listOfSelection" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
-        (nzCheckedChange)="onAllChecked($event)">
-      </th>
+          (nzCheckedChange)="onAllChecked($event)">
+        </th>
         <th [nzSortFn]="listOfColumn[0].compare" [nzSortPriority]="listOfColumn[0].priority" nzCustomFilter>
           {{ listOfColumn[0].title }}
           <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
@@ -69,7 +72,8 @@
         <th nzCustomFilter>
           {{ listOfColumn[3].title }}
         </th>
-        <th [nzSortFn]="listOfColumn[4].compare" [nzSortPriority]="listOfColumn[4].priority" [nzFilters]="filterFound" [nzFilterFn]="listOfColumn[4].filterFn">
+        <th [nzSortFn]="listOfColumn[4].compare" [nzSortPriority]="listOfColumn[4].priority" [nzFilters]="filterFound"
+          [nzFilterFn]="listOfColumn[4].filterFn">
           {{ listOfColumn[4].title }}
 
         </th>
@@ -78,17 +82,26 @@
           {{ listOfColumn[5].title }}
 
         </th>
+        <th>
+          操作
+        </th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let data of sortTable.data">
-        <td [nzChecked]="setOfCheckedId.has(data.student_id)" (nzCheckedChange)="onItemChecked(data.student_id, $event)"></td>
+        <td [nzChecked]="setOfCheckedId.has(data.student_id)"
+          (nzCheckedChange)="onItemChecked(data.student_id, $event)"></td>
         <td>{{ data.student_name}}</td>
         <td>{{ data.semester }}</td>
         <td>{{ data.student_id}}</td>
         <td>{{ data.password }}</td>
         <td>{{ data.found }}</td>
         <td>{{ data.comprehensive }}</td>
+        <td>
+          <button nzSize="small" nz-button nzType="primary" (click)="onEdit(data)">
+            <span nz-icon nzTheme="outline" nzType="edit"></span>
+          </button>
+        </td>
       </tr>
     </tbody>
   </nz-table>

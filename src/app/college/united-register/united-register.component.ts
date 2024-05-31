@@ -11,6 +11,8 @@ import html2canvas from 'html2canvas';
 import { UnitedPaperComponent } from './united-paper/united-paper.component';
 import { unitedPaper } from 'src/app/public/pages/united/united-register/united-user-paper/united-user-paper.component';
 import { environment } from 'src/environments/environment';
+import * as saveAs from 'file-saver';
+import { DeleteGuestInfoComponent } from './delete-guest-info/delete-guest-info.component';
 
 @Component({
   selector: 'app-united-register',
@@ -20,9 +22,10 @@ import { environment } from 'src/environments/environment';
 export class UnitedRegisterComponent implements OnInit, OnDestroy {
 
   @ViewChild('pdfContainer', { read: ViewContainerRef }) container?: ViewContainerRef;
-  private canvasCache: HTMLCanvasElement | null = null;
+
   private componentRefs: ComponentRef<any>[] = [];
 
+  public processor: number = 0
 
   private college_id?: string
 
@@ -221,7 +224,7 @@ export class UnitedRegisterComponent implements OnInit, OnDestroy {
   }
 
   onAllChecked(value: boolean): void {
-    this.listOfCurrentPageData.forEach(item => this.updateCheckedSet(item._id, value));
+    this.listOfCurrentPageData.forEach(item => { item.role === 'guest' ? this.updateCheckedSet(item._id, value) : '' });
     this.refreshCheckedStatus();
   }
 
@@ -231,6 +234,32 @@ export class UnitedRegisterComponent implements OnInit, OnDestroy {
     } else {
       this.setOfCheckedId.delete(id);
     }
+  }
+
+  deleteGuestUnited(data: unitedRegisterUserInfo) {
+    const modal = this.modal.create({
+      nzTitle: '删除访客信息',
+      nzContent: DeleteGuestInfoComponent,
+      nzFooter: null
+    })
+
+    modal.afterClose.subscribe(res => {
+
+      this.collegeService.deleteGuestInfo(data._id, res.checked ? 1 : 0).pipe(first()).subscribe(res => {
+        if (res.status) {
+          this.modal.success({
+            nzTitle: '删除成功',
+            nzContent: '访客信息删除成功！'
+          })
+        }
+        else {
+          this.modal.error({
+            nzTitle: '删除失败',
+            nzContent: 'err：' + res.message
+          })
+        }
+      })
+    })
   }
 
   onItemChecked(id: string, checked: boolean): void {
@@ -343,84 +372,113 @@ export class UnitedRegisterComponent implements OnInit, OnDestroy {
   }
 
   generatePDFs() {
-    this.pdf = new jsPDF('l', 'mm', 'a4');
+    this.pdf = new jsPDF('p', 'mm', [148, 210]);
     this.exporting = true
 
     this.collegeService.getAllStudentsUnitedInfo(localStorage.getItem('information')!).pipe(first()).subscribe(async res => {
       const united_infos: unitedPaper[] = res.data
 
-      let i = 0;
       let length = united_infos.length
-      while (i < length) {
-        let info = united_infos[i]
-        await new Promise((resolve, reject) => {
-          const image = new Image();
-          let url = environment.apiUrl + info.image_url
-          image.onload = () => { this.imageCache.set(url, image); resolve(image)};  // 成功加载后解析Promise
-          image.onerror = reject;               // 加载失败时拒绝Promise
-          image.src = url;                      // 设置源URL开始加载图像
-        });
-
-        i++
+      let slice_N = 10
+      let slice_total = Math.floor(length / slice_N) + 1
+      let maxPaperPerPage = 100
+      let i = 0
+      try {
+        while (i < slice_total) {
+          let sub = united_infos.slice(i * slice_N, i * slice_N + slice_N)
+          let sub_length = sub.length
+          await this.generater(sub, sub_length, i, slice_N)
+          i++;
+          this.processor = (i / slice_total) * 100
+          if (i === slice_total) {
+            const blob = this.pdf.output("blob")
+            saveAs(blob, `${this.collegeService.collegeName}_${new Date().getFullYear()}_学生联考准考证_${Math.floor((i + 1)/maxPaperPerPage)}`);
+            this.pdf = new jsPDF('p', 'mm', [148, 210]);
+          }
+        }
+        this.exporting = false
+        this.processor = 0
       }
-      console.log(i)
-      console.log(this.imageCache)
-
-      united_infos.forEach((info, index) => {
-        setTimeout(() => {
-          const componentRef = this.container!.createComponent(UnitedPaperComponent);
-          componentRef.instance.united_info = info
-          componentRef.instance.imageCache = this.imageCache
-          this.componentRefs.push(componentRef);
-
-
-          // Generate PDF with a delay between items
-          setTimeout(() => {
-            this.exportToPDF(componentRef.location.nativeElement, 'temp', index === united_infos.length - 1);
-            componentRef.destroy(); // Destroy component after use
-          }, 200 * index); // Adding delay to stagger processing
-        }, 0);
-      });
+      catch (err) {
+        this.modal.error({
+          nzTitle: '导出错误！',
+          nzContent: `错误信息：${err}`
+        })
+        this.exporting = false
+        this.processor = 0
+      }
     })
+  }
+
+  async generater(data: unitedPaper[], length: number, slice_number: number, slice_N: number) {
+    let i = 0
+    while (i < length) {
+
+      await new Promise(resolve => {
+        let info = data[i]
+        let url = environment.apiUrl + info.image_url
+        this.collegeService.DownLoadImage(url).pipe(first()).subscribe(blob => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            this.imageCache.set(url, reader.result as string);
+            resolve(undefined)
+          };
+          reader.readAsDataURL(blob);
+        })
+      });
+      i++
+    }
+
+    i = 0
+
+    while (i < length) {
+      let info = data[i]
+      await new Promise(async resolve => {
+        const componentRef = this.container!.createComponent(UnitedPaperComponent);
+        componentRef.instance.united_info = info
+        componentRef.instance.imageCache = this.imageCache
+        this.componentRefs.push(componentRef);
+        setTimeout(async () => {
+          await this.exportToPDF(componentRef.location.nativeElement, 'temp', i === length - 1);
+          componentRef.destroy(); // Destroy component after use
+          resolve(null)
+        }, 200)
+      })
+      i++
+    }
   }
 
   download() {
     this.pdf.save('download.pdf')
   }
 
-  exportToPDF(element: HTMLElement, filename: string, isLast: boolean) {
-    if (this.canvasCache) {
-      this.updateCanvas(element, this.canvasCache, filename, isLast);
-    } else {
-      html2canvas(element, {
-        scale: 2, // 增加分辨率以提高图像质量
-        useCORS: true // 允许加载跨域图片
-      }).then(canvas => {
-        this.canvasCache = canvas; // Cache the canvas for future use
-        this.createPDF(canvas, filename, isLast);
-      });
-    }
+  async exportToPDF(element: HTMLElement, filename: string, isLast: boolean) {
+    let canvas = await html2canvas(element, {
+      scale: 2, // 增加分辨率以提高图像质量
+      useCORS: true, // 允许加载跨域图片
+    })
+    this.createPDF(canvas, filename, isLast);
   }
 
-  private updateCanvas(element: HTMLElement, canvas: HTMLCanvasElement, filename: string, isLast: boolean) {
+  private async updateCanvas(element: HTMLElement, canvas: HTMLCanvasElement, filename: string, isLast: boolean) {
     const context = canvas.getContext('2d');
+
     if (context) {
       context.clearRect(0, 0, canvas.width, canvas.height); // Clear previous drawings
-      html2canvas(element, { canvas }).then(() => {
-        this.createPDF(canvas, filename, isLast);
-      });
+      await html2canvas(element, { canvas })
+      this.createPDF(canvas, filename, isLast);
     }
   }
 
-  private imageCache: Map<string, HTMLImageElement> = new Map();
+  private imageCache: Map<string, string> = new Map();
 
-  private pdf = new jsPDF('l', 'mm', 'a4');
+  private pdf = new jsPDF('p', 'mm', [148, 210]);
 
   private createPDF(canvas: HTMLCanvasElement, filename: string, isLast: boolean) {
-    const contentDataURL = canvas.toDataURL('image/png');
+    const contentDataURL = canvas.toDataURL('image/jpeg', 0.7);
 
-    const imgHeight = 210; // A4 height in mm for landscape
-    const imgWidth = 297; // A4 width in mm for landscape
+    const imgHeight = 210; // A5 height in mm for landscape
+    const imgWidth = 148; // A5 width in mm for landscape
     const imgRatio = canvas.width / canvas.height;
     const a4Ratio = imgWidth / imgHeight;
 
@@ -442,16 +500,15 @@ export class UnitedRegisterComponent implements OnInit, OnDestroy {
     const y = (imgHeight - finalHeight) / 2;
 
 
-    this.pdf.addImage(contentDataURL, 'PNG', x, y, finalWidth, finalHeight);
+    this.pdf.addImage(contentDataURL, 'JPEG', 0, 0, 148, 210);
 
     if (isLast) {
-      this.pdf.save('document.pdf');
-      this.exporting = false
+      this.imageCache.clear()
+      this.pdf.addPage();
     } else {
       // Add a new page if not the last component
       this.pdf.addPage();
     }
-
   }
 
 

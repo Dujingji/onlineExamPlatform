@@ -1,0 +1,69 @@
+<div class="container">
+  <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-label nzRequired>用户名</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input formControlName="username" nz-input placeholder="用户名" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzRequired>密码</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input formControlName="password" nz-input placeholder="密码" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-label nzRequired>学生姓名</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input formControlName="std_name" nz-input placeholder="学生姓名" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzRequired>年级</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input type="number" formControlName="grade" nz-input placeholder="年级" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-row>
+      <nz-form-item>
+        <nz-form-label >专业基础课</nz-form-label>
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="专业基础课" formControlName="found">
+          <nz-option *ngFor="let option of found_list" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label >专业综合课</nz-form-label>
+        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="专业综合课" formControlName="compe">
+          <nz-option *ngFor="let option of compe_list" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+        </nz-select>
+      </nz-form-item>
+    </div>
+  </form>
+  <div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<div *nzModalFooter>
+  <button nz-button nzType="default" (click)="close(0)">取消</button>
+  <button nz-button nzType="primary" [disabled]="!this.validateForm.valid" (click)="close(1)">提交</button>
+</div>

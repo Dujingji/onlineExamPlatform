@@ -31,8 +31,10 @@
               <p class="red">{{'报名截止时间：' + examDate(exam.end) }}</p>
             </nz-card>
             <ng-template #cardExtar>
-              <div class="register_button" [ngClass]="{'cancel' : active(exam.end), 'inactive' : !active(exam.end)}"
-              (click)="active(exam.end) ? cancelRegister(user_id, exam._id, 1) : ''" >{{active(exam.end) ? '取消报考' : '截止'}}</div>
+              <div class="register_button" [ngClass]="{'cancel' : active(exam.end), 'inactive' : !active(exam.end) || !notAnswerPaper(exam)}"
+              (click)="active(exam.end) && notAnswerPaper(exam) ? cancelRegister(user_id, exam._id, 1) : ''" >{{
+              active(exam.end) && notAnswerPaper(exam) ? '取消报考' : !notAnswerPaper(exam) ? '已作答' : '截止'
+              }}</div>
             </ng-template>
           </div>
         </ng-template>

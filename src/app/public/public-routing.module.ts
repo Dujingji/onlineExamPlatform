@@ -23,11 +23,12 @@ const routes: Routes = [
       { path: 'result', component: CheckResultPageComponent },
       { path: 'exercise', component: ExercisePageComponent },
       { path: 'daily', component: CalendarComponent },
-      { path: 'vocabulary', component:  VocabularyHomepageComponent},
+      // { path: 'vocabulary', loadChildren: () => import('./pages/vocabulary/vocabularyModule/vocabulary.module').then((m) => m.VocabularyModule) , canActivate: [canActivate] },
+      { path: 'vocabulary', component: VocabularyHomepageComponent },
       { path: 'vocabulary-study', component: VocabularyComponent },
       { path: 'vocabulary-detail/:word', component: VocabularyDetailPageComponent },
       { path: 'vocabulary-calendar', component: VocabularyCalendarComponent },
-      { path: 'vocabulary-detail-list/:day/:month/:year', component: VocabularyDetailListComponent},
+      { path: 'vocabulary-detail-list/:day/:month/:year', component: VocabularyDetailListComponent },
       { path: 'united', loadChildren: () => import('./pages/united/united.module').then((m) => m.UnitedModule), canActivate: [canActivate] }
     ],
     canActivate: [canActivate]

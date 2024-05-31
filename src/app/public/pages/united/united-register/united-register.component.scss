@@ -19,7 +19,17 @@
   }
 }
 
+.print-section {
+  width: 148mm;
+  height: 210mm;
+  overflow: scroll;
+}
 
+.not-active-container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 
 mat-divider{
   margin-top : 8px;
@@ -32,7 +42,6 @@ nz-step{
 
 .content{
   width: 100%;
-
 }
 
 ::ng-deep *{
@@ -42,3 +51,4 @@ nz-step{
 ::ng-deep ::-webkit-scrollbar{
   display: none;
 }
+

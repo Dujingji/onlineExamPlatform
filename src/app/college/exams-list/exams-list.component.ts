@@ -8,6 +8,8 @@ import * as XLSX from 'xlsx';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { CreateExamDialogComponent } from './create-exam-dialog/create-exam-dialog.component';
 import { CreateClassroomDialogComponent } from './create-classroom-dialog/create-classroom-dialog.component';
+import { UploadDialogComponent } from './upload-dialog/upload-dialog.component';
+import { UploadUnitedStudentDialogComponent } from './upload-united-student-dialog/upload-united-student-dialog.component';
 
 @Component({
   selector: 'app-exams-list',
@@ -374,6 +376,8 @@ export class ExamsListComponent implements OnInit {
     });
   }
 
+
+
   onCreateClassroom(exam_id: string) {
     //打开一个会话框
     const modal = this.modal.create({
@@ -407,6 +411,24 @@ export class ExamsListComponent implements OnInit {
 
       }
     });
+  }
+
+  onUploadUnitedExam(){
+    this.modal.create({
+      nzTitle:'上传联考信息',
+      nzContent: UploadDialogComponent,
+      nzCentered: true,
+      nzStyle: {'minWidth': '700px'}
+    })
+  }
+
+  onUploadUnitedExamStudentInfo(){
+    this.modal.create({
+      nzTitle:'分配联考学生信息',
+      nzContent: UploadUnitedStudentDialogComponent,
+      nzCentered: true,
+      nzStyle: {'minWidth': '700px'}
+    })
   }
 
   assignMember(exam_id: string, data: unitedExamInfo) {
@@ -551,7 +573,7 @@ export interface unitedExamInfo {
   status: number
   registed_member: string[]
   exam_classroom: string[]
-  notification: string
+  notification: string[]
   _id: string,
   location: string,
   fetchExpandData: boolean

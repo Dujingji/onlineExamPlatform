@@ -5,7 +5,7 @@ export interface exericseDetailModel{
   length: number,
   questions : questions[],
   n: number[],
-  section: Array<section>,
+  section: Array<section>
 }
 
 export interface section{

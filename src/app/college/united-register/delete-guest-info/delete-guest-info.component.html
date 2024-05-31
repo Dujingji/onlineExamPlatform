@@ -1,0 +1,11 @@
+
+<div>
+  确定删除访客的报考信息吗？
+</div>
+<p></p>
+<label nz-checkbox [(ngModel)]="checked">同时删除访客账户？</label>
+
+<div *nzModalFooter>
+  <button nz-button nzType="default" (click)="close(0)">取消</button>
+  <button nz-button nzType="primary" (click)="close(1)">确定</button>
+</div>

@@ -32,12 +32,14 @@
           (click)="checkSearchStatus() ? jsonCheck(2) : jsonCheck(1)">{{ checkSearchStatus() ? '导出全部数据' :
           '导出搜索数据'}}</button>
         <button nz-button [nzType]="'primary'" (click)="generatePDFs()" [nzLoading]="exporting">导出学生准考证</button>
+        <nz-progress *ngIf="exporting" [nzPercent]="processor.toFixed(2)" nzStatus="active"></nz-progress>
       </div>
+
     </div>
   </form>
 
   <nz-table #sortTable [nzData]="listOfDisplayData" nzShowSizeChanger [nzFrontPagination]="false" [nzLoading]="loading"
-    [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" [nzScroll]="{ y: '500px'}"
+    [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" [nzScroll]="{ y: '500px', x: '800px'}"
     [nzPageSizeOptions]="[10,20,50,100, 500, 1000, total]" nzTableLayout="fixed"
     (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)"
     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
@@ -79,7 +81,7 @@
     <tbody>
       <ng-container *ngFor="let data of sortTable.data; let i = index ">
         <tr>
-          <td [nzChecked]="setOfCheckedId.has(data._id)" (nzCheckedChange)="onItemChecked(data._id, $event)"></td>
+          <td [nzChecked]="setOfCheckedId.has(data._id)" [nzDisabled]="data.role !== 'guest'" (nzCheckedChange)="onItemChecked(data._id, $event)"></td>
           <td>{{ data.std_name }}</td>
           <td>{{ data.role === 'guest' ? '非在籍':'在籍' }}</td>
           <td>{{ getSubjectString(data.subject) }} </td>
@@ -94,6 +96,10 @@
               取消审核
             </button>
             <button class="green" nz-button nzType="default" (click)="changeSubject(data)" nzSize="small">修改科目</button>
+            <button *ngIf="data.role === 'guest'" (click)="deleteGuestUnited(data)" nz-button
+              nzSize="small" nzType="primary" nzDanger>
+              <span nz-icon nzType="delete" nzTheme="outline"></span>
+            </button>
           </td>
         </tr>
       </ng-container>
@@ -110,7 +116,7 @@
   </div>
 </nz-dropdown-menu>
 
-<div class="print-section">
+<div class="print-section" *ngIf="exporting">
   <ng-template #pdfContainer>
 
   </ng-template>

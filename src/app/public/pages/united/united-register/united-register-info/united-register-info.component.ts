@@ -30,6 +30,8 @@ export class UnitedRegisterInfoComponent implements OnInit {
 
   public validate: boolean = false
 
+  public college_name : string = ''
+
   ngOnInit(): void {
     this.fetchAllUserData()
     this.fetchAllMajorList()
@@ -50,13 +52,13 @@ export class UnitedRegisterInfoComponent implements OnInit {
     this.loading = true
     let std_id = localStorage.getItem('information')!
     this.unitedService.fetchAllUserInfo(std_id).subscribe(data => {
-      this.loading = false
       this.payment = data.data.pay_statement
       this.data = data.data
       this._comphensive = data.data.comphensive
       this._foudation = data.data.found
       this.foundChange()
       this.comphensiveChange()
+      this.loading = false
     })
   }
 
@@ -72,10 +74,23 @@ export class UnitedRegisterInfoComponent implements OnInit {
     this._foudation = ''
   }
 
+  hasChoose(){
+    if(this._foudation && this._foudation.length !== 0){
+      return false
+    }
+
+    else if(this._comphensive && this._comphensive.length !== 0){
+      return false
+    }
+    else{
+      return true
+    }
+  }
+
   onSubmit() {
     const confirm = this.modal.confirm({
       nzTitle: '确认报考',
-      nzContent: '报考后，无法自主修改科目，请仔细核对科目信息！' + `科目：${this._foudation}、${this._comphensive}`,
+      nzContent: '报考后，无法自主修改科目，请仔细核对科目信息！' + `科目：公共课、${this._foudation}、${this._comphensive}`,
       nzOnOk: () => { return true}
     })
 
@@ -100,7 +115,7 @@ export class UnitedRegisterInfoComponent implements OnInit {
       if (data.status) {
         this.modal.success({
           nzTitle: '保存成功！',
-          nzContent: '提交信息成功!'
+          nzContent: '提交信息成功！请点击报名参考按钮完成报考！'
         })
 
       } else {

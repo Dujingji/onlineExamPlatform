@@ -32,7 +32,7 @@
   </form>
 
   <nz-table #sortTable [nzData]="listOfDisplayData" nzShowSizeChanger [nzFrontPagination]="false" [nzLoading]="loading"
-    [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" [nzScroll]="{ y: '500px' }"
+    [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" [nzScroll]="{ y: '500px', x: '800px' }"
     [nzPageSizeOptions]="[10,20,50,100, 500, 1000, total]" nzTableLayout="fixed"
     (nzPageIndexChange)="onPageIndexChange($event)" (nzPageSizeChange)="onPageSizeChange($event)"
     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
@@ -79,6 +79,12 @@
           <button [disabled]="setOfCheckedId.size === 0" (click)="onDelete(1, '', '')" nz-button nzSize="small" nzType="primary" nzDanger>
             <span nz-icon nzType="minus" nzTheme="outline"></span>
           </button>
+          <button nz-button nzType="primary" (click)="onUploadUnitedExam()" nzSize="small" >
+            <span nz-icon nzType="upload" nzTheme="outline"></span>
+          </button>
+          <button nz-button nzType="primary" (click)="onUploadUnitedExamStudentInfo()" nzSize="small">
+            分配
+          </button>
         </th>
       </tr>
     </thead>
@@ -124,9 +130,7 @@
                   <button nz-button (click)="onCreateClassroom(data._id)" nzSize="small">
                     <span nz-icon nzType="plus"></span>
                   </button>
-                  <button nzType="primary" nz-button nzSize="small" (click)="assignMember(data._id, data)">
-                    自动分配
-                  </button>
+
                 </th>
               </tr>
             </thead>

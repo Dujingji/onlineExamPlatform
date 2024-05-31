@@ -37,6 +37,12 @@ export class ExerciseService {
     })
   }
 
+  getExercisePaperDataTest(exc_d_id: string): Observable<exercisePaperModel> {
+    return this.http.get<exercisePaperModel>('https://exam.gwxgt.com/exam-api/exercise/get-exercise-paper-test', {
+      params: new HttpParams().set('exc_d_id', exc_d_id)
+    })
+  }
+
   getUserExerciseAnsewer(info_id: string, exc_id: string, exc_d_id: string): Observable<exerciseUserAnswerModel> {
     return this.http.get<exerciseUserAnswerModel>('https://exam.gwxgt.com/exam-api/exercise/get-user-exercise-answer', {
       params: new HttpParams().set('exc_d_id', exc_d_id).set('exc_id', exc_id).set('info_id', info_id)
@@ -114,6 +120,8 @@ export interface exerciseDataModel {
 
 export interface exercisePaperModel {
   exc_d_info: exericseDetailModel
+  start_i : number,
+  end_i : number
 }
 
 export interface exerciseUserAnswerModel {

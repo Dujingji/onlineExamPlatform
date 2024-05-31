@@ -24,6 +24,7 @@ export interface examEntriesA{
   exams: exam[],
   active: exam[],
   end: exam[],
+  finished: string[]
 }
 
 export interface examUpdateModel{

@@ -38,6 +38,8 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
   public comprehensiveList: major[] = []
   public user_c?: string
 
+  private finished : string[] = []
+
   public disabled: boolean = false
   private recent: exam[] = []
 
@@ -147,12 +149,21 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
       this.exampaperService.setSubject(this.std_id, type, subject)
   }
 
+  notAnswerPaper(data : exam){
+    let find = this.finished.indexOf(data._id)
+    if(find === -1){
+      return true
+    }
+    return false
+  }
+
   retrieveExam(): void {
     let id = localStorage.getItem("information")
     if (id) {
       this.exampaperService.getRegisterExamEntries(id)
         .subscribe((data) => {
           this.current = data.current
+          this.finished = data.finished
           this.recent = data.recent
           this.foundList = data._fl
           this.comprehensiveList = data._cl

@@ -1,5 +1,4 @@
-<div class="container">
-
+<div class="container" *ngIf="active">
   <nz-steps *ngIf="!matchScreem" [nzCurrent]="current" nzSize="small">
     <nz-step nzTitle="考前承诺书" nzDescription="{{matchScreem ? '' : '请仔细阅读承诺书，并选择是否同意'}}"></nz-step>
     <nz-step nzTitle="基本信息" nzDescription="{{matchScreem ? '' : '请确认基本信息是否正确！'}}"></nz-step>
@@ -27,7 +26,7 @@
   <mat-divider>
   </mat-divider>
 
-  <nz-spin [nzSpinning]="loading">
+  <nz-spin [nzSpinning]="loading && active">
     <div class="content" *ngIf="current === 0" @fade> <app-united-register-commitment
         (notify)="next($event)"></app-united-register-commitment> </div>
     <div class="content" *ngIf="current === 1" @fade> <app-united-register-user-info
@@ -36,7 +35,23 @@
         (goBack)="next($event)"></app-united-register-info> </div>
     <div class="content" *ngIf="current === 3" @fade> <app-united-register-paid
         (notify)="next($event)"></app-united-register-paid> </div>
-    <div class="content" *ngIf="current === 4" @fade> <app-united-exam-result></app-united-exam-result> </div>
+    <div class="content" *ngIf="current === 4" @fade> <app-united-exam-result
+        (backTo)="next($event)"></app-united-exam-result> </div>
   </nz-spin>
+</div>
 
+<div class="container" *ngIf="!active">
+  <nz-result nzStatus="info" nzTitle="联考报名已经结束！">
+    <div nz-result-extra>
+      <p>{{getTimeString()}}</p>
+      <button *ngIf="step >= 3" nz-button nzType="primary" (click)="onCollapse()">{{ collapse ? '关闭预览' : '预览准考证' }}</button>
+    </div>
+  </nz-result>
+  <div  *ngIf="step >= 3" class="not-active-container">
+    <div class="print-section">
+      <ng-template #pdfContainer>
+
+      </ng-template>
+    </div>
+  </div>
 </div>

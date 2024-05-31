@@ -22,6 +22,7 @@ export class ShowExamPaperComponent implements OnInit {
   private notifier = new Subject<void>()
   private examActiveInformation? : exam[]
   private examEndInformation?: exam[]
+  private finished: string[] = []
   public endIs?: boolean[]
   public loading : boolean = true
 
@@ -167,6 +168,14 @@ export class ShowExamPaperComponent implements OnInit {
     }
   }
 
+  getFinished(data: exam){
+    let find = this.finished.indexOf(data._id)
+    if(find === -1){
+      return false
+    }
+    return true
+  }
+
   retrieveExam(): void {
     let id = localStorage.getItem("information")
     if (id) {
@@ -178,6 +187,7 @@ export class ShowExamPaperComponent implements OnInit {
           this.examEndInformation = data.end
           this.active = Array<boolean>(this.examActiveInformation.length).fill(false)
           this.endIs = Array<boolean>(this.examActiveInformation.length).fill(false)
+          this.finished = data.finished
           this.Timer()
         })
     }

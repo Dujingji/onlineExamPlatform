@@ -33,6 +33,12 @@ import { CreateClassroomDialogComponent } from './exams-list/create-classroom-di
 import { UnitedRegisterComponent } from './united-register/united-register.component';
 import { UnitedSubjectEditorComponent } from './united-register/united-subject-editor/united-subject-editor.component';
 import { UnitedPaperComponent } from './united-register/united-paper/united-paper.component';
+import { GuestListComponent } from './guest-list/guest-list.component';
+import { DeleteGuestInfoComponent } from './united-register/delete-guest-info/delete-guest-info.component';
+import { EditStudentDialogComponent } from './college-home-page/edit-student-dialog/edit-student-dialog.component';
+import { UploadDialogComponent } from './exams-list/upload-dialog/upload-dialog.component';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { UploadUnitedStudentDialogComponent } from './exams-list/upload-united-student-dialog/upload-united-student-dialog.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +53,12 @@ import { UnitedPaperComponent } from './united-register/united-paper/united-pape
     CreateClassroomDialogComponent,
     UnitedRegisterComponent,
     UnitedSubjectEditorComponent,
-    UnitedPaperComponent
+    UnitedPaperComponent,
+    GuestListComponent,
+    DeleteGuestInfoComponent,
+    EditStudentDialogComponent,
+    UploadDialogComponent,
+    UploadUnitedStudentDialogComponent
   ],
   imports: [
     CommonModule,
@@ -71,7 +82,8 @@ import { UnitedPaperComponent } from './united-register/united-paper/united-pape
     NzProgressModule,
     NzDatePickerModule,
     NzModalModule,
-    CKEditorModule
+    CKEditorModule,
+    NzUploadModule
   ]
 })
 export class CollegeModule { }

@@ -1,27 +1,35 @@
 <div class="container">
-  <nz-empty></nz-empty>
-  <!-- <div class="top">
-    <div class="top_title">政治理论</div>
-    <div class="top_button" >
-      <mat-icon *ngIf="state === 'collapsed'" (click)="toggleBlock()">keyboard_arrow_down</mat-icon>
-      <mat-icon *ngIf="state === 'expanded'"(click)="toggleBlock()">keyboard_arrow_up</mat-icon>
+  <nz-spin [nzSpinning]="loading">
+    <nz-result nzStatus="info" *ngIf="!active" nzTitle="未检索到您的联考考场信息！" nzSubTitle={{getNotification()}}>
+    </nz-result>
+    <div *ngIf="active">
+      <nz-descriptions nzBordered>
+        <nz-descriptions-item nzTitle="准考证号" [nzSpan]="3"> {{united_data ? united_data.united_exam_id : ''}} </nz-descriptions-item>
+      </nz-descriptions>
+      <mat-divider></mat-divider>
+      <div *ngFor="let major of getData(); let i = index">
+        <div class="top">
+          <div class="top_title">{{major.major}}</div>
+          <div class="top_button">
+            <mat-icon *ngIf="state[i] === 'collapsed'" (click)="toggleBlock(i)">keyboard_arrow_down</mat-icon>
+            <mat-icon *ngIf="state[i] === 'expanded'" (click)="toggleBlock(i)">keyboard_arrow_up</mat-icon>
+          </div>
+        </div>
+        <div class="description-box" #content [@expandCollapse]="state[i]">
+          <nz-descriptions nzBordered>
+            <nz-descriptions-item nzTitle="考试名称" [nzSpan]="3"> {{major.united_name}} </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="科目" [nzSpan]="2"> {{major.major}} </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="考试时间" [nzSpan]="3">{{getTimeString(i)}} </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="所属院校" [nzSpan]="3"> {{united_data ? united_data.location : ''}}
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="考场" [nzSpan]="2"> {{major.classroom}} </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="座位号" [nzSpan]="1">
+              {{major.site_number}}
+            </nz-descriptions-item>
+          </nz-descriptions>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
     </div>
-  </div>
-  <div class="description-box" #content [@expandCollapse]="state">
-    <nz-descriptions nzTitle="考场信息"  nzBordered>
-      <nz-descriptions-item nzTitle="考试名称" [nzSpan]="3"> xxx大联考 </nz-descriptions-item>
-      <nz-descriptions-item nzTitle="科目" [nzSpan]="2"> 政治理论 </nz-descriptions-item>
-      <nz-descriptions-item nzTitle="考试时间" [nzSpan]="3"> 2000-00-00-00 </nz-descriptions-item>
-      <nz-descriptions-item nzTitle="教学点" [nzSpan]="3"> xxx职业技术学院 </nz-descriptions-item>
-      <nz-descriptions-item nzTitle="考场" [nzSpan]="2"> xxx栋xxx教室 </nz-descriptions-item>
-      <nz-descriptions-item nzTitle="座位号" [nzSpan]="1">
-        xx排xx列
-      </nz-descriptions-item>
-      <nz-descriptions-item nzTitle="考试状态" [nzSpan]="3">
-        <nz-badge nzStatus="processing" nzText="Running"></nz-badge>
-      </nz-descriptions-item>
-    </nz-descriptions>
-  </div>
-  <mat-divider></mat-divider> -->
-
+  </nz-spin>
 </div>

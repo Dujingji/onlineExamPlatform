@@ -56,23 +56,48 @@ export class UnitedUserPaperComponent implements OnInit, OnDestroy {
     this.printService.exportAsPDF('print-section', this.united_info ? `${this.united_info.std_name}_准考证_${new Date().getTime()}` : undefined);
   }
 
-  getTimeString(i: number) {
-
+  getTimeString(index: number) {
+    if(this.united_info && this.united_info.majorInfo.length > index){
+      let start = new Date(this.united_info.majorInfo[index].start_date)
+      let end = new Date(this.united_info.majorInfo[index].end_date)
+      return `${start.getMonth() + 1}月${start.getDate()}日 ${start.getHours().toString().padStart(2, '0')}:${start.getMinutes().toString().padStart(2, '0')}-${end.getHours().toString().padStart(2, '0')}:${end.getMinutes().toString().padStart(2, '0')}`
+    }
+    else{
+      return ''
+    }
+  }
+  getClassroomString(index: number) {
+    if (this.united_info && this.united_info.majorInfo.length > index) {
+      return this.united_info.majorInfo[index].classroom
+    }
+    else {
+      return ''
+    }
   }
 
-  getClassroomString(i: number) {
-
+  getNumberSite(index: number) {
+    if (this.united_info && this.united_info.majorInfo.length > index) {
+      return this.united_info.majorInfo[index].site_number.toString().padStart(2, '0')
+    }
+    else {
+      return ''
+    }
   }
 
-  getNumberSite(i: number) {
-
+  getNotification(){
+    if(this.united_info){
+      return this.united_info.notification
+    }
+    else{
+      return []
+    }
   }
 
   getDetail(condition: number) {
     if (this.united_info) {
       switch (condition) {
         case 0:
-          return this.united_info.united_user_id ? this.united_info.united_user_id : '待定'
+          return this.united_info.united_exam_id ? this.united_info.united_exam_id : '待定'
         case 1:
           return this.united_info.std_name ? this.united_info.std_name : '待定'
         case 2:
@@ -98,15 +123,19 @@ export class UnitedUserPaperComponent implements OnInit, OnDestroy {
 export interface unitedPaper {
   ID: string
   std_name: string
-  united_user_id: string
+  united_exam_id: string
   image_url: string
   majorInfo: majorInfo[]
   gerden: string,
   location: string,
-  location_detail: string
+  location_detail: string,
+  notification: string[],
+  _f: string,
+  _c : string
 }
 
-interface majorInfo {
+export interface majorInfo {
+  united_name : string
   major: string
   start_date: Date
   end_date: Date

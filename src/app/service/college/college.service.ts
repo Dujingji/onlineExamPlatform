@@ -24,6 +24,8 @@ export class CollegesService {
 
   public change_subject_data?: unitedRegisterUserInfo
 
+  public student_info?: studentAccountInfo
+
 
   set change_exam_id(data: string) {
     this._change_exam_id = data
@@ -36,8 +38,14 @@ export class CollegesService {
   private _examEntriesSubject = new Subject<void>();
   private _unitedExamPaperEntriesSubject = new Subject<void>();
 
+  private _studentsEntriesSubject = new Subject<void>();
+
   get unitedExamPaperEntriesSubject() {
     return this._unitedExamPaperEntriesSubject
+  }
+
+  get studentsEntriesSubject(){
+    return this._studentsEntriesSubject
   }
 
   set c_id(data: string) {
@@ -197,10 +205,34 @@ export class CollegesService {
       }))
   }
 
-  getAllStudentsUnitedInfo(college_id : string): Observable<{ data: unitedPaper[] }> {
+  getAllStudentsUnitedInfo(college_id: string): Observable<{ data: unitedPaper[] }> {
     return this.http.get<{ data: unitedPaper[] }>(environment.apiUrl + 'college/get-all-students-united-info', {
-      params : new HttpParams().set('college_id', college_id)
+      params: new HttpParams().set('college_id', college_id)
     })
+  }
+
+  DownLoadImage(url: string): Observable<Blob> {
+    return this.http.get(url, { responseType: 'blob' })
+  }
+
+  deleteGuestInfo(guest_id: string, condition: number): Observable<{ status: boolean, message: string }> {
+    return this.http.post<{ status: boolean, message: string }>(environment.apiUrl + 'college/delete-united-info', { id: guest_id, condition: condition })
+      .pipe(tap(() => {
+        this.unitedExamPaperEntriesSubject.next()
+      }))
+  }
+
+  editStudentInfo(data: { compe: string, found: string, username: string, std_name: string, password: string, grade: number }, id: string): Observable<{ status: boolean, message: string }> {
+    return this.http.post<{ status: boolean, message: string }>(environment.apiUrl + 'college/edit-student-info', { data: data, id: id }).pipe(tap(() => {
+      this.studentsEntriesSubject.next()
+    }))
+  }
+  downloadTempStudent() {
+    return this.http.get(environment.apiUrl + 'college/download/student-temp', { responseType: 'blob' });
+  }
+
+  downloadTemp() {
+    return this.http.get(environment.apiUrl + 'college/download/classroom-temp', { responseType: 'blob' });
   }
 }
 

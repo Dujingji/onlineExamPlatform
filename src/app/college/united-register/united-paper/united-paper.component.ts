@@ -9,7 +9,8 @@ import { environment } from 'src/environments/environment';
 export class UnitedPaperComponent {
 
   public united_info?: unitedPaper
-  public imageCache: Map<string, HTMLImageElement> = new Map();
+  public imageCache: Map<string, string> = new Map();
+
   constructor() {
 
   }
@@ -22,7 +23,6 @@ export class UnitedPaperComponent {
 
   }
 
-
   getMajorString(index: number) {
     if (this.united_info && this.united_info.majorInfo.length > index) {
       return this.united_info.majorInfo[index].major
@@ -33,24 +33,50 @@ export class UnitedPaperComponent {
   }
 
 
-  getTimeString(i: number) {
-
+  getTimeString(index: number) {
+    if(this.united_info && this.united_info.majorInfo.length > index){
+      let start = new Date(this.united_info.majorInfo[index].start_date)
+      let end = new Date(this.united_info.majorInfo[index].end_date)
+      return `${start.getMonth() + 1}月${start.getDate()}日 ${start.getHours().toString().padStart(2, '0')}:${start.getMinutes().toString().padStart(2, '0')}-${end.getHours().toString().padStart(2, '0')}:${end.getMinutes().toString().padStart(2, '0')}`
+    }
+    else{
+      return ''
+    }
   }
 
-  getClassroomString(i: number) {
-
+  getClassroomString(index: number) {
+    if (this.united_info && this.united_info.majorInfo.length > index) {
+      return this.united_info.majorInfo[index].classroom.toString().padStart(3, '0')
+    }
+    else {
+      return ''
+    }
   }
 
-  getNumberSite(i: number) {
-
+  getNumberSite(index: number) {
+    if (this.united_info && this.united_info.majorInfo.length > index) {
+      return this.united_info.majorInfo[index].site_number.toString().padStart(2, '0')
+    }
+    else {
+      return ''
+    }
   }
 
   getImage() {
     if (this.united_info && this.imageCache.get(environment.apiUrl + this.united_info.image_url)) {
-      return this.imageCache.get(environment.apiUrl + this.united_info.image_url)!.src
+      return this.imageCache.get(environment.apiUrl + this.united_info.image_url)
     }
     else {
       return undefined
+    }
+  }
+
+  getNotification(){
+    if(this.united_info){
+      return this.united_info.notification
+    }
+    else{
+      return []
     }
   }
 
@@ -58,7 +84,7 @@ export class UnitedPaperComponent {
     if (this.united_info) {
       switch (condition) {
         case 0:
-          return this.united_info.united_user_id ? this.united_info.united_user_id : '待定'
+          return this.united_info.united_exam_id ? this.united_info.united_exam_id : '待定'
         case 1:
           return this.united_info.std_name ? this.united_info.std_name : '待定'
         case 2:
@@ -82,12 +108,13 @@ export class UnitedPaperComponent {
 interface unitedPaper {
   ID: string
   std_name: string
-  united_user_id: string
+  united_exam_id: string
   image_url: string
   majorInfo: majorInfo[]
   gerden: string,
   location: string,
-  location_detail: string
+  location_detail: string,
+  notification: string[]
 }
 
 

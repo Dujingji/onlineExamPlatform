@@ -14,6 +14,7 @@ export class UnitedService {
   public step: number = 0
   private _baseInfoEntriesSubject = new Subject<void>();
   private _statusEntriesSubject = new Subject<void>();
+  public college_name : string = ''
 
   constructor(private http: HttpClient) { }
 
@@ -29,8 +30,14 @@ export class UnitedService {
     return this.http.get<{ status: boolean }>(environment.apiUrl + 'united/agreement')
   }
 
-  getUserStep(): Observable<{ current: number, step: number }> {
-    return this.http.get<{ current: number, step: number }>(environment.apiUrl + 'united/user-step')
+  getUserStep(): Observable<{ current: number, step: number, active: boolean }> {
+    return this.http.get<{ current: number, step: number, active: boolean }>(environment.apiUrl + 'united/user-step')
+  }
+
+  fetchAllCampus(college : string): Observable<{ data: MajorOption[] }> {
+    return this.http.get<{ data: MajorOption[] }>(environment.apiUrl + 'united/get-campus', {
+      params: new HttpParams().set('college', college)
+    })
   }
 
   changePaidStatus(): Observable<{ status: boolean }> {
@@ -71,16 +78,16 @@ export class UnitedService {
     return this.http.post<{ status: boolean }>(environment.apiUrl + 'united/save-subjext-info', data)
   }
 
-  getResult(): Observable<{ able: boolean, subject: number, _f : string, _c : string }> {
-    return this.http.get<{ able: boolean, subject: number,  _f : string, _c : string }>(environment.apiUrl + 'united/get-result-info')
+  getResult(): Observable<{ able: boolean, subject: number, _f: string, _c: string }> {
+    return this.http.get<{ able: boolean, subject: number, _f: string, _c: string }>(environment.apiUrl + 'united/get-result-info')
   }
 
-  notPaid() : Observable<{ status: boolean }> {
+  notPaid(): Observable<{ status: boolean }> {
     return this.http.get<{ status: boolean }>(environment.apiUrl + 'united/not-paid')
   }
 
-  getUnitedPaper() : Observable<{data : unitedPaper}>{
-    return this.http.get<{ data : unitedPaper }>(environment.apiUrl + 'united/get-united-paper')
+  getUnitedPaper(): Observable<{ data: unitedPaper }> {
+    return this.http.get<{ data: unitedPaper }>(environment.apiUrl + 'united/get-united-paper')
   }
 
 }
@@ -105,5 +112,7 @@ export interface userBaseInfo {
   name: string,
   grade: string,
   gerden: string,
-  image_url: string
+  image_url: string,
+  role: string,
+  campus: {name : string}
 }

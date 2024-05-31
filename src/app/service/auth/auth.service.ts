@@ -1,3 +1,4 @@
+import { MajorOption } from './../../public/pages/united/united-register/united-register-info/united-register-info.component';
 import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
@@ -26,7 +27,7 @@ export class AuthService {
     return this.account
   }
 
-  get role(){
+  get role() {
     return this.accountRole
   }
 
@@ -42,8 +43,8 @@ export class AuthService {
     return this.loginSub
   }
 
-  getUserProfile(): Observable<{ url : string, status : boolean }>{
-    return this.http.get<{ url : string, status : boolean }>(environment.apiUrl + 'united/get-avater')
+  getUserProfile(): Observable<{ url: string, status: boolean }> {
+    return this.http.get<{ url: string, status: boolean }>(environment.apiUrl + 'united/get-avater')
   }
 
   getCollegeList(): Observable<{ college: { name: string }[] }> {
@@ -57,9 +58,9 @@ export class AuthService {
   }
 
   getAccountRole() {
-    return this.http.get<{ data: { role: string }, status : boolean }>(environment.apiUrl + 'united/get-role')
+    return this.http.get<{ data: { role: string }, status: boolean }>(environment.apiUrl + 'united/get-role')
       .pipe(tap(res => {
-        if(res.status)
+        if (res.status)
           this.accountRole = res.data.role
       }))
   }

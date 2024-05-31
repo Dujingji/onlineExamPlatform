@@ -51,12 +51,23 @@
       <nz-form-item>
         <nz-form-label nzRequired="true">所属院校</nz-form-label>
         <nz-form-control>
-          <nz-select formControlName="college" nzShowSearch nzPlaceHolder="请选择您的所属院校..." nzAllowClear>
+          <nz-select formControlName="college" (ngModelChange)="collegeOnChange()" nzShowSearch nzPlaceHolder="请选择您的所属院校..." nzAllowClear>
             <nz-option *ngFor="let college of collegeList" nzLabel="{{college.label}}"
               nzValue="{{college.value}}"> </nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzRequired="true">校区</nz-form-label>
+        <nz-form-control>
+          <nz-select formControlName="campus" nzShowSearch nzPlaceHolder="请选择您的校区..." nzAllowClear>
+            <nz-option *ngFor="let campus of campusList" nzLabel="{{campus.label}}"
+              nzValue="{{campus.value}}"> </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      </div>
+      <div nz-row>
       <nz-form-item>
         <nz-form-label nzRequired="true">年级</nz-form-label>
         <nz-form-control>

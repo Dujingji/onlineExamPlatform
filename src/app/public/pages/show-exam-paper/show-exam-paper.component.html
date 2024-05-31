@@ -13,9 +13,11 @@
               <time>{{examDate(exam.date)}} - {{examDate(exam.end)}}</time>
             </div>
             <div class="card-action">
-              <button mat-button class="startBTN" *ngIf="!loading" [disabled]="getButtonStatus(i) !== 1"
+              <button mat-button class="startBTN" *ngIf="!loading" [disabled]="getButtonStatus(i) !== 1 || getFinished(exam)"
                 routerLink="/public/homePage/p/{{exam._id}}">
-                {{getButtonStatus(i) === -1 ? '加载中...' :
+                {{
+                getFinished(exam) ? '已交卷' :
+                getButtonStatus(i) === -1 ? '加载中...' :
                 getButtonStatus(i) === 0 ? getTimeSpan(i) :
                 getButtonStatus(i) === 1 ? '开始考试' : ''
                 }}

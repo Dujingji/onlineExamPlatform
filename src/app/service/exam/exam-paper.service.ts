@@ -49,25 +49,25 @@ export class ExamPaperService {
   }
 
   getUserAnswer(userInfo_id: string, paper_id: string, exam_id: string): Observable<{ answer: result }> {
-    return this.http.get<{ answer: result }>(environment.apiUrl +'exam/get-user-answer', {
+    return this.http.get<{ answer: result }>(environment.apiUrl + 'exam/get-user-answer', {
       params: new HttpParams().set('info_id', userInfo_id).set('paper_id', paper_id).set('exam_id', exam_id)
     })
   }
 
-  getExamDetailInfo(exam_id : string) : Observable<{ detail : exam, total : number, cost: number }>{
-    return this.http.get<{ detail : exam, total : number, cost: number }>(environment.apiUrl + 'exam/get-exam-detail-info', {
+  getExamDetailInfo(exam_id: string): Observable<{ detail: exam, total: number, cost: number, finished: boolean }> {
+    return this.http.get<{ detail: exam, total: number, cost: number, finished: boolean }>(environment.apiUrl + 'exam/get-exam-detail-info', {
       params: new HttpParams().set('exam_id', exam_id)
     })
   }
 
   getRegisterExamEntries(id: string): Observable<{
-    current: exam[], _e: exam[], _p: exam[], recent: exam[], all : exam[][],
-    _f: exam[], _c: exam[], major: major[], type: number, _fl: major[], _cl: major[], u_c?: string
+    current: exam[], _e: exam[], _p: exam[], recent: exam[], all: exam[][],
+    _f: exam[], _c: exam[], major: major[], type: number, _fl: major[], _cl: major[], u_c?: string, finished: string[]
   }> {
     return this.http.get<{
-      current: exam[], _e: exam[], _p: exam[], recent: exam[], all : exam[][],
-      _f: exam[], _c: exam[], major: major[], type: number, _fl: major[], _cl: major[], u_c?: string
-    }>(environment.apiUrl +'exam/get-register-exam', {
+      current: exam[], _e: exam[], _p: exam[], recent: exam[], all: exam[][],
+      _f: exam[], _c: exam[], major: major[], type: number, _fl: major[], _cl: major[], u_c?: string, finished: string[]
+    }>(environment.apiUrl + 'exam/get-register-exam', {
       params: new HttpParams().set('id', id)
     })
   }
@@ -79,7 +79,7 @@ export class ExamPaperService {
     return this.http.get<{
       current: resultInfo[], _e: resultInfo[], _p: resultInfo[], _f: resultInfo[],
       _c: resultInfo[], major: major[], type: number
-    }>(environment.apiUrl +'exam/get-result-exam', {
+    }>(environment.apiUrl + 'exam/get-result-exam', {
       params: new HttpParams().set('id', id)
     })
   }

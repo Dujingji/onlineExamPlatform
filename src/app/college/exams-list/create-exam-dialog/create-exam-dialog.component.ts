@@ -52,7 +52,7 @@ export class CreateExamDialogComponent implements OnInit {
       this.date.push(this.exam_data.end_date)
 
       if (this.exam_data.notification && this.exam_data.notification.length !== 0) {
-        this.model.editorData = this.exam_data.notification
+        this.model.editorData = this.exam_data.notification.toString()
       }
     }
 

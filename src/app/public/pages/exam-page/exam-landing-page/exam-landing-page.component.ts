@@ -15,6 +15,7 @@ export class ExamLandingPageComponent implements OnInit{
   public exam_detail? : exam
   public total_mark : number = 0
   public cost: string = ''
+  private finished : boolean = false
 
   constructor(private route: ActivatedRoute, private examPaperService : ExamPaperService){
 
@@ -28,6 +29,7 @@ export class ExamLandingPageComponent implements OnInit{
 
   fetchExamDetail(exam_id : string){
     this.examPaperService.getExamDetailInfo(exam_id).subscribe(data =>{
+      this.finished = data.finished
       this.exam_detail = data.detail
       this.total_mark = data.total
       this.cost = Math.floor(data.cost / 3600).toString() + ' 小时 ' + Math.floor(data.cost % 3600 / 60) + ' 分钟'
@@ -36,6 +38,9 @@ export class ExamLandingPageComponent implements OnInit{
 
   examStatus(){
     let now = new Date()
+    if(this.finished){
+      return 3
+    }
     if(this.exam_detail && new Date(this.exam_detail.date).getTime() > now.getTime()){
       return 0
     }

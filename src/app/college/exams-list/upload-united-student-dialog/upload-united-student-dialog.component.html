@@ -1,0 +1,27 @@
+<div>
+
+  <p>请点击下载模版下载模版文件，编辑好后，点击上传。表格上传成功后，将导入联考数据到系统。</p>
+  <div class="col">
+    <button nz-button nzType="primary" class="green" (click)="DownloadTemp()">下载模板</button>
+  </div>
+
+  <div class="col">
+    <nz-upload
+      nzAction="{{getUrl()}}" nzName="upload"
+      [nzShowUploadList]="true"
+      (nzChange)="handleChange($event)"
+    >
+      <button nz-button>
+        <span nz-icon nzType="upload"></span>
+        上传文件
+      </button>
+    </nz-upload>
+
+  </div>
+
+</div>
+
+<div *nzModalFooter>
+  <button nz-button nzType="primary" nzDanger="true" (click)="close(0)">取消</button>
+</div>
+
